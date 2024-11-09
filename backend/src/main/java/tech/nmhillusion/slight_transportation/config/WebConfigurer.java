@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -27,9 +28,6 @@ import static java.net.URLDecoder.decode;
  */
 @Configuration
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(WebConfigurer.class);
-
     private final Environment env;
 
 
@@ -40,10 +38,10 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     @Override
     public void onStartup(ServletContext servletContext) {
         if (env.getActiveProfiles().length != 0) {
-            LOG.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
+            LogHelper.getLogger(this).info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
         }
 
-        LOG.info("Web application fully configured");
+        LogHelper.getLogger(this).info("Web application fully configured");
     }
 
     /**
@@ -61,6 +59,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
             String prefixPath = resolvePathPrefix();
             root = new File(prefixPath + "target/classes/static/");
             if (root.exists() && root.isDirectory()) {
+                LogHelper.getLogger(this).info("set document root for {}", root);
                 servletWebServer.setDocumentRoot(root);
             }
         }
@@ -77,14 +76,16 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         if (extractionEndIndex <= 0) {
             return "";
         }
-        return extractedPath.substring(0, extractionEndIndex);
+        final String pathPrefix = extractedPath.substring(0, extractionEndIndex);
+        LogHelper.getLogger(this).info("resolved pathPrefix = {}", pathPrefix);
+        return pathPrefix;
     }
 
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        LOG.debug("Registering CORS filter");
+        LogHelper.getLogger(this).debug("Registering CORS filter");
         source.registerCorsConfiguration("/api/**"
                 , new CorsConfiguration()
                         .applyPermitDefaultValues()
