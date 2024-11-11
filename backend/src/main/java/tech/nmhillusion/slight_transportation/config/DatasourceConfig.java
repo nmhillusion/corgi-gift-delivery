@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import tech.nmhillusion.n2mix.constant.CommonConfigDataSourceValue;
 import tech.nmhillusion.n2mix.helper.database.config.DataSourceProperties;
 import tech.nmhillusion.n2mix.helper.database.config.DatabaseConfigHelper;
-import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
 import javax.sql.DataSource;
 import java.io.IOException;
