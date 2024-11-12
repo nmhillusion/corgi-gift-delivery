@@ -9,9 +9,9 @@ import tech.nmhillusion.n2mix.helper.log.LogHelper;
  */
 public abstract class StartupSeeder {
 
-    protected abstract void doSeed();
+    protected abstract void doSeed() throws Throwable;
 
-    public final void seed() {
+    public final void seed() throws Throwable {
         LogHelper.getLogger(this).info(">> seeding for seeder [{}]", getClass().getSimpleName());
         doSeed();
         LogHelper.getLogger(this).info("<< seeded for seeder [{}]", getClass().getSimpleName());

@@ -8,10 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.slight_transportation.startup.DatabaseSchemeSeeder;
 
 import java.util.Calendar;
+
+import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 
 @EnableAutoConfiguration(
         exclude = {
@@ -32,10 +33,15 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        LogHelper.getLogger(this).info("Started app successfully at {}", Calendar.getInstance()
+        getLogger(this).info("Started app successfully at {}", Calendar.getInstance()
                 .getTime()
         );
 
-        databaseSchemeSeeder.seed();
+        try {
+            databaseSchemeSeeder.seed();
+        } catch (Throwable ex) {
+            getLogger(this).error(ex);
+            System.exit(-1);
+        }
     }
 }
