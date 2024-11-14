@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tech.nmhillusion.n2mix.constant.CommonConfigDataSourceValue;
+import tech.nmhillusion.n2mix.exception.InvalidArgument;
 import tech.nmhillusion.n2mix.helper.database.config.DataSourceProperties;
 import tech.nmhillusion.n2mix.helper.database.config.DatabaseConfigHelper;
-import tech.nmhillusion.n2mix.helper.log.LogHelper;
+import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -61,4 +62,9 @@ public class DatasourceConfig {
                 );
     }
 
+    @Bean("databaseHelper")
+    public DatabaseHelper initDatabaseHelper(@Autowired DataSource dataSource,
+                                             @Autowired SessionFactory sessionFactory) throws InvalidArgument {
+        return new DatabaseHelper(dataSource, sessionFactory);
+    }
 }

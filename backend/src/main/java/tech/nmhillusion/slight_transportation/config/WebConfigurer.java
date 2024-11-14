@@ -1,8 +1,6 @@
 package tech.nmhillusion.slight_transportation.config;
 
 import jakarta.servlet.ServletContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.server.WebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
