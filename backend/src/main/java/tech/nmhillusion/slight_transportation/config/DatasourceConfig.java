@@ -36,7 +36,8 @@ public class DatasourceConfig {
         final String password = ""; // Default password
 
         dataSourceProperties = DataSourceProperties.generateFromDefaultDataSourceProperties(
-                dataSourceConfig
+                "slitran-db"
+                , dataSourceConfig
                 , dbUrl
                 , user
                 , password
