@@ -25,7 +25,12 @@ public class DatabaseSchemeSeeder extends StartupSeeder {
     @Override
     protected void doSeed() throws Throwable {
         getLogger(this).info("Seed on application[{}]", applicationContext);
+
+        getLogger(this).info("init database scheme");
         startupRepo.initDatabaseSchema();
+
+        getLogger(this).info("init data for app");
+        startupRepo.initData();
     }
 
 }

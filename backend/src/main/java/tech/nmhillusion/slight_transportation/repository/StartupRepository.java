@@ -1,7 +1,5 @@
 package tech.nmhillusion.slight_transportation.repository;
 
-import java.io.IOException;
-
 /**
  * created by: nmhillusion
  * <p>
@@ -9,4 +7,6 @@ import java.io.IOException;
  */
 public interface StartupRepository {
     void initDatabaseSchema() throws Throwable;
+
+    void initData() throws Throwable;
 }
