@@ -1,3 +1,12 @@
+server:
+  port: 8080
+  tomcat:
+    max-connections: 100
+    resource:
+      allow-caching: true
+  compression:
+    enabled: true
+
 spring:
   application:
     name: Slight Transportation
