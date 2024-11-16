@@ -5,6 +5,7 @@ import tech.nmhillusion.n2mix.helper.database.query.DatabaseExecutor;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.IOStreamUtil;
+import tech.nmhillusion.slight_transportation.provider.SqlScriptProvider;
 import tech.nmhillusion.slight_transportation.repository.StartupRepository;
 
 import java.io.IOException;
@@ -24,9 +25,11 @@ public class StartupRepositoryImpl implements StartupRepository {
     private static final String INIT_DATA__FILENAME = "startup/init-data.sql";
 
     private final DatabaseExecutor dbExecutor;
+    private final SqlScriptProvider sqlScriptProvider;
 
-    public StartupRepositoryImpl(DatabaseHelper databaseHelper) {
+    public StartupRepositoryImpl(DatabaseHelper databaseHelper, SqlScriptProvider sqlScriptProvider) {
         this.dbExecutor = databaseHelper.getExecutor();
+        this.sqlScriptProvider = sqlScriptProvider;
     }
 
     private String getStartupSql(String sqlFilename) throws IOException {
@@ -51,10 +54,8 @@ public class StartupRepositoryImpl implements StartupRepository {
     }
 
     private boolean isExistedData() throws Throwable {
-        final String checkExistedDataSql = """
-                select count(1)
-                from t_cx_delivery_type
-                """;
+        final String checkExistedDataSql = sqlScriptProvider
+                .getSqlScript("startup/check-existed-data.sql");
 
         return dbExecutor.doReturningWork(conn ->
                 conn.doReturningPreparedStatement(checkExistedDataSql, preparedStatement -> {
