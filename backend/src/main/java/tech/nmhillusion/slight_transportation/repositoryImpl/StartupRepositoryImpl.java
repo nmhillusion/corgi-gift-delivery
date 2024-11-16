@@ -4,12 +4,11 @@ import org.springframework.stereotype.Repository;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseExecutor;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
-import tech.nmhillusion.n2mix.util.IOStreamUtil;
+import tech.nmhillusion.slight_transportation.helper.UnixPathHelper;
 import tech.nmhillusion.slight_transportation.provider.SqlScriptProvider;
 import tech.nmhillusion.slight_transportation.repository.StartupRepository;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.ResultSet;
 
 import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
@@ -21,28 +20,29 @@ import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
  */
 @Repository
 public class StartupRepositoryImpl implements StartupRepository {
-    private static final String INIT_DB_SCHEMA__FILENAME = "startup/init-db-scheme.sql";
-    private static final String INIT_DATA__FILENAME = "startup/init-data.sql";
+    private static final String FILENAME__INIT_DB_SCHEMA = "init-db-scheme.sql";
+    private static final String FILENAME__INIT_DATA = "init-data.sql";
+    private static final String FILENAME__CHECK_EXISTED_DATA = "check-existed-data.sql";
 
     private final DatabaseExecutor dbExecutor;
     private final SqlScriptProvider sqlScriptProvider;
+    private final UnixPathHelper unixPathHelper;
 
-    public StartupRepositoryImpl(DatabaseHelper databaseHelper, SqlScriptProvider sqlScriptProvider) {
+    public StartupRepositoryImpl(DatabaseHelper databaseHelper, SqlScriptProvider sqlScriptProvider, UnixPathHelper unixPathHelper) {
         this.dbExecutor = databaseHelper.getExecutor();
         this.sqlScriptProvider = sqlScriptProvider;
+        this.unixPathHelper = unixPathHelper;
     }
 
     private String getStartupSql(String sqlFilename) throws IOException {
-        try (final InputStream sqlFileStream = getClass().getClassLoader().getResourceAsStream(
-                sqlFilename
-        )) {
-            return IOStreamUtil.convertInputStreamToString(sqlFileStream);
-        }
+        return sqlScriptProvider.getSqlScript(
+                unixPathHelper.joinPaths("startup", sqlFilename)
+        );
     }
 
     @Override
     public void initDatabaseSchema() throws Throwable {
-        final String startupSql = getStartupSql(INIT_DB_SCHEMA__FILENAME);
+        final String startupSql = getStartupSql(FILENAME__INIT_DB_SCHEMA);
 
         dbExecutor.doWork(conn -> {
             conn.doPreparedStatement(startupSql, preparedStatement -> {
@@ -54,8 +54,7 @@ public class StartupRepositoryImpl implements StartupRepository {
     }
 
     private boolean isExistedData() throws Throwable {
-        final String checkExistedDataSql = sqlScriptProvider
-                .getSqlScript("startup/check-existed-data.sql");
+        final String checkExistedDataSql = getStartupSql(FILENAME__CHECK_EXISTED_DATA);
 
         return dbExecutor.doReturningWork(conn ->
                 conn.doReturningPreparedStatement(checkExistedDataSql, preparedStatement -> {
@@ -82,7 +81,7 @@ public class StartupRepositoryImpl implements StartupRepository {
             return;
         }
 
-        final String startupSql = getStartupSql(INIT_DATA__FILENAME);
+        final String startupSql = getStartupSql(FILENAME__INIT_DATA);
 
         dbExecutor.doWork(conn -> {
             conn.doPreparedStatement(startupSql, preparedStatement -> {
