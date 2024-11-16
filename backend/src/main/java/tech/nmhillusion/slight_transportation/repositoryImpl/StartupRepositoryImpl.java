@@ -3,7 +3,6 @@ package tech.nmhillusion.slight_transportation.repositoryImpl;
 import org.springframework.stereotype.Repository;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseExecutor;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
-import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.IOStreamUtil;
 import tech.nmhillusion.slight_transportation.repository.StartupRepository;
 
@@ -28,12 +27,6 @@ public class StartupRepositoryImpl implements StartupRepository {
     }
 
     private String getStartupSql(String sqlFilename) throws IOException {
-//        final String sqlFilePath = String.join("/", List.of("startup", sqlFilename));
-//        getLogger(this).info("sql file path to load: {}", sqlFilePath);
-
-        final String currentDir = getClass().getClassLoader().getResource(".").getPath();
-        LogHelper.getLogger(this).info("currentDir = {}", currentDir);
-
         try (final InputStream sqlFileStream = getClass().getClassLoader().getResourceAsStream(
                 sqlFilename
         )) {
