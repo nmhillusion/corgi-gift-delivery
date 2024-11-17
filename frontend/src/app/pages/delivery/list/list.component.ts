@@ -1,9 +1,13 @@
 import { Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { DeliveryStatusService } from "../../../service/delivery-status.service";
+import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
 
 @Component({
   standalone: true,
+  imports: [
+    MainLayoutComponent
+  ],
   templateUrl: "./list.component.html",
   styleUrl: "./list.component.scss",
 })
