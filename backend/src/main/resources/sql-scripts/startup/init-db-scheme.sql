@@ -12,16 +12,48 @@ create table if not exists t_cx_commodity_type (
 
 ----
 
+create table if not exists t_cx_commodity_import (
+  import_id int primary key,
+  import_time timestamp with time zone
+);
+
+create table if not exists t_cx_commodity_import_item (
+  item_id varchar(100) primary key,
+  import_id int,
+  com_type_id int,
+  quantity numeric
+);
+
+alter table t_cx_commodity_import_item
+add constraint if not exists fk_cx_commodity_import_item__import_id
+foreign key (import_id)
+references t_cx_commodity_import (import_id);
+
+alter table t_cx_commodity_import_item
+add constraint if not exists fk_cx_commodity_import_item__com_type_id
+foreign key (com_type_id)
+references t_cx_commodity_type (type_id);
+
+----
+
 create table if not exists t_cx_commodity (
-  com_id int primary key,
+  com_id numeric primary key,
   com_name nvarchar(200),
-  com_type_id int
+  com_type_id int,
+  import_item_id varchar(100),
+  create_time timestamp with time zone
 );
 
 alter table t_cx_commodity
 add constraint if not exists fk_cx_commodity__com_type_id
 foreign key (com_type_id)
 REFERENCES t_cx_commodity_type(type_id);
+
+alter table t_cx_commodity
+add constraint if not exists fk_cx_commodity__import_item_id
+foreign key (import_item_id)
+references t_cx_commodity_import_item (item_id)
+;
 
 ----
 
@@ -121,30 +153,6 @@ REFERENCES t_cx_delivery_status (status_id);
 
 ----
 
-create table if not exists t_cx_commodity_import (
-  import_id int primary key,
-  import_time timestamp with time zone
-);
-
-create table if not exists t_cx_commodity_import_item (
-  item_id varchar(100) primary key,
-  import_id int,
-  commodity_id int,
-  quantity numeric
-);
-
-alter table t_cx_commodity_import_item
-add constraint if not exists fk_cx_commodity_import_item__import_id
-foreign key (import_id)
-references t_cx_commodity_import (import_id);
-
-alter table t_cx_commodity_import_item
-add constraint if not exists fk_cx_commodity_import_item__commodity_id
-foreign key (commodity_id)
-references t_cx_commodity (com_id);
-
-----
-
 create table if not exists t_cx_note (
   note_id int primary key,
   note_content text,
@@ -185,3 +193,7 @@ add constraint if not exists fk_cx_note__import_item_id
 foreign key (import_item_id)
 references t_cx_commodity_import_item (item_id)
 ;
+
+----
+
+

@@ -18,8 +18,8 @@ spring:
 
 logging:
   file:
-    name: sli-tran.log
-    path: sli-tran.log
+    name: logs/sli-tran.log
+    path: logs/sli-tran.log
   pattern:
     dateformat: yyyy-MM-dd'T'HH:mm:ssXXX
     level:
