@@ -11,8 +11,6 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 @Entity
 @Table(name = "t_cx_commodity_type")
 public class CommodityTypeEntity extends Stringeable {
-    @Version
-    private Long version;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_commodity_type_type_id")
@@ -22,15 +20,6 @@ public class CommodityTypeEntity extends Stringeable {
 
     @Column(name = "type_name", nullable = false, unique = true)
     private String typeName;
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public CommodityTypeEntity setVersion(Long version) {
-        this.version = version;
-        return this;
-    }
 
     public int getTypeId() {
         return typeId;
