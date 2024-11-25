@@ -2,6 +2,7 @@ package tech.nmhillusion.slight_transportation.domains.delivery.deliveryStatus;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryStatusEntity;
@@ -23,13 +24,13 @@ public class DeliveryStatusController {
         this.deliveryStatusService = deliveryStatusService;
     }
 
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<DeliveryStatusEntity> list() {
-        return deliveryStatusService.list();
+    @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<DeliveryStatusEntity> findAll() {
+        return deliveryStatusService.findAll();
     }
 
-//    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public DeliveryStatusEntity create() {
-//        return
-//    }
+    @GetMapping(value = "/{statusId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public DeliveryStatusEntity findById(@PathVariable String statusId) {
+        return deliveryStatusService.findById(statusId);
+    }
 }

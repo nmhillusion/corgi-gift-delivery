@@ -1,5 +1,6 @@
 package tech.nmhillusion.slight_transportation.domains.delivery.deliveryStatus;
 
+import org.springframework.stereotype.Service;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryStatusEntity;
 
 import java.util.List;
@@ -10,5 +11,29 @@ import java.util.List;
  * created date: 2024-11-16
  */
 public interface DeliveryStatusService {
-    List<DeliveryStatusEntity> list();
+    List<DeliveryStatusEntity> findAll();
+
+    DeliveryStatusEntity findById(String statusId);
+
+    @Service
+    class Impl implements DeliveryStatusService {
+
+        private final DeliveryStatusRepository deliveryStatusRepository;
+
+        public Impl(DeliveryStatusRepository deliveryStatusRepository) {
+            this.deliveryStatusRepository = deliveryStatusRepository;
+        }
+
+        @Override
+        public List<DeliveryStatusEntity> findAll() {
+            return deliveryStatusRepository.findAll();
+        }
+
+        @Override
+        public DeliveryStatusEntity findById(String statusId) {
+            return deliveryStatusRepository
+                    .findById(statusId)
+                    .orElse(null);
+        }
+    }
 }
