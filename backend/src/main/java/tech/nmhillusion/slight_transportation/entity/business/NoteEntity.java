@@ -1,5 +1,9 @@
 package tech.nmhillusion.slight_transportation.entity.business;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
 import java.time.ZonedDateTime;
@@ -9,14 +13,32 @@ import java.time.ZonedDateTime;
  * <p>
  * created date: 2024-11-16
  */
+@Entity
+@Table(name = "t_cx_note")
 public class NoteEntity extends Stringeable {
+    @Id
+    @Column(name = "note_id", nullable = false)
     private String noteId;
+
+    @Column(name = "note_content", nullable = false)
     private String noteContent;
+
+    @Column(name = "note_time", nullable = false)
     private ZonedDateTime noteTime;
+
+    @Column(name = "customer_id")
     private String customerId;
+
+    @Column(name = "delivery_id")
     private String deliveryId;
+
+    @Column(name = "delivery_attempt_id")
     private String deliveryAttemptId;
+
+    @Column(name = "import_id")
     private String importId;
+
+    @Column(name = "import_item_id")
     private String importItemId;
 
     public String getNoteId() {

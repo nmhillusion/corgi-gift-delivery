@@ -12,35 +12,30 @@ create table if not exists t_cx_commodity_type (
 
 ----
 
+create table if not exists t_cx_commodity_warehouse (
+  warehouse_id int primary key,
+  warehouse_name nvarchar(200),
+  warehouse_address nvarchar(500)
+);
+
 create table if not exists t_cx_commodity_import (
   import_id int primary key,
+  import_name nvarchar(200),
+  warehouse_id int not null,
   import_time timestamp with time zone
 );
 
-create table if not exists t_cx_commodity_import_item (
-  item_id varchar(100) primary key,
-  import_id int,
-  com_type_id int,
-  quantity numeric
-);
+alter table t_cx_commodity_import
+add constraint if not exists fk_cx_commodity_import__warehouse_id
+foreign key (warehouse_id)
+references t_cx_commodity_warehouse (warehouse_id);
 
-alter table t_cx_commodity_import_item
-add constraint if not exists fk_cx_commodity_import_item__import_id
-foreign key (import_id)
-references t_cx_commodity_import (import_id);
-
-alter table t_cx_commodity_import_item
-add constraint if not exists fk_cx_commodity_import_item__com_type_id
-foreign key (com_type_id)
-references t_cx_commodity_type (type_id);
-
-----
+------
 
 create table if not exists t_cx_commodity (
   com_id numeric primary key,
   com_name nvarchar(200),
   com_type_id int,
-  import_item_id varchar(100),
   create_time timestamp with time zone
 );
 
@@ -49,11 +44,30 @@ add constraint if not exists fk_cx_commodity__com_type_id
 foreign key (com_type_id)
 REFERENCES t_cx_commodity_type(type_id);
 
-alter table t_cx_commodity
-add constraint if not exists fk_cx_commodity__import_item_id
-foreign key (import_item_id)
-references t_cx_commodity_import_item (item_id)
-;
+----
+
+create table if not exists t_cx_commodity_warehouse_item (
+  item_id varchar(100) primary key,
+  import_id int,
+  warehouse_id int,
+  com_id int,
+  quantity numeric
+);
+
+alter table t_cx_commodity_warehouse_item
+add constraint if not exists fk_cx_commodity_warehouse_item__import_id
+foreign key (import_id)
+references t_cx_commodity_import (import_id);
+
+alter table t_cx_commodity_warehouse_item
+add constraint if not exists fk_cx_commodity_warehouse_item__com_id
+foreign key (com_id)
+references t_cx_commodity (com_id);
+
+alter table t_cx_commodity_warehouse_item
+add constraint if not exists fk_cx_commodity_warehouse_item__warehouse_id
+foreign key (warehouse_id)
+references t_cx_commodity_warehouse (warehouse_id);
 
 ----
 
@@ -161,7 +175,7 @@ create table if not exists t_cx_note (
   delivery_id varchar(100),
   delivery_attempt_id varchar(100),
   import_id int,
-  import_item_id varchar(100)
+  warehouse_item_id varchar(100)
 );
 
 alter table t_cx_note

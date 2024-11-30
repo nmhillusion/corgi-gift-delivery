@@ -13,8 +13,8 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class CommodityTypeEntity extends Stringeable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_commodity_type_type_id")
-    @SequenceGenerator(name = "t_cx_commodity_type_type_id_seq", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_commodity_type_type__id")
+    @SequenceGenerator(name = "seq__cx_commodity_type_type__id", allocationSize = 1, initialValue = 1)
     @Column(name = "type_id", nullable = false)
     private int typeId;
 
