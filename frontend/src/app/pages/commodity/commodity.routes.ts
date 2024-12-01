@@ -9,9 +9,9 @@ const routes: Routes = [
   },
   {
     path: "commodity-type-mgmt",
-    loadComponent: () =>
-      import("./commodity-type-mgmt/commodity-type-mgmt.component").then(
-        (m) => m.CommodityTypeMgmtComponent
+    loadChildren: () =>
+      import("./commodity-type-mgmt/commodity-type-mgmt.module").then(
+        (m) => m.CommodityTypeModule
       ),
   },
   {
