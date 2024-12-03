@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
+import { BasePage } from "@app/pages/base.page";
 
 @Component({
   standalone: true,
@@ -7,6 +8,8 @@ import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.com
   styleUrl: "./commodity-mgmt.component.scss",
   imports: [MainLayoutComponent],
 })
-export class CommodityMgmtComponent {
-  title = "commodity-mgmt";
+export class CommodityMgmtComponent extends BasePage {
+  constructor() {
+    super("Commodity Mgmt");
+  }
 }
