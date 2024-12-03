@@ -1,12 +1,13 @@
 import {
-  OnInit,
-  OnDestroy,
   Component,
-  Injectable,
   inject,
   Inject,
+  OnDestroy,
+  OnInit
 } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AlertDialog } from "@app/widget/dialog/alert-dialog/alert.dialog";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -15,8 +16,9 @@ import { Subscription } from "rxjs";
 })
 export class BasePage implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
-  private $router: Router = inject(Router);
-  private $activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  protected $router: Router = inject(Router);
+  protected $activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  protected $dialog = inject(MatDialog);
 
   constructor(@Inject("_NONE_") pageTitle: string) {
     document.title = pageTitle;
@@ -37,4 +39,14 @@ export class BasePage implements OnInit, OnDestroy {
   registerSubscription(subscription: Subscription) {
     this.subscriptions.push(subscription);
   }
+
+  dialogHandler = {
+    alert: (message: string) => {
+      this.$dialog.open<AlertDialog>(AlertDialog, {
+        data: {
+          message,
+        }
+      });
+    },
+  };
 }
