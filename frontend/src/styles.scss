@@ -5,10 +5,18 @@ $themeColor: rgb(0, 139, 97);
   --mat-sys-corner-extra-large: 0.5em;
   --mat-sys-corner-full: 0.5em;
 
+  --mdc-outlined-button-container-height: 30px;
+  --mdc-filled-button-container-height: 30px;
+
   --theme-color: #{$themeColor};
   --themeColor: #{$themeColor};
 
   --mat-sys-outline: currentColor;
+}
+
+.mat-mdc-unelevated-button .mat-mdc-button-touch-target,
+.mat-mdc-outlined-button .mat-mdc-button-touch-target {
+  height: 0 !important;
 }
 
 html,

@@ -1,13 +1,8 @@
-import {
-  Component,
-  inject,
-  Inject,
-  OnDestroy,
-  OnInit
-} from "@angular/core";
+import { Component, inject, Inject, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AlertDialog } from "@app/widget/dialog/alert-dialog/alert.dialog";
+import { ConfirmDialog } from "@app/widget/dialog/confirm-dialog/confirm.dialog";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -45,7 +40,28 @@ export class BasePage implements OnInit, OnDestroy {
       this.$dialog.open<AlertDialog>(AlertDialog, {
         data: {
           message,
-        }
+        },
+      });
+    },
+
+    confirm: (message: string) => {
+      return new Promise((resolve, reject) => {
+        const ref_ = this.$dialog.open<ConfirmDialog, any, Boolean>(
+          ConfirmDialog,
+          {
+            data: {
+              message,
+            },
+          }
+        );
+
+        const subscription = ref_.afterClosed().subscribe({
+          next: resolve,
+          error: reject,
+          complete: () => {
+            subscription.unsubscribe();
+          },
+        });
       });
     },
   };

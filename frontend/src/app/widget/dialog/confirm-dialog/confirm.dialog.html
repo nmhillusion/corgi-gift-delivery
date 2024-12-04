@@ -1,0 +1,11 @@
+<div class="dialog-container">
+  <div mat-dialog-title class="title">Confirm</div>
+  <mat-divider></mat-divider>
+
+  <div mat-dialog-content class="content">{{ dialogData.message }}</div>
+
+  <div class="footer">
+    <button mat-stroked-button color="accent" (click)="cancel()">Cancel</button>
+    <button mat-flat-button color="warn" (click)="confirm()">Confirm</button>
+  </div>
+</div>

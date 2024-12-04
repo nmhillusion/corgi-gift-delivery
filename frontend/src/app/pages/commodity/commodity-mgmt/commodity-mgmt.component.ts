@@ -15,6 +15,8 @@ export class CommodityMgmtComponent extends BasePage {
   }
 
   show() {
-    this.dialogHandler.alert("hello world");
+    this.dialogHandler.confirm("Are you sure?").then((result_) => {
+      console.log("==> You sure? ", result_);
+    });
   }
 }
