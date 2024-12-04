@@ -1,9 +1,80 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, signal, WritableSignal } from "@angular/core";
+import { Menu } from "@app/model/menu.model";
+import { MenuComponent } from "../menu/menu.component";
 
 @Component({
   standalone: true,
   selector: "main-layout",
   templateUrl: "./main-layout.component.html",
   styleUrls: ["./main-layout.component.scss"],
+  imports: [MenuComponent],
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent implements OnInit {
+  menuList$: WritableSignal<Menu[]> = signal([]);
+
+  ngOnInit(): void {
+    this.menuList$.update((list) => {
+      list.push({
+        url: "",
+        name: "Commodity Mgmt",
+        icon: "inventory_2",
+        children: [
+          {
+            url: "/commodity/commodity-mgmt",
+            name: "Commodity",
+            icon: "inventory_2",
+          },
+          {
+            url: "/commodity/commodity-type-mgmt",
+            name: "Commodity Type",
+            icon: "inventory_2",
+          },
+        ],
+      });
+
+      list.push({
+        url: "/delivery/list",
+        name: "Delivery Mgmt",
+        icon: "inventory_2",
+      });
+
+      list.push({
+        url: "/shipper/list",
+        name: "Shipper Mgmt",
+        icon: "inventory_2",
+      });
+
+      list.push({
+        url: "/customer/list",
+        name: "Customer Mgmt",
+        icon: "inventory_2",
+      });
+
+      list.push({
+        url: "/warehouse/list",
+        name: "Warehouse Mgmt",
+        icon: "inventory_2",
+      });
+
+      list.push({
+        url: "",
+        name: "Import Mgmt",
+        icon: "inventory_2",
+        children: [
+          {
+            url: "/import/list",
+            name: "Import List",
+            icon: "inventory_2",
+          },
+          {
+            url: "/import/import",
+            name: "Import",
+            icon: "",
+          },
+        ],
+      });
+
+      return list;
+    });
+  }
+}

@@ -2,14 +2,9 @@
   <header>Header</header>
   <div class="main-content">
     <nav class="menu-container">
-      <div class="menu-item">
-        <span>Commodity</span>
-        <div class="sub-menus">
-          <div class="menu-item">Commodity Type</div>
-          <div class="menu-item">Commodity Management</div>
-        </div>
-      </div>
-      <div class="menu-item">Menu Item 2</div>
+      @for (menuItem of menuList$(); track menuItem.url) {
+        <app-menu [data]="menuItem"></app-menu>
+      }
     </nav>
     <section>
       <ng-content />
