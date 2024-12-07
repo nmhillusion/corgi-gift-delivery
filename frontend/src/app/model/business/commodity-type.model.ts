@@ -1,4 +1,4 @@
 export interface CommodityTypeModel {
-  typeName: string;
-  typeId: string;
+  typeName?: string;
+  typeId?: string;
 }

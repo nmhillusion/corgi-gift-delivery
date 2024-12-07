@@ -1,5 +1,13 @@
 import { DialogRef } from "@angular/cdk/dialog";
-import { Component, inject, Inject, OnDestroy, OnInit, signal, WritableSignal } from "@angular/core";
+import {
+  Component,
+  inject,
+  Inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  WritableSignal,
+} from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
@@ -24,7 +32,7 @@ export class EditComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   data: {
-    commodityType: CommodityTypeModel
+    commodityType: CommodityTypeModel;
   } = inject(MAT_DIALOG_DATA);
 
   formGroup: FormGroup = new FormGroup({
@@ -33,7 +41,9 @@ export class EditComponent implements OnInit, OnDestroy {
 
   /// METHODS
 
-  constructor(private $dialogRef: DialogRef<EditComponent>, private $commodityTypeService: CommodityTypeService,
+  constructor(
+    private $dialogRef: DialogRef<EditComponent>,
+    private $commodityTypeService: CommodityTypeService
   ) {}
 
   ngOnInit() {
@@ -44,6 +54,16 @@ export class EditComponent implements OnInit, OnDestroy {
 
   save() {
     console.log("do save form...", this.formGroup.value);
+
+    if (!this.data) {
+      this.data = {
+        commodityType: {},
+      };
+    }
+
+    if (!this.data.commodityType) {
+      this.data.commodityType = {};
+    }
 
     this.data.commodityType.typeName = this.formGroup.value.typeName;
 

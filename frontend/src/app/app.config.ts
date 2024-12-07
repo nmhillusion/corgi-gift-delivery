@@ -16,5 +16,9 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: "outline" },
     },
+    {
+      provide: "PAGE_TITLE_DEFAULT",
+      useValue: "Slight Transportation",
+    }
   ],
 };

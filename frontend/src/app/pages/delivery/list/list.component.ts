@@ -1,18 +1,19 @@
 import { Component, inject } from "@angular/core";
 import { BasePage } from "@app/pages/base.page";
-import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
-import { DeliveryStatusService } from "../../../service/delivery-status.service";
+import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { DeliveryStatusService } from "@app/service/delivery-status.service";
+import { AppCommonModule } from "@app/core/app-common.module";
 
 @Component({
   standalone: true,
   imports: [
-    MainLayoutComponent
+    MainLayoutComponent,
+    AppCommonModule
   ],
   templateUrl: "./list.component.html",
   styleUrl: "./list.component.scss",
 })
 export class ListComponent extends BasePage {
-  title = "delivery list";
   private $deliveryStatusService = inject(DeliveryStatusService);
 
   override __ngOnInit__() {
