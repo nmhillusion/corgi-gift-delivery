@@ -1,4 +1,19 @@
 <div class="menu-item">
+  @if (data.url) {
+  <a [routerLink]="data.url">
+    <div class="menu-content">
+      @if (data.icon) {
+      <mat-icon>{{ data.icon }}</mat-icon>
+      }
+
+      <span class="menu-name">{{ data.name }}</span>
+    </div>
+  </a>
+  }
+
+  <!--  -->
+
+  @if (!data.url) {
   <div class="menu-content">
     @if (data.icon) {
     <mat-icon>{{ data.icon }}</mat-icon>
@@ -6,7 +21,8 @@
 
     <span class="menu-name">{{ data.name }}</span>
   </div>
-
+  }
+  <!--  -->
   @if (data.children) {
   <div class="sub-menus">
     @for (item of data.children; track item.url) {
