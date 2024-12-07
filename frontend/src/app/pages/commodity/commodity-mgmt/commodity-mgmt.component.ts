@@ -3,6 +3,8 @@ import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.compone
 import { BasePage } from "@app/pages/base.page";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { CommodityService } from "./commodity.service";
+import { CommodityModel } from "@app/model/business/commodity.model";
+import { EditComponent } from "./edit/edit.component";
 
 @Component({
   standalone: true,
@@ -23,9 +25,17 @@ export class CommodityMgmtComponent extends BasePage {
     );
   }
 
-  show() {
-    this.dialogHandler.confirm("Are you sure?").then((result_) => {
-      console.log("==> You sure? ", result_);
-    });
+  addCommodity() {
+    console.log(" do addCommodity ");
+
+    this.$dialog.open<EditComponent>(EditComponent, {
+      width: "600px",
+      maxHeight: "600px",
+      data: {},
+    })
+  }
+
+  editCommodity(commodity: CommodityModel) {
+    console.log(" do editCommodity: ", commodity);
   }
 }
