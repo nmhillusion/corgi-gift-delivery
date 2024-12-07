@@ -12,8 +12,8 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 @Table(name = "t_cx_commodity")
 public class CommodityEntity extends Stringeable {
     @Id
-    @SequenceGenerator(name = "seq__cx_commodity_com_id", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_commodity_com_id")
+    @SequenceGenerator(name = "seq__cx_commodity__com_id", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_commodity__com_id")
     @Column(name = "com_id", nullable = false)
     private Long comId;
     @Column(name = "com_name", nullable = false)
