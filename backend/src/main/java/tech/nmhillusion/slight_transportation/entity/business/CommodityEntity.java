@@ -1,10 +1,9 @@
 package tech.nmhillusion.slight_transportation.entity.business;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import tech.nmhillusion.n2mix.type.Stringeable;
+
+import javax.annotation.processing.Generated;
 
 /**
  * created by: chubb
@@ -15,8 +14,10 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 @Table(name = "t_cx_commodity")
 public class CommodityEntity extends Stringeable {
     @Id
+    @SequenceGenerator(name = "seq__cx_commodity_com_id", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_commodity_com_id")
     @Column(name = "com_id", nullable = false)
-    private String comId;
+    private Long comId;
     @Column(name = "com_name", nullable = false)
     private String comName;
     @Column(name = "com_type_id", nullable = false)
@@ -24,11 +25,11 @@ public class CommodityEntity extends Stringeable {
     @Column(name = "create_time", nullable = false)
     private String createTime;
 
-    public String getComId() {
+    public Long getComId() {
         return comId;
     }
 
-    public CommodityEntity setComId(String comId) {
+    public CommodityEntity setComId(Long comId) {
         this.comId = comId;
         return this;
     }

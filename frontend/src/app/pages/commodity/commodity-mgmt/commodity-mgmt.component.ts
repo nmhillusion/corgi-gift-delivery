@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
-import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
+import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { BasePage } from "@app/pages/base.page";
 import { AppCommonModule } from "@app/core/app-common.module";
+import { CommodityService } from "./commodity.service";
 
 @Component({
   standalone: true,
@@ -10,8 +11,16 @@ import { AppCommonModule } from "@app/core/app-common.module";
   imports: [MainLayoutComponent, AppCommonModule],
 })
 export class CommodityMgmtComponent extends BasePage {
-  constructor() {
+  constructor(private $commodityService: CommodityService) {
     super("Commodity Mgmt");
+  }
+
+  override __ngOnInit__() {
+    this.registerSubscription(
+      this.$commodityService.findAll().subscribe((list) => {
+        console.log({ list });
+      })
+    );
   }
 
   show() {
