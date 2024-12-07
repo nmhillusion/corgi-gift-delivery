@@ -18,4 +18,14 @@ export const routes: Routes = [
     loadChildren: () =>
       import("./pages/delivery/delivery.module").then((m) => m.DeliveryModule),
   },
+  {
+    path: "shipper",
+    loadChildren: () =>
+      import("./pages/shipper/shipper.module").then((m) => m.ShipperModule),
+  },
+  {
+    path: "customer",
+    loadChildren: () =>
+      import("./pages/customer/customer.module").then((m) => m.CustomerModule),
+  },
 ];
