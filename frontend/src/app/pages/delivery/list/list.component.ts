@@ -1,8 +1,7 @@
-import { Component, inject, OnDestroy, OnInit } from "@angular/core";
-import { Subscription } from "rxjs";
-import { DeliveryStatusService } from "../../../service/delivery-status.service";
-import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
+import { Component, inject } from "@angular/core";
 import { BasePage } from "@app/pages/base.page";
+import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
+import { DeliveryStatusService } from "../../../service/delivery-status.service";
 
 @Component({
   standalone: true,
