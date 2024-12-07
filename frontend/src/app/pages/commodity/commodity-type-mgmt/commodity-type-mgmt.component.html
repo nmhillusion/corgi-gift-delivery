@@ -1,3 +1,22 @@
-<main-layout>
-  <h1>This is commodity type management</h1>
+<main-layout [basePage]="this">
+  <div class="header-action-panel">
+    <button mat-stroked-button color="primary" (click)="addCommodityType()">
+      Add commodity type
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="commodity-type-list">
+    <ol>
+      @for (commodityType of commodityTypeList$(); track commodityType.typeId) {
+      <li class="commodity-type-item">
+        <span>{{ commodityType.typeName }}</span>
+        <button mat-icon-button (click)="editCommodityType(commodityType)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </li>
+      }
+    </ol>
+  </div>
 </main-layout>

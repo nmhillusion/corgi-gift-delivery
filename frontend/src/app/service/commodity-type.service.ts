@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@app/../environments/environment";
+import { CommodityTypeModel } from "@app/model/business/commodity-type.model";
 
 @Injectable({
   providedIn: "root",
@@ -9,10 +10,17 @@ export class CommodityTypeService {
   constructor(private http: HttpClient) {}
 
   private buildApiUrl(path: string): string {
-    return `${environment.LINK.API_BASE_URL}/api/v1/commodity-type${path}`;
+    return `${environment.LINK.API_BASE_URL}/api/commodity-type${path}`;
   }
 
   findAll() {
-    return this.http.get(this.buildApiUrl("/find-all"));
+    return this.http.get<CommodityTypeModel[]>(this.buildApiUrl("/find-all"));
+  }
+
+  create(commodityType: CommodityTypeModel) {
+    return this.http.post<CommodityTypeModel>(
+      this.buildApiUrl("/create"),
+      commodityType
+    );
   }
 }

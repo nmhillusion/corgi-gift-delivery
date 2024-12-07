@@ -1,0 +1,22 @@
+@mixin inline-block-message($color: #36f) {
+  display: block;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  border: solid 1px $color;
+  color: $color;
+  background-color: rgba($color, 0.1);
+}
+
+.inline-block-message {
+  &.info {
+    @include inline-block-message(#36f);
+  }
+
+  &.warning {
+    @include inline-block-message(#f90);
+  }
+
+  &.error {
+    @include inline-block-message(#f33);
+  }
+}

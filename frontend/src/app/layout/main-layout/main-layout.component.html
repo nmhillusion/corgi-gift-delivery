@@ -1,8 +1,8 @@
 <div class="page-content">
-  <header>Header</header>
+  <header>{{ basePage.pageTitle }}</header>
   <div class="main-content">
     <nav class="menu-container">
-      @for (menuItem of menuList$(); track menuItem.url) {
+      @for (menuItem of menuList$(); track menuItem.name) {
         <app-menu [data]="menuItem"></app-menu>
       }
     </nav>

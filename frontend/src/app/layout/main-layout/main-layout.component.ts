@@ -1,6 +1,7 @@
-import { Component, OnInit, signal, WritableSignal } from "@angular/core";
-import { Menu } from "@app/model/menu.model";
+import { Component, Input, OnInit, signal, WritableSignal } from "@angular/core";
+import { Menu } from "@app/model/core/menu.model";
 import { MenuComponent } from "../menu/menu.component";
+import { BasePage } from "@app/pages/base.page";
 
 @Component({
   standalone: true,
@@ -11,6 +12,8 @@ import { MenuComponent } from "../menu/menu.component";
 })
 export class MainLayoutComponent implements OnInit {
   menuList$: WritableSignal<Menu[]> = signal([]);
+
+  @Input({ required: true }) basePage!: BasePage;
 
   ngOnInit(): void {
     this.menuList$.update((list) => {

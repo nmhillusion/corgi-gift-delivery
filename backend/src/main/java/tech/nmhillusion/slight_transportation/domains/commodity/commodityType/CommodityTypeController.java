@@ -27,8 +27,8 @@ public class CommodityTypeController {
         return commodityTypeService.findAll();
     }
 
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CommodityTypeEntity create(@RequestBody Map<String, ?> dto) {
-        return commodityTypeService.create(dto);
+    @PostMapping(value = "/sync", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CommodityTypeEntity sync(@RequestBody Map<String, ?> dto) {
+        return commodityTypeService.sync(dto);
     }
 }

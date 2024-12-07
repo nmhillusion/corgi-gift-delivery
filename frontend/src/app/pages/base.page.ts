@@ -15,7 +15,7 @@ export class BasePage implements OnInit, OnDestroy {
   protected $activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   protected $dialog = inject(MatDialog);
 
-  constructor(@Inject("_NONE_") pageTitle: string) {
+  constructor(@Inject("_NONE_") public pageTitle: string) {
     document.title = pageTitle;
   }
 

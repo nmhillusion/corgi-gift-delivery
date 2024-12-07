@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@use "scss/inline-block-message";
+
 $themeColor: rgb(0, 139, 97);
 
 :root {
@@ -44,5 +46,11 @@ body {
 
   h1 {
     @include fontFamily();
+  }
+}
+
+.mat-divider {
+  &.mat-divider-horizontal {
+    margin: 0.5em 0;
   }
 }

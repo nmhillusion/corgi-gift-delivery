@@ -1,4 +1,4 @@
-<main-layout>
+<div class="form-panel">
   <h1>Add commodity</h1>
 
   <form [formGroup]="formGroup">
@@ -6,5 +6,17 @@
       <mat-label>Type name</mat-label>
       <input matInput placeholder="Type name" formControlName="typeName" />
     </mat-form-field>
+
+    <mat-divider></mat-divider>
+
+    @if (logMessage$()) {
+    <div class="log-message inline-block-message {{ logMessage$()?.logType }}">
+      {{ logMessage$()?.message }}  
+    </div>
+    }
+
+    <div class="action-box">
+      <button mat-stroked-button color="primary" (click)="save()">Save</button>
+    </div>
   </form>
-</main-layout>
+</div>

@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterModule } from "@angular/router";
-import { Menu } from "@app/model/menu.model";
+import { Menu } from "@app/model/core/menu.model";
 
 @Component({
   selector: "app-menu",
