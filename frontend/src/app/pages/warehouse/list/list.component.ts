@@ -13,6 +13,6 @@ import { BasePage } from "@app/pages/base.page";
 })
 export class ListComponent extends BasePage {
   constructor() {
-    super("Shipper");
+    super("Warehouse");
   }
 }

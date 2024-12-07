@@ -28,4 +28,16 @@ export const routes: Routes = [
     loadChildren: () =>
       import("./pages/customer/customer.module").then((m) => m.CustomerModule),
   },
+  {
+    path: "warehouse",
+    loadChildren: () =>
+      import("./pages/warehouse/warehouse.module").then(
+        (m) => m.WarehouseModule
+      ),
+  },
+  {
+    path: "import",
+    loadChildren: () =>
+      import("./pages/import/import.module").then((m) => m.ImportModule),
+  },
 ];
