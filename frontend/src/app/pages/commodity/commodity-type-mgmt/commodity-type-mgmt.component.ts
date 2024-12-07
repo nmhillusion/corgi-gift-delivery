@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, signal, WritableSignal } from "@angular/core";
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  signal,
+  WritableSignal,
+} from "@angular/core";
 import { CommodityTypeService } from "@app/service/commodity-type.service";
 import { Subscription } from "rxjs";
 import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
@@ -23,6 +29,10 @@ export class CommodityTypeMgmtComponent extends BasePage {
   }
 
   override __ngOnInit__() {
+    this.initLoadData();
+  }
+
+  private initLoadData() {
     this.registerSubscription(
       this.$commodityTypeService.findAll().subscribe((list) => {
         console.log({ list });
@@ -35,22 +45,28 @@ export class CommodityTypeMgmtComponent extends BasePage {
   addCommodityType() {
     console.log(" do addCommodityType ");
 
-    this.$dialog.open<EditComponent>(EditComponent, {
-      width: "600px",
-      maxHeight: "600px",
-      data: {},
-    })
+    this.openEditDialog();
   }
 
   editCommodityType(commodityType: CommodityTypeModel) {
     console.log(" do editCommodityType ", commodityType);
 
-    this.$dialog.open<EditComponent>(EditComponent, {
+    this.openEditDialog(commodityType);
+  }
+
+  private openEditDialog(commodityType?: CommodityTypeModel) {
+    const ref = this.$dialog.open<EditComponent>(EditComponent, {
       width: "600px",
       maxHeight: "600px",
       data: {
         commodityType,
       },
-    })
+    });
+
+    this.registerSubscription(
+      ref.afterClosed().subscribe((result) => {
+        this.initLoadData();
+      })
+    );
   }
 }
