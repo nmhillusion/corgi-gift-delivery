@@ -205,7 +205,7 @@ references t_cx_commodity_import (import_id)
 alter table t_cx_note
 add constraint if not exists fk_cx_note__import_item_id
 foreign key (import_item_id)
-references t_cx_commodity_import_item (item_id)
+references t_cx_commodity_warehouse_item (item_id)
 ;
 
 ----
