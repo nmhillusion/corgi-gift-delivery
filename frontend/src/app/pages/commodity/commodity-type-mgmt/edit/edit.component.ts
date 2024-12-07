@@ -45,9 +45,11 @@ export class EditComponent implements OnInit, OnDestroy {
   save() {
     console.log("do save form...", this.formGroup.value);
 
+    this.data.commodityType.typeName = this.formGroup.value.typeName;
+
     this.subscriptions.push(
       this.$commodityTypeService
-        .create(this.formGroup.value)
+        .sync(this.data.commodityType)
         .subscribe((result) => {
           console.log({ result });
 

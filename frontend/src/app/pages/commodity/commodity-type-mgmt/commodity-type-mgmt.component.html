@@ -8,15 +8,13 @@
   <mat-divider></mat-divider>
 
   <div class="commodity-type-list">
-    <ol>
-      @for (commodityType of commodityTypeList$(); track commodityType.typeId) {
-      <li class="commodity-type-item">
-        <span>{{ commodityType.typeName }}</span>
-        <button mat-icon-button (click)="editCommodityType(commodityType)">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </li>
-      }
-    </ol>
+    @for (commodityType of commodityTypeList$(); track commodityType.typeId) {
+    <div class="commodity-type-item">
+      <span>{{ commodityType.typeName }}</span>
+      <button mat-icon-button (click)="editCommodityType(commodityType)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    }
   </div>
 </main-layout>

@@ -1,6 +1,7 @@
 package tech.nmhillusion.slight_transportation.domains.commodity.commodityType;
 
 import org.springframework.stereotype.Service;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.n2mix.validator.StringValidator;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityTypeEntity;
@@ -33,12 +34,13 @@ public interface CommodityTypeService {
 
         @Override
         public CommodityTypeEntity sync(Map<String, ?> dto) {
-            final String currentTypeId = StringUtil.trimWithNull(dto.get("currentTypeId"));
+            final String currentTypeId = StringUtil.trimWithNull(dto.get("typeId"));
             final String typeName = StringUtil.trimWithNull(dto.get("typeName"));
 
             final CommodityTypeEntity entity = new CommodityTypeEntity()
                     .setTypeName(typeName);
 
+            LogHelper.getLogger(this).info("currentTypeId: {}", currentTypeId);
             if (!StringValidator.isBlank(currentTypeId)) {
                 /// Mark: For update
                 entity.setTypeId(Integer.parseInt(currentTypeId));

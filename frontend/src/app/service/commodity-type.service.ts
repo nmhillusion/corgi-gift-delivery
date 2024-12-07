@@ -17,9 +17,9 @@ export class CommodityTypeService {
     return this.http.get<CommodityTypeModel[]>(this.buildApiUrl("/find-all"));
   }
 
-  create(commodityType: CommodityTypeModel) {
+  sync(commodityType: CommodityTypeModel) {
     return this.http.post<CommodityTypeModel>(
-      this.buildApiUrl("/create"),
+      this.buildApiUrl("/sync"),
       commodityType
     );
   }

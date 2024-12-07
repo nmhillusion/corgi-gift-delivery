@@ -2,5 +2,10 @@
 .commodity-type-item {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+  margin: .25em 0;
+
+  border: solid 1px #ccc;
+  padding: .25em;
 }
