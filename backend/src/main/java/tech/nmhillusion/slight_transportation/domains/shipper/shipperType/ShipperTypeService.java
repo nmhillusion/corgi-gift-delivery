@@ -6,7 +6,7 @@ import tech.nmhillusion.slight_transportation.entity.business.ShipperTypeEntity;
 import java.util.List;
 
 /**
- * created by: chubb
+ * created by: nmhillusion
  * <p>
  * created date: 2024-11-30
  */

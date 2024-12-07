@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
 /**
- * created by: chubb
+ * created by: nmhillusion
  * <p>
  * created date: 2024-11-16
  */

@@ -9,7 +9,7 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 import java.time.ZonedDateTime;
 
 /**
- * created by: chubb
+ * created by: nmhillusion
  * <p>
  * created date: 2024-11-16
  */

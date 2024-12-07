@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationListener;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
 /**
- * created by: chubb
+ * created by: nmhillusion
  * <p>
  * created date: 2024-11-09
  */

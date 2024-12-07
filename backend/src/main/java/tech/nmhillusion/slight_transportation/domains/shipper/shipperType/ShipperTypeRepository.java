@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import tech.nmhillusion.slight_transportation.entity.business.ShipperTypeEntity;
 
 /**
- * created by: chubb
+ * created by: nmhillusion
  * <p>
  * created date: 2024-11-30
  */

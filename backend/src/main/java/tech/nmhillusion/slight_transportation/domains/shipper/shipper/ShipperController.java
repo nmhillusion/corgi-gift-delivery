@@ -7,7 +7,7 @@ import tech.nmhillusion.slight_transportation.entity.business.ShipperEntity;
 import java.util.Map;
 
 /**
- * created by: chubb
+ * created by: nmhillusion
  * <p>
  * created date: 2024-11-30
  */

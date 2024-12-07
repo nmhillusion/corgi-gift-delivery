@@ -3,10 +3,8 @@ package tech.nmhillusion.slight_transportation.entity.business;
 import jakarta.persistence.*;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
-import javax.annotation.processing.Generated;
-
 /**
- * created by: chubb
+ * created by: nmhillusion
  * <p>
  * created date: 2024-11-16
  */
