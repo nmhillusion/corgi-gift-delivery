@@ -1,0 +1,11 @@
+
+.commodity-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.25em 0;
+  border: solid 1px #ccc;
+  border-left: solid 0.3em var(--themeColor);
+  padding: 0.25em 0.5em;
+}

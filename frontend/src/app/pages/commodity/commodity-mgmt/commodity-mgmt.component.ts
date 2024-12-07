@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { BasePage } from "@app/pages/base.page";
 import { AppCommonModule } from "@app/core/app-common.module";
@@ -13,14 +13,24 @@ import { EditComponent } from "./edit/edit.component";
   imports: [MainLayoutComponent, AppCommonModule],
 })
 export class CommodityMgmtComponent extends BasePage {
+  commodityList$ = signal<CommodityModel[]>([]);
+
+  /// METHODS
+
   constructor(private $commodityService: CommodityService) {
     super("Commodity Mgmt");
   }
 
   override __ngOnInit__() {
+    this.initLoadData();
+  }
+
+  private initLoadData() {
     this.registerSubscription(
       this.$commodityService.findAll().subscribe((list) => {
         console.log({ list });
+
+        this.commodityList$.set(list);
       })
     );
   }
@@ -28,14 +38,28 @@ export class CommodityMgmtComponent extends BasePage {
   addCommodity() {
     console.log(" do addCommodity ");
 
-    this.$dialog.open<EditComponent>(EditComponent, {
-      width: "600px",
-      maxHeight: "600px",
-      data: {},
-    })
+    this.openEditDialog();
   }
 
   editCommodity(commodity: CommodityModel) {
     console.log(" do editCommodity: ", commodity);
+
+    this.openEditDialog(commodity);
+  }
+
+  private openEditDialog(commodity?: CommodityModel) {
+    const ref = this.$dialog.open<EditComponent>(EditComponent, {
+      width: "600px",
+      maxHeight: "600px",
+      data: {
+        commodity,
+      },
+    });
+
+    this.registerSubscription(
+      ref.afterClosed().subscribe((result) => {
+        this.initLoadData();
+      })
+    );
   }
 }

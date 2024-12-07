@@ -3,6 +3,8 @@ package tech.nmhillusion.slight_transportation.entity.business;
 import jakarta.persistence.*;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
+import java.time.ZonedDateTime;
+
 /**
  * created by: nmhillusion
  * <p>
@@ -19,9 +21,9 @@ public class CommodityEntity extends Stringeable {
     @Column(name = "com_name", nullable = false)
     private String comName;
     @Column(name = "com_type_id", nullable = false)
-    private String comTypeId;
+    private int comTypeId;
     @Column(name = "create_time", nullable = false)
-    private String createTime;
+    private ZonedDateTime createTime;
 
     public Long getComId() {
         return comId;
@@ -41,20 +43,20 @@ public class CommodityEntity extends Stringeable {
         return this;
     }
 
-    public String getComTypeId() {
+    public int getComTypeId() {
         return comTypeId;
     }
 
-    public CommodityEntity setComTypeId(String comTypeId) {
+    public CommodityEntity setComTypeId(int comTypeId) {
         this.comTypeId = comTypeId;
         return this;
     }
 
-    public String getCreateTime() {
+    public ZonedDateTime getCreateTime() {
         return createTime;
     }
 
-    public CommodityEntity setCreateTime(String createTime) {
+    public CommodityEntity setCreateTime(ZonedDateTime createTime) {
         this.createTime = createTime;
         return this;
     }

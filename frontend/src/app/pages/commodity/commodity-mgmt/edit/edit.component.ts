@@ -16,16 +16,14 @@ import { MatOptionModule } from "@angular/material/core";
   selector: "app-edit",
   templateUrl: "./edit.component.html",
   styleUrls: ["./edit.component.scss"],
-  imports: [
-    AppCommonModule
-  ]
+  imports: [AppCommonModule],
 })
 export class EditComponent extends BasePage {
   loading$ = signal(false);
   logMessage$: WritableSignal<Nullable<LogModel>> = signal(null);
 
   data: {
-    commodityType: CommodityModel;
+    commodity: CommodityModel;
   } = inject(MAT_DIALOG_DATA);
 
   formGroup: FormGroup = new FormGroup({
@@ -38,7 +36,7 @@ export class EditComponent extends BasePage {
   /// METHODS
 
   constructor(
-    private $dialogRef: DialogRef<EditComponent>,
+    private $dialogRef: DialogRef<CommodityModel>,
     private $commodityTypeService: CommodityTypeService,
     private $commodityService: CommodityService
   ) {
@@ -46,20 +44,37 @@ export class EditComponent extends BasePage {
   }
 
   protected override __ngOnInit__() {
-    this.formGroup.patchValue(this.data.commodityType);
+    this.formGroup.patchValue(this.data.commodity);
 
     this.registerSubscription(
-      this.$commodityTypeService
-        .findAll()
-        .subscribe((result) => {
-          console.log("commodityTypeList: ", result);
-          
-          this.commodityTypeList$.set(result);
-        })
+      this.$commodityTypeService.findAll().subscribe((result) => {
+        console.log("commodityTypeList: ", result);
+
+        this.commodityTypeList$.set(result);
+      })
     );
   }
 
   save() {
     console.log("do save form...", this.formGroup.value);
+
+    if (!this.data) {
+      this.data = {
+        commodity: {},
+      };
+    }
+
+    if (!this.data.commodity) {
+      this.data.commodity = {};
+    }
+
+    this.data.commodity.comName = this.formGroup.value.comName;
+    this.data.commodity.comTypeId = this.formGroup.value.comTypeId;
+
+    this.registerSubscription(
+      this.$commodityService.sync(this.data.commodity).subscribe((result) => {
+        this.$dialogRef.close(result);
+      })
+    );
   }
 }

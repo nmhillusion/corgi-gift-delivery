@@ -1,9 +1,20 @@
 <main-layout [basePage]="this">
-  <h1>This is commodity management</h1>
+  <h1>Quản lý hàng hóa</h1>
 
   <div class="header-action-box">
     <button mat-stroked-button color="primary" (click)="addCommodity()">
       Add commodity
     </button>
+  </div>
+
+  <div class="commodity-list">
+    @for (commodity of commodityList$(); track commodity.comId) {
+    <div class="commodity-item">
+      <span>{{ commodity.comName }}</span>
+      <button mat-icon-button (click)="editCommodity(commodity)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    }
   </div>
 </main-layout>
