@@ -1,0 +1,26 @@
+.warehouse-item {
+  display: grid;
+  border: solid 1px #eee;
+  padding: 0.5em;
+  margin: 0.5em;
+
+  .warehouse-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .id {
+      margin-right: 0.5em;
+      font-weight: bold;
+      border: solid 1px #ccc;
+      border-bottom: solid 0.3em var(--themeColor);
+      padding: 0.5em;
+    }
+  }
+
+  .action-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}

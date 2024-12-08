@@ -10,13 +10,22 @@
   <div class="warehouse-list">
     @for (warehouse of warehouseList$(); track warehouse.warehouseId) {
     <div class="warehouse-item">
-      <span>{{ warehouse.warehouseName }}</span>
-      <p>
+      <div class="warehouse-name">
+        <div class="id">
+          {{ warehouse.warehouseId }}
+        </div>
+        <div class="name">
+          {{ warehouse.warehouseName }}
+        </div>
+      </div>
+      <p class="warehouse-address">
         {{ warehouse.warehouseAddress }}
       </p>
-      <button mat-icon-button (click)="editWarehouse(warehouse)">
-        <mat-icon>edit</mat-icon>
-      </button>
+      <div class="action-box">
+        <button mat-icon-button (click)="editWarehouse(warehouse)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
     </div>
     }
   </div>
