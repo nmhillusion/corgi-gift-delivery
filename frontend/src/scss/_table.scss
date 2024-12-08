@@ -1,0 +1,19 @@
+@use "@angular/material" as mat;
+@use "variables" as vars;
+@use "sass:color";
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.table-overrides(
+    (
+      background-color: #fff,
+      header-headline-color: vars.$themeColor,
+    )
+  );
+}
+
+.mat-mdc-table.app-table {
+  .mat-mdc-header-cell {
+    background-color: color.scale($color: vars.$themeColor, $alpha: -85%);
+  }
+}

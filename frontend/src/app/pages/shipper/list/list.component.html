@@ -8,7 +8,7 @@
   </div>
 
   <div class="shipper-list">
-    <table mat-table [dataSource]="shipperDataSource">
+    <table mat-table [dataSource]="shipperDataSource" class="app-table">
       <ng-container matColumnDef="shipperCode">
         <th mat-header-cell *matHeaderCellDef>Shipper code</th>
         <td mat-cell *matCellDef="let el"> {{ el.shipperCode }} </td>
