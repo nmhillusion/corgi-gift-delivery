@@ -4,4 +4,11 @@
   .dialog-block {
     display: block;
   }
+
+  .action-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 0.5em;
+  }
 }
