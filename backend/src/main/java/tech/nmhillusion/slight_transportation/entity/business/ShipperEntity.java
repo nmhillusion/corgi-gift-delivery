@@ -14,10 +14,11 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class ShipperEntity extends Stringeable {
     @Id
     @Column(name = "shipper_id", nullable = false)
-    private String shipperId;
+    @SequenceGenerator(name = "seq__cx_shipper__shipper_id", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_shipper__shipper_id")
+    private int shipperId;
 
-    @ManyToOne(targetEntity = ShipperTypeEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "shipper_type_id")
+    @Column(name = "shipper_type_id")
     private String shipperTypeId;
 
     @Column(name = "shipper_code", nullable = false)
@@ -26,11 +27,11 @@ public class ShipperEntity extends Stringeable {
     @Column(name = "shipper_name", nullable = false)
     private String shipperName;
 
-    public String getShipperId() {
+    public int getShipperId() {
         return shipperId;
     }
 
-    public ShipperEntity setShipperId(String shipperId) {
+    public ShipperEntity setShipperId(int shipperId) {
         this.shipperId = shipperId;
         return this;
     }

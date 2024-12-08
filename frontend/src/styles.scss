@@ -1,20 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@use "scss/variables";
 @use "scss/inline-block-message";
-
-$themeColor: rgb(0, 139, 97);
-
-:root {
-  --mat-sys-corner-extra-large: 0.5em;
-  --mat-sys-corner-full: 0.5em;
-
-  --mdc-outlined-button-container-height: 30px;
-  --mdc-filled-button-container-height: 30px;
-
-  --theme-color: #{$themeColor};
-  --themeColor: #{$themeColor};
-
-  --mat-sys-outline: currentColor;
-}
+@use "scss/dialog";
 
 .mat-mdc-unelevated-button .mat-mdc-button-touch-target,
 .mat-mdc-outlined-button .mat-mdc-button-touch-target {

@@ -1,0 +1,14 @@
+$themeColor: rgb(0, 139, 97);
+
+:root {
+  --mat-sys-corner-extra-large: 0.5em;
+  --mat-sys-corner-full: 0.5em;
+
+  --mdc-outlined-button-container-height: 30px;
+  --mdc-filled-button-container-height: 30px;
+
+  --theme-color: #{$themeColor};
+  --themeColor: #{$themeColor};
+
+  --mat-sys-outline: currentColor;
+}

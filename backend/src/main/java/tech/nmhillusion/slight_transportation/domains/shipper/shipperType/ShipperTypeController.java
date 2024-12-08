@@ -2,6 +2,7 @@ package tech.nmhillusion.slight_transportation.domains.shipper.shipperType;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.nmhillusion.slight_transportation.entity.business.ShipperTypeEntity;
@@ -29,4 +30,8 @@ public class ShipperTypeController {
         return shipperTypeService.findAll();
     }
 
+    @GetMapping(value = "/{shipperTypeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ShipperTypeEntity findById(@PathVariable String shipperTypeId) {
+        return shipperTypeService.findById(shipperTypeId);
+    }
 }

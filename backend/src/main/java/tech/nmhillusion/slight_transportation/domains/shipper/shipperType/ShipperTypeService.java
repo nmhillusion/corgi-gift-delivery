@@ -14,6 +14,8 @@ import java.util.List;
 public interface ShipperTypeService {
     List<ShipperTypeEntity> findAll();
 
+    ShipperTypeEntity findById(String shipperTypeId);
+
     @Service
     class Impl implements ShipperTypeService {
         private final ShipperTypeRepository repository;
@@ -26,6 +28,11 @@ public interface ShipperTypeService {
         @Override
         public List<ShipperTypeEntity> findAll() {
             return repository.findAll();
+        }
+
+        @Override
+        public ShipperTypeEntity findById(String shipperTypeId) {
+            return repository.findById(shipperTypeId).orElse(null);
         }
     }
 }

@@ -1,10 +1,14 @@
 package tech.nmhillusion.slight_transportation.domains.shipper.shipper;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
-import tech.nmhillusion.n2mix.validator.StringValidator;
 import tech.nmhillusion.slight_transportation.entity.business.ShipperEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,9 +19,13 @@ import java.util.Map;
 public interface ShipperService {
     ShipperEntity findById(String id);
 
-    ShipperEntity sync(Map<String, ?> dto);
+    ShipperEntity sync(ShipperEntity dto);
 
     void deleteById(String shipperId);
+
+    Page<ShipperEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
+
+    List<ShipperEntity> findAll();
 
     @Service
     class Impl implements ShipperService {
@@ -32,29 +40,30 @@ public interface ShipperService {
             return repository.findById(id).orElse(null);
         }
 
+        @Transactional
         @Override
-        public ShipperEntity sync(Map<String, ?> dto) {
-            final String currentShipperId = StringUtil.trimWithNull(dto.get("currentShipperId"));
-            final String shipperCode = StringUtil.trimWithNull(dto.get("shipperCode"));
-            final String shipperName = StringUtil.trimWithNull(dto.get("shipperName"));
-            final String shipperTypeId = StringUtil.trimWithNull(dto.get("shipperTypeId"));
-
-            final ShipperEntity entity = new ShipperEntity()
-                    .setShipperCode(shipperCode)
-                    .setShipperName(shipperName)
-                    .setShipperTypeId(shipperTypeId);
-
-            if (!StringValidator.isBlank(currentShipperId)) {
-                /// Mark: For update
-                entity.setShipperId(currentShipperId);
-            }
-
-            return repository.save(entity);
+        public ShipperEntity sync(ShipperEntity dto) {
+            final ShipperEntity savedEntity = repository.save(dto);
+            LogHelper.getLogger(this).info("savedEntity: {}", savedEntity);
+            return savedEntity;
         }
 
         @Override
         public void deleteById(String shipperId) {
             repository.deleteById(shipperId);
+        }
+
+        @Override
+        public Page<ShipperEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
+            return repository.findBy(
+                    StringUtil.trimWithNull(dto.get("shipperName")),
+                    PageRequest.of(pageIndex, pageSize)
+            );
+        }
+
+        @Override
+        public List<ShipperEntity> findAll() {
+            return repository.findAll();
         }
     }
 }

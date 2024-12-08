@@ -1,8 +1,23 @@
 <main-layout [basePage]="this">
   <h1>This is shipper list</h1>
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod facere dolore
-    distinctio et magni deleniti hic earum quaerat, asperiores, totam impedit
-    reiciendis non? Debitis et unde consequuntur quod doloremque ratione.
-  </p>
+
+  <div class="header-action-box">
+    <button mat-stroked-button color="primary" (click)="addShipper()">
+      Add shipper
+    </button>
+  </div>
+
+  <div class="shipper-list">
+    @for (shipper of shipperList$(); track shipper.shipperId) {
+    <div class="shipper-item">
+      <span>{{ shipper.shipperId }}</span>
+      <span>{{ shipper.shipperCode }}</span>
+      <span>{{ shipper.shipperName }}</span>
+      <span>{{ shipper.shipperType?.typeName }}</span>
+      <button mat-icon-button (click)="editShipper(shipper)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
 </main-layout>
