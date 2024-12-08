@@ -1,28 +1,19 @@
+import { WritableSignal } from "@angular/core";
+import { PageEvent } from "@angular/material/paginator";
+
 export interface Page<T> {
   content: T[];
-  pageable: {
-    pageNumber: number;
-    pageSize: number;
-    sort: {
-      empty: boolean;
-      sorted: boolean;
-      unsorted: boolean;
-    };
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
   };
-  last: boolean;
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  number: number;
-  sort: {
-    empty: boolean;
-    sorted: boolean;
-    unsorted: boolean;
-  };
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
+}
+
+export interface PaginatorHandler {
+  onPageChange(pageEvent: PageEvent): void;
+  length$: WritableSignal<number>;
+  pageSize$: WritableSignal<number>;
+  pageIndex$: WritableSignal<number>;
 }

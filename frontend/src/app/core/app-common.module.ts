@@ -7,7 +7,9 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 
 const commonModules = [
   CommonModule,
@@ -21,7 +23,9 @@ const commonModules = [
   MatFormFieldModule,
   MatIconModule,
   MatOptionModule,
-  MatSelectModule
+  MatSelectModule,
+  MatTableModule,
+  MatPaginatorModule
 ];
 
 @NgModule({

@@ -43,6 +43,10 @@ export class EditComponent extends BasePage {
         console.log("shipperTypeList: ", result);
 
         this.shipperTypeList$.set(result);
+
+        if (this.data && this.data.shipper) {
+          this.formGroup.patchValue(this.data?.shipper);
+        }
       })
     );
   }
