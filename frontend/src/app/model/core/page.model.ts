@@ -1,4 +1,4 @@
-import { WritableSignal } from "@angular/core";
+import { signal, WritableSignal } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 
 export interface Page<T> {
@@ -16,4 +16,5 @@ export interface PaginatorHandler {
   length$: WritableSignal<number>;
   pageSize$: WritableSignal<number>;
   pageIndex$: WritableSignal<number>;
+  pageSizeOptions$: WritableSignal<number[]>;
 }

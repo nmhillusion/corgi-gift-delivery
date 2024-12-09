@@ -4,11 +4,17 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { SIZE } from "@app/layout/size.constant";
-import { CustomerModel } from "@app/model/business/customer.model";
-import { PaginatorHandler } from "@app/model/core/page.model";
+import {
+  CustomerFEModel,
+  CustomerModel,
+} from "@app/model/business/customer.model";
+import { Page, PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { CustomerService } from "@app/service/customer.service";
 import { EditComponent } from "../edit/edit.component";
+import { PAGE } from "@app/layout/page.constant";
+import { CustomerTypeService } from "@app/service/customer-type.service";
+import { firstValueFrom } from "rxjs";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -16,39 +22,77 @@ import { EditComponent } from "../edit/edit.component";
   imports: [AppCommonModule, MainLayoutComponent],
 })
 export class ListComponent extends BasePage {
-
   pageHandler: PaginatorHandler = {
     length$: signal(0),
     pageSize$: signal(10),
     pageIndex$: signal(0),
+    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
     onPageChange: this.search.bind(this),
   };
 
-  customerDataSource = new MatTableDataSource<CustomerModel>();
+  customerDataSource = new MatTableDataSource<CustomerFEModel>();
 
-  displayedColumns = ["customerId", "fullName", "idCardNumber", "action"];
+  displayedColumns = [
+    "customerId",
+    "fullName",
+    "idCardNumber",
+    "customerType",
+    "action",
+  ];
 
   /// methods
 
-  constructor(private $customerService: CustomerService) {
+  constructor(
+    private $customerService: CustomerService,
+    private $customerTypeService: CustomerTypeService
+  ) {
     super("Customer");
   }
 
-  protected override __ngOnInit__() {}
+  protected override __ngOnInit__() {
+    this.search();
+  }
 
-  search() {
+  search(pageEvent?: PageEvent) {
+    if (!pageEvent) {
+      pageEvent = {
+        pageIndex: this.pageHandler.pageIndex$(),
+        pageSize: this.pageHandler.pageSize$(),
+        length: this.pageHandler.length$(),
+      };
+    }
+
     this.registerSubscription(
       this.$customerService
         .search(
           {
             name: "",
           },
-          this.pageHandler.pageIndex$(),
-          this.pageHandler.pageSize$()
+          pageEvent.pageIndex,
+          pageEvent.pageSize
         )
-        .subscribe((result) => {
+        .subscribe(async (result) => {
+          const convertedPageContent = result.content.map((customer) => {
+            const convertedCustomer = customer as CustomerFEModel;
+            convertedCustomer.customerType$ = signal(null);
+
+            this.registerSubscription(
+              this.$customerTypeService
+                .findById(customer.customerTypeId || 0)
+                .subscribe((customerType) => {
+                  convertedCustomer.customerType$.set(customerType);
+                })
+            );
+
+            return convertedCustomer;
+          });
+          const convertedResult: Page<CustomerFEModel> = {
+            page: result.page,
+            content: convertedPageContent,
+          };
+
           this.handlePageDataUpdate(
-            result,
+            convertedResult,
             this.pageHandler,
             this.customerDataSource
           );
@@ -57,7 +101,7 @@ export class ListComponent extends BasePage {
   }
 
   addCustomer() {
-    this.openEditDialog();  
+    this.openEditDialog();
   }
 
   editCustomer(customer: CustomerModel) {
@@ -68,6 +112,9 @@ export class ListComponent extends BasePage {
     const ref = this.$dialog.open<EditComponent>(EditComponent, {
       width: SIZE.DIALOG.width,
       maxHeight: SIZE.DIALOG.height,
+      data: {
+        customer,
+      },
     });
 
     this.registerSubscription(

@@ -1,7 +1,8 @@
-package tech.nmhillusion.slight_transportation.domains.customer;
+package tech.nmhillusion.slight_transportation.domains.customer.customer;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.entity.business.CustomerEntity;
@@ -22,6 +23,7 @@ public interface CustomerService {
 
     void deleteById(String customerId);
 
+    @Service
     class Impl implements CustomerService {
 
         private final CustomerRepository repository;

@@ -14,6 +14,7 @@ import { firstValueFrom } from "rxjs";
 import { MatTableDataSource } from "@angular/material/table";
 import { Page, PaginatorHandler } from "@app/model/core/page.model";
 import { PageEvent } from "@angular/material/paginator";
+import { PAGE } from "@app/layout/page.constant";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -31,6 +32,7 @@ export class ListComponent extends BasePage {
     length$: signal(0),
     pageSize$: signal(10),
     pageIndex$: signal(0),
+    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
     onPageChange: (pageEvent: PageEvent) => {
       this.searchData(pageEvent);
     },

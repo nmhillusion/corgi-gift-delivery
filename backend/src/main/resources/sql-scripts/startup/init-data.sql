@@ -33,4 +33,11 @@ values (2, 'CA');
 insert into t_cx_shipper_type (type_id, type_name)
 values (3, 'Bưu điện');
 
+---------
+
+insert into t_cx_customer_type (type_id, type_name)
+values (1, 'Khách hàng');
+
+insert into t_cx_customer_type (type_id, type_name)
+values (2, 'Đại lý');
 

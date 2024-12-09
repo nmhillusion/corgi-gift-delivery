@@ -1,0 +1,40 @@
+<div class="dialog-container">
+  <h2>Edit customer</h2>
+
+  <form [formGroup]="formGroup">
+    <mat-form-field class="dialog-block">
+      <mat-label>Customer name</mat-label>
+      <input matInput placeholder="Customer name" formControlName="fullName" />
+    </mat-form-field>
+
+    <mat-form-field class="dialog-block">
+      <mat-label>ID card number</mat-label>
+      <input
+        matInput
+        placeholder="ID card number"
+        formControlName="idCardNumber"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="dialog-block">
+      <mat-label>Customer Type</mat-label>
+      <mat-select formControlName="customerTypeId">
+        @for (customerType of customerTypeList$(); track customerType.typeId) {
+        <mat-option [value]="customerType.typeId">
+          {{ customerType.typeName }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (logMessage$()) {
+    <div class="log-message inline-block-message {{ logMessage$()?.logType }}">
+      {{ logMessage$()?.message }}
+    </div>
+    }
+
+    <div class="action-box">
+      <button mat-stroked-button color="primary" (click)="save()">Save</button>
+    </div>
+  </form>
+</div>

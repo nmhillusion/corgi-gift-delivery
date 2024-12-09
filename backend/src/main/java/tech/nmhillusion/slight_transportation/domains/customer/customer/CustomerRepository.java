@@ -1,4 +1,4 @@
-package tech.nmhillusion.slight_transportation.domains.customer;
+package tech.nmhillusion.slight_transportation.domains.customer.customer;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

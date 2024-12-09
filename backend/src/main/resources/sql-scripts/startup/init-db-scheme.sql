@@ -1,9 +1,20 @@
 
+create table if not exists t_cx_customer_type (
+    type_id int primary key,
+    type_name nvarchar(100)
+);
+
 create table if not exists t_cx_customer (
   customer_id int primary key,
   full_name nvarchar(200),
-  id_card_number nvarchar(30)
+  id_card_number nvarchar(30),
+  customer_type_id int
 );
+
+alter table t_cx_customer
+add constraint if not exists fk_cx_customer__customer_type_id
+foreign key (customer_type_id)
+REFERENCES t_cx_customer_type(type_id);
 
 create table if not exists t_cx_commodity_type (
   type_id int primary key,
@@ -24,7 +35,6 @@ create table if not exists t_cx_commodity_import (
   warehouse_id int not null,
   import_time timestamp with time zone
 );
-
 alter table t_cx_commodity_import
 add constraint if not exists fk_cx_commodity_import__warehouse_id
 foreign key (warehouse_id)

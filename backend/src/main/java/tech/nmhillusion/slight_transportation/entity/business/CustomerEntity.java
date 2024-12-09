@@ -23,6 +23,9 @@ public class CustomerEntity extends Stringeable {
     @Column(name = "id_card_number", nullable = false, unique = true)
     private String idCardNumber;
 
+    @Column(name = "customer_type_id", nullable = false)
+    private int customerTypeId;
+
     public long getCustomerId() {
         return customerId;
     }
@@ -47,6 +50,15 @@ public class CustomerEntity extends Stringeable {
 
     public CustomerEntity setIdCardNumber(String idCardNumber) {
         this.idCardNumber = idCardNumber;
+        return this;
+    }
+
+    public int getCustomerTypeId() {
+        return customerTypeId;
+    }
+
+    public CustomerEntity setCustomerTypeId(int customerTypeId) {
+        this.customerTypeId = customerTypeId;
         return this;
     }
 }
