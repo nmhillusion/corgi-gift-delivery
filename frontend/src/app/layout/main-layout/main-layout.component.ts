@@ -48,8 +48,8 @@ export class MainLayoutComponent implements OnInit {
       });
 
       list.push({
-        url: "/customer/list",
-        name: "Customer Mgmt",
+        url: "/recipient/list",
+        name: "Recipient Mgmt",
         icon: "inventory_2",
       });
 

@@ -17,7 +17,7 @@
     </mat-form-field>
 
     <mat-form-field class="dialog-block">
-      <mat-label>Customer Type</mat-label>
+      <mat-label>Recipient Type</mat-label>
       <mat-select formControlName="recipientTypeId">
         @for (recipientType of recipientTypeList$(); track recipientType.typeId) {
         <mat-option [value]="recipientType.typeId">

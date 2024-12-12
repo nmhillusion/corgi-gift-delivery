@@ -11,7 +11,7 @@
     <table mat-table [dataSource]="recipientDataSource" class="app-table">
       <ng-container matColumnDef="recipientId">
         <th mat-header-cell *matHeaderCellDef>Recipient ID</th>
-        <td mat-cell *matCellDef="let el">{{ el.customerId }}</td>
+        <td mat-cell *matCellDef="let el">{{ el.recipientId }}</td>
       </ng-container>
 
       <ng-container matColumnDef="fullName">

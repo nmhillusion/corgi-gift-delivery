@@ -20,8 +20,8 @@ public class DeliveryEntity extends Stringeable {
     @Column(name = "delivery_id", nullable = false)
     private String deliveryId;
 
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    @Column(name = "recipient_id", nullable = false)
+    private String recipientId;
 
     @Column(name = "commodity_id", nullable = false)
     private String commodityId;
@@ -50,12 +50,12 @@ public class DeliveryEntity extends Stringeable {
         return this;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getRecipientId() {
+        return recipientId;
     }
 
-    public DeliveryEntity setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public DeliveryEntity setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
         return this;
     }
 

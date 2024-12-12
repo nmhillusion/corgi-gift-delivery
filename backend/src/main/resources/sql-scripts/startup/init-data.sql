@@ -35,9 +35,9 @@ values (3, 'Bưu điện');
 
 ---------
 
-insert into t_cx_customer_type (type_id, type_name)
+insert into t_cx_recipient_type (type_id, type_name)
 values (1, 'Khách hàng');
 
-insert into t_cx_customer_type (type_id, type_name)
+insert into t_cx_recipient_type (type_id, type_name)
 values (2, 'Đại lý');
 

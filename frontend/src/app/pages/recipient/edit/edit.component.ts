@@ -27,7 +27,7 @@ export class EditComponent extends BasePage {
   formGroup = new FormGroup({
     fullName: new FormControl("", [Validators.required]),
     idCardNumber: new FormControl("", [Validators.required]),
-    customerTypeId: new FormControl(-1, [Validators.required]),
+    recipientTypeId: new FormControl(-1, [Validators.required]),
   });
 
   recipientTypeList$ = signal<RecipientTypeModel[]>([]);
@@ -78,7 +78,7 @@ export class EditComponent extends BasePage {
     this.data.recipient.fullName = this.formGroup.value.fullName || "";
     this.data.recipient.idCardNumber = this.formGroup.value.idCardNumber || "";
     this.data.recipient.recipientTypeId =
-      this.formGroup.value.customerTypeId || 0;
+      this.formGroup.value.recipientTypeId || 0;
 
     this.registerSubscription(
       this.$recipientService

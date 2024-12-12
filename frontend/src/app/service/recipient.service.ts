@@ -29,10 +29,10 @@ export class RecipientService {
     );
   }
 
-  sync(customer: RecipientModel) {
+  sync(recipient: RecipientModel) {
     return this.$http.post<RecipientModel>(
       this.buildApiUrl("/sync"),
-      customer
+      recipient
     );
   }
 }

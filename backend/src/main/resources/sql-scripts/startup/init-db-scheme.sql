@@ -5,10 +5,10 @@ create table if not exists t_cx_recipient_type (
 );
 
 create table if not exists t_cx_recipient (
-  recipient_id int primary key,
-  full_name nvarchar(200),
-  id_card_number nvarchar(30),
-  recipient_type_id int
+    recipient_id int primary key,
+    full_name nvarchar(200),
+    id_card_number nvarchar(30),
+    recipient_type_id int
 );
 
 alter table t_cx_recipient
@@ -94,7 +94,7 @@ create table if not exists t_cx_delivery_status (
 
 create table if not exists t_cx_delivery (
   delivery_id varchar(200) primary key,
-  customer_id int,
+  recipient_id int,
   commodity_id int,
   com_quantity NUMERIC,
   start_time TIMESTAMP with time zone,
@@ -156,11 +156,6 @@ references t_cx_shipper (shipper_id);
 ----
 
 alter table t_cx_delivery
-add constraint if not exists fk_cx_delivery__customer_id
-foreign key (customer_id)
-REFERENCES t_cx_customer (customer_id);
-
-alter table t_cx_delivery
 add constraint if not exists fk_cx_delivery__commodity_id
 foreign key (commodity_id)
 REFERENCES t_cx_commodity (com_id);
@@ -175,13 +170,18 @@ add constraint if not exists fk_cx_delivery__delivery_status_id
 foreign key (delivery_status_id)
 REFERENCES t_cx_delivery_status (status_id);
 
+alter table t_cx_delivery
+add constraint if not exists fk_cx_delivery__recipient_id
+foreign key (recipient_id)
+REFERENCES t_cx_recipient (recipient_id);
+
 ----
 
 create table if not exists t_cx_note (
   note_id int primary key,
   note_content text,
   note_time timestamp with time zone,
-  customer_id int,
+  recipient_id int,
   delivery_id varchar(100),
   delivery_attempt_id varchar(100),
   import_id int,
@@ -189,9 +189,9 @@ create table if not exists t_cx_note (
 );
 
 alter table t_cx_note
-add constraint if not exists fk_cx_note__customer_id
-foreign key (customer_id)
-references t_cx_customer (customer_id)
+add constraint if not exists fk_cx_note__recipient_id
+foreign key (recipient_id)
+references t_cx_recipient (recipient_id)
 ;
 
 alter table t_cx_note
@@ -213,8 +213,8 @@ references t_cx_commodity_import (import_id)
 ;
 
 alter table t_cx_note
-add constraint if not exists fk_cx_note__import_item_id
-foreign key (import_item_id)
+add constraint if not exists fk_cx_note__warehouse_item_id
+foreign key (warehouse_item_id)
 references t_cx_commodity_warehouse_item (item_id)
 ;
 

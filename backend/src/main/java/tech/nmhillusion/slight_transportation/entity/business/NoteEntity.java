@@ -26,8 +26,8 @@ public class NoteEntity extends Stringeable {
     @Column(name = "note_time", nullable = false)
     private ZonedDateTime noteTime;
 
-    @Column(name = "customer_id")
-    private String customerId;
+    @Column(name = "recipient_id")
+    private String recipientId;
 
     @Column(name = "delivery_id")
     private String deliveryId;
@@ -38,8 +38,8 @@ public class NoteEntity extends Stringeable {
     @Column(name = "import_id")
     private String importId;
 
-    @Column(name = "import_item_id")
-    private String importItemId;
+    @Column(name = "warehouse_item_id")
+    private String warehouseItemId;
 
     public String getNoteId() {
         return noteId;
@@ -68,12 +68,12 @@ public class NoteEntity extends Stringeable {
         return this;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getRecipientId() {
+        return recipientId;
     }
 
-    public NoteEntity setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public NoteEntity setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
         return this;
     }
 
@@ -104,12 +104,12 @@ public class NoteEntity extends Stringeable {
         return this;
     }
 
-    public String getImportItemId() {
-        return importItemId;
+    public String getWarehouseItemId() {
+        return warehouseItemId;
     }
 
-    public NoteEntity setImportItemId(String importItemId) {
-        this.importItemId = importItemId;
+    public NoteEntity setWarehouseItemId(String warehouseItemId) {
+        this.warehouseItemId = warehouseItemId;
         return this;
     }
 }
