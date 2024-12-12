@@ -24,9 +24,11 @@ export const routes: Routes = [
       import("./pages/shipper/shipper.module").then((m) => m.ShipperModule),
   },
   {
-    path: "customer",
+    path: "recipient",
     loadChildren: () =>
-      import("./pages/customer/customer.module").then((m) => m.CustomerModule),
+      import("./pages/recipient/recipient.module").then(
+        (m) => m.RecipientModule
+      ),
   },
   {
     path: "warehouse",

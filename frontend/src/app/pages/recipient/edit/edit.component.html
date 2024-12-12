@@ -1,10 +1,10 @@
 <div class="dialog-container">
-  <h2>Edit customer</h2>
+  <h2>Edit recipient</h2>
 
   <form [formGroup]="formGroup">
     <mat-form-field class="dialog-block">
-      <mat-label>Customer name</mat-label>
-      <input matInput placeholder="Customer name" formControlName="fullName" />
+      <mat-label>Recipient name</mat-label>
+      <input matInput placeholder="Recipient name" formControlName="fullName" />
     </mat-form-field>
 
     <mat-form-field class="dialog-block">
@@ -18,10 +18,10 @@
 
     <mat-form-field class="dialog-block">
       <mat-label>Customer Type</mat-label>
-      <mat-select formControlName="customerTypeId">
-        @for (customerType of customerTypeList$(); track customerType.typeId) {
-        <mat-option [value]="customerType.typeId">
-          {{ customerType.typeName }}
+      <mat-select formControlName="recipientTypeId">
+        @for (recipientType of recipientTypeList$(); track recipientType.typeId) {
+        <mat-option [value]="recipientType.typeId">
+          {{ recipientType.typeName }}
         </mat-option>
         }
       </mat-select>

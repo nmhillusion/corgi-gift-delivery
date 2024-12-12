@@ -1,5 +1,5 @@
 
-export interface CustomerTypeModel {
+export interface RecipientTypeModel {
   typeId?: string
   typeName?: string
 }

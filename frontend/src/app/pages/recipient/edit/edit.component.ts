@@ -3,13 +3,13 @@ import { Component, inject, signal } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AppCommonModule } from "@app/core/app-common.module";
-import { CustomerTypeModel } from "@app/model/business/customer-type.model";
-import { CustomerModel } from "@app/model/business/customer.model";
+import { RecipientTypeModel } from "@app/model/business/recipient-type.model";
+import { RecipientModel } from "@app/model/business/recipient.model";
 import { LogModel } from "@app/model/core/log.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
-import { CustomerTypeService } from "@app/service/customer-type.service";
-import { CustomerService } from "@app/service/customer.service";
+import { RecipientTypeService } from "@app/service/recipient-type.service";
+import { RecipientService } from "@app/service/recipient.service";
 import { catchError } from "rxjs";
 
 @Component({
@@ -18,11 +18,11 @@ import { catchError } from "rxjs";
   imports: [AppCommonModule],
 })
 export class EditComponent extends BasePage {
-  data?: { customer: CustomerModel } = inject(MAT_DIALOG_DATA);
+  data?: { recipient: RecipientModel } = inject(MAT_DIALOG_DATA);
 
   logMessage$ = signal<Nullable<LogModel>>(null);
 
-  $dialogRef = inject(DialogRef<CustomerModel>);
+  $dialogRef = inject(DialogRef<RecipientModel>);
 
   formGroup = new FormGroup({
     fullName: new FormControl("", [Validators.required]),
@@ -30,24 +30,24 @@ export class EditComponent extends BasePage {
     customerTypeId: new FormControl(-1, [Validators.required]),
   });
 
-  customerTypeList$ = signal<CustomerTypeModel[]>([]);
+  recipientTypeList$ = signal<RecipientTypeModel[]>([]);
 
   /// Methods
 
   constructor(
-    private $customerService: CustomerService,
-    private $customerTypeService: CustomerTypeService
+    private $recipientService: RecipientService,
+    private $recipientTypeService: RecipientTypeService
   ) {
-    super("Edit Customer");
+    super("Edit Recipient");
   }
 
   protected override __ngOnInit__() {
     console.log("pass data: ", this.data);
 
     this.registerSubscription(
-      this.$customerTypeService.findAll().subscribe({
+      this.$recipientTypeService.findAll().subscribe({
         next: (result) => {
-          this.customerTypeList$.set(result);
+          this.recipientTypeList$.set(result);
         },
         error: (error) => {
           this.logMessage$.set({
@@ -56,8 +56,8 @@ export class EditComponent extends BasePage {
           });
         },
         complete: () => {
-          if (this.data && this.data.customer) {
-            this.formGroup.patchValue(this.data?.customer);
+          if (this.data && this.data.recipient) {
+            this.formGroup.patchValue(this.data?.recipient);
           }
         },
       })
@@ -68,21 +68,21 @@ export class EditComponent extends BasePage {
     console.log("do save form...", this.formGroup.value);
 
     if (!this.data) {
-      this.data = { customer: {} };
+      this.data = { recipient: {} };
     }
 
-    if (!this.data.customer) {
-      this.data.customer = {};
+    if (!this.data.recipient) {
+      this.data.recipient = {};
     }
 
-    this.data.customer.fullName = this.formGroup.value.fullName || "";
-    this.data.customer.idCardNumber = this.formGroup.value.idCardNumber || "";
-    this.data.customer.customerTypeId =
+    this.data.recipient.fullName = this.formGroup.value.fullName || "";
+    this.data.recipient.idCardNumber = this.formGroup.value.idCardNumber || "";
+    this.data.recipient.recipientTypeId =
       this.formGroup.value.customerTypeId || 0;
 
     this.registerSubscription(
-      this.$customerService
-        .sync(this.data.customer)
+      this.$recipientService
+        .sync(this.data.recipient)
         .pipe(
           catchError((error) => {
             this.logMessage$.set({

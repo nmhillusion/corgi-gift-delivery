@@ -3,18 +3,17 @@ import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { PAGE } from "@app/layout/page.constant";
 import { SIZE } from "@app/layout/size.constant";
 import {
-  CustomerFEModel,
-  CustomerModel,
-} from "@app/model/business/customer.model";
+  RecipientModel,
+  RecipientFEModel,
+} from "@app/model/business/recipient.model";
 import { Page, PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
-import { CustomerService } from "@app/service/customer.service";
+import { RecipientTypeService } from "@app/service/recipient-type.service";
+import { RecipientService } from "@app/service/recipient.service";
 import { EditComponent } from "../edit/edit.component";
-import { PAGE } from "@app/layout/page.constant";
-import { CustomerTypeService } from "@app/service/customer-type.service";
-import { firstValueFrom } from "rxjs";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -30,23 +29,23 @@ export class ListComponent extends BasePage {
     onPageChange: this.search.bind(this),
   };
 
-  customerDataSource = new MatTableDataSource<CustomerFEModel>();
+  recipientDataSource = new MatTableDataSource<RecipientFEModel>();
 
   displayedColumns = [
-    "customerId",
+    "recipientId",
     "fullName",
     "idCardNumber",
-    "customerType",
+    "recipientType",
     "action",
   ];
 
   /// methods
 
   constructor(
-    private $customerService: CustomerService,
-    private $customerTypeService: CustomerTypeService
+    private $recipientService: RecipientService,
+    private $recipientTypeService: RecipientTypeService
   ) {
-    super("Customer");
+    super("Recipient");
   }
 
   protected override __ngOnInit__() {
@@ -63,7 +62,7 @@ export class ListComponent extends BasePage {
     }
 
     this.registerSubscription(
-      this.$customerService
+      this.$recipientService
         .search(
           {
             name: "",
@@ -72,21 +71,21 @@ export class ListComponent extends BasePage {
           pageEvent.pageSize
         )
         .subscribe(async (result) => {
-          const convertedPageContent = result.content.map((customer) => {
-            const convertedCustomer = customer as CustomerFEModel;
-            convertedCustomer.customerType$ = signal(null);
+          const convertedPageContent = result.content.map((recipient) => {
+            const convertedRecipient = recipient as RecipientFEModel;
+            convertedRecipient.recipientType$ = signal(null);
 
             this.registerSubscription(
-              this.$customerTypeService
-                .findById(customer.customerTypeId || 0)
+              this.$recipientTypeService
+                .findById(recipient.recipientTypeId || 0)
                 .subscribe((customerType) => {
-                  convertedCustomer.customerType$.set(customerType);
+                  convertedRecipient.recipientType$.set(customerType);
                 })
             );
 
-            return convertedCustomer;
+            return convertedRecipient;
           });
-          const convertedResult: Page<CustomerFEModel> = {
+          const convertedResult: Page<RecipientFEModel> = {
             page: result.page,
             content: convertedPageContent,
           };
@@ -94,21 +93,21 @@ export class ListComponent extends BasePage {
           this.handlePageDataUpdate(
             convertedResult,
             this.pageHandler,
-            this.customerDataSource
+            this.recipientDataSource
           );
         })
     );
   }
 
-  addCustomer() {
+  addRecipient() {
     this.openEditDialog();
   }
 
-  editCustomer(customer: CustomerModel) {
+  editRecipient(customer: RecipientModel) {
     this.openEditDialog(customer);
   }
 
-  private openEditDialog(customer?: CustomerModel) {
+  private openEditDialog(customer?: RecipientModel) {
     const ref = this.$dialog.open<EditComponent>(EditComponent, {
       width: SIZE.DIALOG.width,
       maxHeight: SIZE.DIALOG.height,

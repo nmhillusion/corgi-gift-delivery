@@ -1,23 +1,23 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@app/../environments/environment";
-import { CustomerModel } from "@app/model/business/customer.model";
+import { RecipientModel } from "@app/model/business/recipient.model";
 import { Page } from "@app/model/core/page.model";
 
 @Injectable({
   providedIn: "root",
 })
-export class CustomerService {
+export class RecipientService {
   constructor(private $http: HttpClient) {}
 
   private buildApiUrl(path: string) {
-    return `${environment.LINK.API_BASE_URL}/api/customer${path}`;
+    return `${environment.LINK.API_BASE_URL}/api/recipient${path}`;
   }
 
   search(dto: {
     name?: string
   }, pageIndex: number, pageSize: number) {
-    return this.$http.post<Page<CustomerModel>>(
+    return this.$http.post<Page<RecipientModel>>(
       this.buildApiUrl(`/search`),
       dto,
       {
@@ -29,8 +29,8 @@ export class CustomerService {
     );
   }
 
-  sync(customer: CustomerModel) {
-    return this.$http.post<CustomerModel>(
+  sync(customer: RecipientModel) {
+    return this.$http.post<RecipientModel>(
       this.buildApiUrl("/sync"),
       customer
     );

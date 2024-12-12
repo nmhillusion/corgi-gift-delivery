@@ -1,9 +1,9 @@
-package tech.nmhillusion.slight_transportation.domains.customer.customer;
+package tech.nmhillusion.slight_transportation.domains.recipient.recipient;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import tech.nmhillusion.slight_transportation.entity.business.CustomerEntity;
+import tech.nmhillusion.slight_transportation.entity.business.RecipientEntity;
 
 import java.util.Map;
 
@@ -14,22 +14,22 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("/api/customer")
-public class CustomerController {
+@RequestMapping("/api/recipient")
+public class RecipientController {
 
-    private final CustomerService service;
+    private final RecipientService service;
 
-    public CustomerController(CustomerService service) {
+    public RecipientController(RecipientService service) {
         this.service = service;
     }
 
     @PostMapping(value = "/sync", consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerEntity sync(@RequestBody CustomerEntity customerEntity) {
-        return service.sync(customerEntity);
+    public RecipientEntity sync(@RequestBody RecipientEntity recipientEntity) {
+        return service.sync(recipientEntity);
     }
 
     @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<CustomerEntity> search(@RequestBody Map<String, ?> dto, @RequestParam int pageIndex, @RequestParam int pageSize) {
+    public Page<RecipientEntity> search(@RequestBody Map<String, ?> dto, @RequestParam int pageIndex, @RequestParam int pageSize) {
         return service.search(dto, pageIndex, pageSize);
     }
 }

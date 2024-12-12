@@ -12,8 +12,8 @@ import tech.nmhillusion.n2mix.type.Stringeable;
  * created date: 2024-12-09
  */
 @Entity
-@Table(name = "t_cx_customer_type")
-public class CustomerTypeEntity extends Stringeable {
+@Table(name = "t_cx_recipient_type")
+public class RecipientTypeEntity extends Stringeable {
     @Id
     @Column(name = "type_id", nullable = false)
     private int typeId;
@@ -25,7 +25,7 @@ public class CustomerTypeEntity extends Stringeable {
         return typeId;
     }
 
-    public CustomerTypeEntity setTypeId(int typeId) {
+    public RecipientTypeEntity setTypeId(int typeId) {
         this.typeId = typeId;
         return this;
     }
@@ -34,7 +34,7 @@ public class CustomerTypeEntity extends Stringeable {
         return typeName;
     }
 
-    public CustomerTypeEntity setTypeName(String typeName) {
+    public RecipientTypeEntity setTypeName(String typeName) {
         this.typeName = typeName;
         return this;
     }

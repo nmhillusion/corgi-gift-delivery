@@ -1,11 +1,11 @@
-package tech.nmhillusion.slight_transportation.domains.customer.customer;
+package tech.nmhillusion.slight_transportation.domains.recipient.recipient;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
-import tech.nmhillusion.slight_transportation.entity.business.CustomerEntity;
+import tech.nmhillusion.slight_transportation.entity.business.RecipientEntity;
 
 import java.util.Map;
 
@@ -14,38 +14,38 @@ import java.util.Map;
  * <p>
  * created date: 2024-12-09
  */
-public interface CustomerService {
-    CustomerEntity sync(CustomerEntity customerEntity);
+public interface RecipientService {
+    RecipientEntity sync(RecipientEntity recipientEntity);
 
-    CustomerEntity findById(String id);
+    RecipientEntity findById(String id);
 
-    Page<CustomerEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
+    Page<RecipientEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
 
     void deleteById(String customerId);
 
     @Service
-    class Impl implements CustomerService {
+    class Impl implements RecipientService {
 
-        private final CustomerRepository repository;
+        private final RecipientRepository repository;
 
-        public Impl(CustomerRepository repository) {
+        public Impl(RecipientRepository repository) {
             this.repository = repository;
         }
 
         @Override
-        public CustomerEntity sync(CustomerEntity customerEntity) {
-            final CustomerEntity savedEntity = repository.save(customerEntity);
+        public RecipientEntity sync(RecipientEntity recipientEntity) {
+            final RecipientEntity savedEntity = repository.save(recipientEntity);
             LogHelper.getLogger(this).info("savedEntity: {}", savedEntity);
             return savedEntity;
         }
 
         @Override
-        public CustomerEntity findById(String id) {
+        public RecipientEntity findById(String id) {
             return repository.findById(Long.parseLong(id)).orElse(null);
         }
 
         @Override
-        public Page<CustomerEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
+        public Page<RecipientEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
             final String name = StringUtil.trimWithNull(dto.get("name"));
 
             LogHelper.getLogger(this).info("name: {}", name);
