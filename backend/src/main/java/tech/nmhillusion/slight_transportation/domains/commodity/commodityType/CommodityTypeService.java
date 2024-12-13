@@ -1,10 +1,10 @@
 package tech.nmhillusion.slight_transportation.domains.commodity.commodityType;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.n2mix.validator.StringValidator;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityTypeEntity;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface CommodityTypeService {
 
     CommodityTypeEntity sync(Map<String, ?> dto);
 
-    @Service
+    @TransactionalService
     class Impl implements CommodityTypeService {
         private final CommodityTypeRepository repository;
 

@@ -1,7 +1,7 @@
 package tech.nmhillusion.slight_transportation.domains.warehouse;
 
-import org.springframework.stereotype.Service;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseEntity;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public interface WarehouseService {
 
     WarehouseEntity findById(String warehouseId);
 
-    @Service
+    @TransactionalService
     class Impl implements WarehouseService {
         private final WarehouseRepository repository;
 

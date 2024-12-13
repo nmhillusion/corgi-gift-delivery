@@ -2,9 +2,9 @@ package tech.nmhillusion.slight_transportation.domains.recipient.recipient;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.RecipientEntity;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ public interface RecipientService {
 
     void deleteById(String customerId);
 
-    @Service
+    @TransactionalService
     class Impl implements RecipientService {
 
         private final RecipientRepository repository;

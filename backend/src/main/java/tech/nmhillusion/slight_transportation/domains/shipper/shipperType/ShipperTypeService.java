@@ -1,6 +1,7 @@
 package tech.nmhillusion.slight_transportation.domains.shipper.shipperType;
 
 import org.springframework.stereotype.Service;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.ShipperTypeEntity;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface ShipperTypeService {
 
     ShipperTypeEntity findById(String shipperTypeId);
 
-    @Service
+    @TransactionalService
     class Impl implements ShipperTypeService {
         private final ShipperTypeRepository repository;
 

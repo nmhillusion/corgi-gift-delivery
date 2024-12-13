@@ -1,6 +1,6 @@
 package tech.nmhillusion.slight_transportation.domains.delivery.deliveryStatus;
 
-import org.springframework.stereotype.Service;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryStatusEntity;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface DeliveryStatusService {
 
     DeliveryStatusEntity findById(String statusId);
 
-    @Service
+    @TransactionalService
     class Impl implements DeliveryStatusService {
 
         private final DeliveryStatusRepository deliveryStatusRepository;

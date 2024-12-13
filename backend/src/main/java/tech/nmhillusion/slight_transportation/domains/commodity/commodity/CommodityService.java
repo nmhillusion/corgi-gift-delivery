@@ -1,7 +1,7 @@
 package tech.nmhillusion.slight_transportation.domains.commodity.commodity;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityEntity;
 
 import java.time.ZonedDateTime;
@@ -18,7 +18,7 @@ public interface CommodityService {
 
     CommodityEntity sync(CommodityEntity commodityEntity);
 
-    @Service
+    @TransactionalService
     class Impl implements CommodityService {
         private final CommodityRepository repository;
 

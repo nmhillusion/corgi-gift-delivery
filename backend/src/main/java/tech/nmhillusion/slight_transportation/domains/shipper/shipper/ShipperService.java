@@ -2,10 +2,10 @@ package tech.nmhillusion.slight_transportation.domains.shipper.shipper;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.ShipperEntity;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface ShipperService {
 
     List<ShipperEntity> findAll();
 
-    @Service
+    @TransactionalService
     class Impl implements ShipperService {
         private final ShipperRepository repository;
 

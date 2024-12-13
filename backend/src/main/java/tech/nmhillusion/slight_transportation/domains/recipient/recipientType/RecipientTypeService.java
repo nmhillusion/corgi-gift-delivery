@@ -1,6 +1,6 @@
 package tech.nmhillusion.slight_transportation.domains.recipient.recipientType;
 
-import org.springframework.stereotype.Service;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.RecipientTypeEntity;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface RecipientTypeService {
 
     RecipientTypeEntity findById(String customerTypeId);
 
-    @Service
+    @TransactionalService
     class Impl implements RecipientTypeService {
         private final RecipientTypeRepository repository;
 
