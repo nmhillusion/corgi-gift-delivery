@@ -2,12 +2,12 @@
   <h2>Edit commodity</h2>
 
   <form [formGroup]="formGroup">
-    <mat-form-field>
+    <mat-form-field class="dialog-block">
       <mat-label>Commodity name</mat-label>
       <input matInput placeholder="Commodity name" formControlName="comName" />
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="dialog-block">
       <mat-label>Commodity type</mat-label>
       <mat-select formControlName="comTypeId">
         @for (commodityType of commodityTypeList$(); track commodityType.typeId) {
