@@ -14,8 +14,8 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class ShipperEntity extends Stringeable {
     @Id
     @Column(name = "shipper_id", nullable = false)
-    @SequenceGenerator(name = "seq__cx_shipper__shipper_id", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_shipper__shipper_id")
+    @SequenceGenerator(name = "seq_gen__cx_shipper__shipper_id", sequenceName = "seq__cx_shipper__shipper_id", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_shipper__shipper_id")
     private int shipperId;
 
     @Column(name = "shipper_type_id")

@@ -12,8 +12,8 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 @Table(name = "t_cx_recipient")
 public class RecipientEntity extends Stringeable {
     @Id
-    @SequenceGenerator(name = "seq__cx_recipient__recipient_id", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_recipient__recipient_id")
+    @SequenceGenerator(name = "seq_gen__cx_recipient__recipient_id", sequenceName = "seq__cx_recipient__recipient_id", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_recipient__recipient_id")
     @Column(name = "recipient_id", nullable = false)
     private long recipientId;
 

@@ -13,8 +13,8 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class WarehouseEntity extends Stringeable {
     @Id
     @Column(name = "warehouse_id", nullable = false)
-    @SequenceGenerator(name = "seq__cx_warehouse__warehouse_id", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq__cx_warehouse__warehouse_id")
+    @SequenceGenerator(name = "seq_gen__cx_warehouse__warehouse_id", sequenceName = "seq__cx_warehouse__warehouse_id", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_warehouse__warehouse_id")
     private int warehouseId;
 
     @Column(name = "warehouse_name", nullable = false)
