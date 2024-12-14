@@ -1,9 +1,6 @@
 package tech.nmhillusion.slight_transportation.entity.business;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
 import java.time.ZonedDateTime;
@@ -18,7 +15,9 @@ import java.time.ZonedDateTime;
 public class CommodityImportEntity extends Stringeable {
     @Id
     @Column(name = "import_id", nullable = false)
-    private String importId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_commodity_import__import_id")
+    @SequenceGenerator(name = "seq_gen__cx_commodity_import__import_id", sequenceName = "seq__cx_commodity_import__import_id", allocationSize = 1, initialValue = 1)
+    private int importId;
     @Column(name = "import_name", nullable = false)
     private String importName;
     @Column(name = "import_time")
@@ -26,11 +25,11 @@ public class CommodityImportEntity extends Stringeable {
     @Column(name = "warehouse_id", nullable = false)
     private String warehouseId;
 
-    public String getImportId() {
+    public int getImportId() {
         return importId;
     }
 
-    public CommodityImportEntity setImportId(String importId) {
+    public CommodityImportEntity setImportId(int importId) {
         this.importId = importId;
         return this;
     }
