@@ -110,7 +110,7 @@ export class ListComponent extends BasePage {
       width: SIZE.DIALOG.width,
       maxHeight: SIZE.DIALOG.height,
       data: {
-        import_,
+        import: import_,
       },
     });
 
