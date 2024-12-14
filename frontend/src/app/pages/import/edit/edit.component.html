@@ -1,0 +1,44 @@
+<div class="dialog-container">
+  <h2>Edit import</h2>
+
+  <form [formGroup]="formGroup">
+    <mat-form-field class="dialog-block">
+      <mat-label>Import name</mat-label>
+      <input matInput placeholder="Import name" formControlName="importName" />
+    </mat-form-field>
+
+    <mat-form-field class="dialog-block">
+      <mat-label>Import date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="importDate" />
+
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="dialog-block">
+      <mat-label>Warehouse</mat-label>
+      <mat-select formControlName="warehouseId">
+        @for (warehouse of warehouseList$(); track warehouse.warehouseId) {
+        <mat-option [value]="warehouse.warehouseId">
+          {{ warehouse.warehouseName }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (logMessage$()) {
+    <div class="log-message inline-block-message {{ logMessage$()?.logType }}">
+      {{ logMessage$()?.message }}
+    </div>
+    }
+
+    <div class="action-box">
+      <button mat-stroked-button color="primary" (click)="save()">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

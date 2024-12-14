@@ -23,7 +23,7 @@ public class CommodityImportEntity extends Stringeable {
     @Column(name = "import_time")
     private ZonedDateTime importTime;
     @Column(name = "warehouse_id", nullable = false)
-    private String warehouseId;
+    private int warehouseId;
 
     public int getImportId() {
         return importId;
@@ -52,11 +52,11 @@ public class CommodityImportEntity extends Stringeable {
         return this;
     }
 
-    public String getWarehouseId() {
+    public int getWarehouseId() {
         return warehouseId;
     }
 
-    public CommodityImportEntity setWarehouseId(String warehouseId) {
+    public CommodityImportEntity setWarehouseId(int warehouseId) {
         this.warehouseId = warehouseId;
         return this;
     }

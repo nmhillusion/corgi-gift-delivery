@@ -7,14 +7,22 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {WarehouseService} from "@app/service/warehouse.service";
 import {WarehouseModel} from "@app/model/business/warehouse.model";
+import { AppCommonModule } from "@app/core/app-common.module";
+import { CommodityImportService } from "@app/service/commodity-import.service";
+import { DialogRef } from "@angular/cdk/dialog";
 
 @Component({
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  styleUrls: ['./edit.component.scss'],
+  imports: [
+    AppCommonModule,
+  ]
 })
 export class EditComponent extends BasePage {
 
   data: { import: CommodityImportModel } = inject(MAT_DIALOG_DATA);
+  $dialogRef = inject(DialogRef<CommodityImportModel>);
+  
   logMessage$ = signal<Nullable<LogModel>>(null);
 
   formGroup = new FormGroup({
@@ -29,7 +37,9 @@ export class EditComponent extends BasePage {
   /// methods
 
 
-  constructor(private $warehouseService: WarehouseService) {
+  constructor(private $warehouseService: WarehouseService,
+    private $commodityImportService: CommodityImportService
+  ) {
     super("Edit Import");
   }
 
@@ -63,6 +73,12 @@ export class EditComponent extends BasePage {
     this.data.import.importTime = this.formGroup.value.importDate || new Date();
     this.data.import.warehouseId = this.formGroup.value.warehouseId || 0;
 
-
+    console.log({ submitData: this.data });
+    
+    this.registerSubscription(
+      this.$commodityImportService.sync(this.data.import).subscribe((result) => {
+        this.$dialogRef.close(result);
+      })
+    );
   }
 }

@@ -29,4 +29,11 @@ export class CommodityImportService {
       }
     );
   }
+
+  sync(commodityImport: CommodityImportModel) {
+    return this.$http.post<CommodityImportModel>(
+      this.buildApiUrl("/sync"),
+      commodityImport
+    );
+  }
 }
