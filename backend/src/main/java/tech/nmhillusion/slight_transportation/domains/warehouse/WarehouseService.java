@@ -16,7 +16,7 @@ public interface WarehouseService {
 
     WarehouseEntity sync(WarehouseEntity warehouseEntity);
 
-    WarehouseEntity findById(String warehouseId);
+    WarehouseEntity findById(int warehouseId);
 
     @TransactionalService
     class Impl implements WarehouseService {
@@ -39,7 +39,7 @@ public interface WarehouseService {
         }
 
         @Override
-        public WarehouseEntity findById(String warehouseId) {
+        public WarehouseEntity findById(int warehouseId) {
             return repository.findById(warehouseId).orElse(null);
         }
     }

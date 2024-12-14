@@ -20,6 +20,11 @@ public class WarehouseController {
         this.service = service;
     }
 
+    @GetMapping(value = "/{warehouseId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WarehouseEntity findById(@PathVariable int warehouseId) {
+        return service.findById(warehouseId);
+    }
+
     @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<WarehouseEntity> findAll() {
         return service.findAll();

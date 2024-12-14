@@ -7,6 +7,7 @@ import { WarehouseModel } from "@app/model/business/warehouse.model";
   providedIn: "root",
 })
 export class WarehouseService {
+  
   constructor(private $http: HttpClient) {}
 
   buildApiUrl(path: string): string {
@@ -22,5 +23,9 @@ export class WarehouseService {
       this.buildApiUrl("/sync"),
       warehouse
     );
+  }
+
+  findById(warehouseId: number) {
+    return this.$http.get<WarehouseModel>(this.buildApiUrl(`/${warehouseId}`));
   }
 }
