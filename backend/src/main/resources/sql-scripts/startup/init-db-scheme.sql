@@ -23,7 +23,7 @@ create table if not exists t_cx_commodity_type (
 
 ----
 
-create table if not exists t_cx_commodity_warehouse (
+create table if not exists t_cx_warehouse (
   warehouse_id int primary key,
   warehouse_name nvarchar(200),
   warehouse_address nvarchar(500)
@@ -38,7 +38,7 @@ create table if not exists t_cx_commodity_import (
 alter table t_cx_commodity_import
 add constraint if not exists fk_cx_commodity_import__warehouse_id
 foreign key (warehouse_id)
-references t_cx_commodity_warehouse (warehouse_id);
+references t_cx_warehouse (warehouse_id);
 
 ------
 
@@ -56,7 +56,7 @@ REFERENCES t_cx_commodity_type(type_id);
 
 ----
 
-create table if not exists t_cx_commodity_warehouse_item (
+create table if not exists t_cx_warehouse_item (
   item_id varchar(100) primary key,
   import_id int,
   warehouse_id int,
@@ -64,20 +64,20 @@ create table if not exists t_cx_commodity_warehouse_item (
   quantity numeric
 );
 
-alter table t_cx_commodity_warehouse_item
-add constraint if not exists fk_cx_commodity_warehouse_item__import_id
+alter table t_cx_warehouse_item
+add constraint if not exists fk_cx_warehouse_item__import_id
 foreign key (import_id)
 references t_cx_commodity_import (import_id);
 
-alter table t_cx_commodity_warehouse_item
-add constraint if not exists fk_cx_commodity_warehouse_item__com_id
+alter table t_cx_warehouse_item
+add constraint if not exists fk_cx_warehouse_item__com_id
 foreign key (com_id)
 references t_cx_commodity (com_id);
 
-alter table t_cx_commodity_warehouse_item
-add constraint if not exists fk_cx_commodity_warehouse_item__warehouse_id
+alter table t_cx_warehouse_item
+add constraint if not exists fk_cx_warehouse_item__warehouse_id
 foreign key (warehouse_id)
-references t_cx_commodity_warehouse (warehouse_id);
+references t_cx_warehouse (warehouse_id);
 
 ----
 
@@ -215,7 +215,7 @@ references t_cx_commodity_import (import_id)
 alter table t_cx_note
 add constraint if not exists fk_cx_note__warehouse_item_id
 foreign key (warehouse_item_id)
-references t_cx_commodity_warehouse_item (item_id)
+references t_cx_warehouse_item (item_id)
 ;
 
 ----
