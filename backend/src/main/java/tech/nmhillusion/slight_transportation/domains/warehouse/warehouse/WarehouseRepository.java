@@ -1,4 +1,4 @@
-package tech.nmhillusion.slight_transportation.domains.warehouse;
+package tech.nmhillusion.slight_transportation.domains.warehouse.warehouse;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseEntity;

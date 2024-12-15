@@ -1,4 +1,4 @@
-package tech.nmhillusion.slight_transportation.domains.warehouse;
+package tech.nmhillusion.slight_transportation.domains.warehouse.warehouse;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

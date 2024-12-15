@@ -1,4 +1,4 @@
-package tech.nmhillusion.slight_transportation.domains.warehouse;
+package tech.nmhillusion.slight_transportation.domains.warehouse.warehouse;
 
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
