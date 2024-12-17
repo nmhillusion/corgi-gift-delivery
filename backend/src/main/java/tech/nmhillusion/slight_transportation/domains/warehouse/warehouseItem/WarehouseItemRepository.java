@@ -15,9 +15,9 @@ import java.time.ZonedDateTime;
  */
 public interface WarehouseItemRepository extends JpaRepository<WarehouseItemEntity, String> {
 
-    @Query("select w from WarehouseItemEntity w where w.warehouseId = :warehouseId and w.createdTime between :from and :to")
+    @Query("select w from WarehouseItemEntity w where w.warehouseId = :warehouseId and w.createTime between :from and :to")
     Page<WarehouseItemEntity> searchItemsInWarehouse(int warehouseId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
 
-    @Query("select w from WarehouseItemEntity w where w.importId = :importId and w.createdTime between :from and :to")
+    @Query("select w from WarehouseItemEntity w where w.importId = :importId and w.createTime between :from and :to")
     Page<WarehouseItemEntity> searchItemsInImport(int importId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
 }
