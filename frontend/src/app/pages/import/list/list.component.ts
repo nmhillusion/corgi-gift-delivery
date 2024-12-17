@@ -1,15 +1,18 @@
-import {Component, signal, WritableSignal} from "@angular/core";
+import { Component, signal, WritableSignal } from "@angular/core";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { BasePage } from "@app/pages/base.page";
-import {CommodityImportFEModel, CommodityImportModel} from "@app/model/business/commodity-import.model";
-import {MatTableDataSource} from "@angular/material/table";
-import {SIZE} from "@app/layout/size.constant";
-import {EditComponent} from "../edit/edit.component";
-import {PageEvent} from "@angular/material/paginator";
-import {DEFAULT_PAGE_EVENT, PAGE} from "@app/layout/page.constant";
-import {CommodityImportService} from "@app/service/commodity-import.service";
-import {Page, PaginatorHandler} from "@app/model/core/page.model";
+import {
+  CommodityImportFEModel,
+  CommodityImportModel,
+} from "@app/model/business/commodity-import.model";
+import { MatTableDataSource } from "@angular/material/table";
+import { SIZE } from "@app/layout/size.constant";
+import { EditComponent } from "../edit/edit.component";
+import { PageEvent } from "@angular/material/paginator";
+import { DEFAULT_PAGE_EVENT, PAGE } from "@app/layout/page.constant";
+import { CommodityImportService } from "@app/service/commodity-import.service";
+import { Page, PaginatorHandler } from "@app/model/core/page.model";
 import { WarehouseModel } from "@app/model/business/warehouse.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { WarehouseService } from "@app/service/warehouse.service";
@@ -17,10 +20,7 @@ import { WarehouseService } from "@app/service/warehouse.service";
 @Component({
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"],
-  imports: [
-    AppCommonModule,
-    MainLayoutComponent
-  ]
+  imports: [AppCommonModule, MainLayoutComponent],
 })
 export class ListComponent extends BasePage {
   importDataSource = new MatTableDataSource<CommodityImportFEModel>();
@@ -38,12 +38,13 @@ export class ListComponent extends BasePage {
     "importName",
     "importTime",
     "warehouse",
-    "action"
+    "action",
   ];
 
   /// Methods
 
-  constructor(private $commodityImportService: CommodityImportService,
+  constructor(
+    private $commodityImportService: CommodityImportService,
     private $warehouseService: WarehouseService
   ) {
     super("Import");
@@ -64,7 +65,8 @@ export class ListComponent extends BasePage {
 
           const convertedPageContent = result.content.map((import_) => {
             const convertedImport = import_ as CommodityImportFEModel;
-            const warehouse$: WritableSignal<Nullable<WarehouseModel>> = signal(null);  
+            const warehouse$: WritableSignal<Nullable<WarehouseModel>> =
+              signal(null);
 
             this.registerSubscription(
               this.$warehouseService
@@ -78,20 +80,19 @@ export class ListComponent extends BasePage {
             return convertedImport;
           });
 
-          const convertedResult : Page<CommodityImportFEModel> = {
+          const convertedResult: Page<CommodityImportFEModel> = {
             content: convertedPageContent,
-            page: result.page
+            page: result.page,
           };
 
           this.handlePageDataUpdate(
             convertedResult,
             this.pageHandler,
             this.importDataSource
-          )
+          );
         })
     );
   }
-
 
   createImport() {
     console.log("create import");
@@ -99,7 +100,7 @@ export class ListComponent extends BasePage {
     this.openEditDialog();
   }
 
-  editImport(import_ : CommodityImportModel) {
+  editImport(import_: CommodityImportModel) {
     console.log("edit import: ", import_);
 
     this.openEditDialog(import_);
@@ -119,5 +120,9 @@ export class ListComponent extends BasePage {
         this.search();
       })
     );
+  }
+
+  editImportItem(el: CommodityImportModel) {
+    this.$router.navigate(["..", el.importId, "import-item", "list"]);
   }
 }
