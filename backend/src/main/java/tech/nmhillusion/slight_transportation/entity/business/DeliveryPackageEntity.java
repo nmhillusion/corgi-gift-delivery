@@ -16,7 +16,7 @@ public class DeliveryPackageEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_delivery_package__package_id")
     @SequenceGenerator(name = "seq_gen__cx_delivery_package__package_id", sequenceName = "seq__cx_delivery_package__package_id", allocationSize = 1, initialValue = 1)
     @Column(name = "package_id", nullable = false)
-    private int packageId;
+    private long packageId;
 
     @Column(name = "delivery_id", nullable = false)
     private String deliveryId;
@@ -28,11 +28,11 @@ public class DeliveryPackageEntity {
     private ZonedDateTime packageTime;
 
 
-    public int getPackageId() {
+    public long getPackageId() {
         return packageId;
     }
 
-    public DeliveryPackageEntity setPackageId(int packageId) {
+    public DeliveryPackageEntity setPackageId(long packageId) {
         this.packageId = packageId;
         return this;
     }
