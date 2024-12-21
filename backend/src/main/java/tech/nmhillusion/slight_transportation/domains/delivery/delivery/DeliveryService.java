@@ -3,6 +3,7 @@ package tech.nmhillusion.slight_transportation.domains.delivery.delivery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.n2mix.util.StringUtil;
+import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryEntity;
 
 import java.util.Map;
@@ -19,7 +20,7 @@ public interface DeliveryService {
 
     DeliveryEntity save(DeliveryEntity deliveryEntity);
 
-
+    @TransactionalService
     class Impl implements DeliveryService {
         private final DeliveryRepository repository;
 
