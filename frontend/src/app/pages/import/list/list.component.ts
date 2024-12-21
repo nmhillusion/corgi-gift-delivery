@@ -123,6 +123,10 @@ export class ListComponent extends BasePage {
   }
 
   editImportItem(el: CommodityImportModel) {
-    this.$router.navigate(["..", el.importId, "import-item", "list"]);
+    console.log("editing for import: ", el);
+
+    this.$router.navigate(["..", el.importId, "import-item", "list"], {
+      relativeTo: this.$activatedRoute.parent,
+    });
   }
 }
