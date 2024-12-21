@@ -219,6 +219,85 @@ foreign key (warehouse_item_id)
 references t_cx_warehouse_item (item_id)
 ;
 
+---- 2024-12-21
+
+create table if not exists t_cx_commodity_export (
+  export_id int primary key,
+  export_name nvarchar(200),
+  warehouse_id int not null,
+  export_time timestamp with time zone
+);
+
+alter table t_cx_commodity_export
+add constraint if not exists fk_cx_commodity_export__warehouse_id
+foreign key (warehouse_id)
+references t_cx_warehouse (warehouse_id);
+
+create table if not exists t_cx_warehouse_item_export (
+  item_id varchar(100) primary key,
+  export_id int,
+  warehouse_id int,
+  com_id int,
+  quantity numeric,
+  create_time timestamp with time zone
+);
+
+alter table t_cx_warehouse_item_export
+add constraint if not exists fk_cx_warehouse_item_export__export_id
+foreign key (export_id)
+references t_cx_commodity_export (export_id);
+
+alter table t_cx_warehouse_item_export
+add constraint if not exists fk_cx_warehouse_item_export__com_id
+foreign key (com_id)
+references t_cx_commodity (com_id);
+
+alter table t_cx_warehouse_item_export
+add constraint if not exists fk_cx_warehouse_item_export__warehouse_id
+foreign key (warehouse_id)
+references t_cx_warehouse (warehouse_id);
+
 ----
 
+create table if not exists t_cx_delivery_package (
+  package_id int primary key,
+  delivery_id varchar(200),
+  package_name nvarchar(100),
+  package_time timestamp with time zone
+);
 
+alter table t_cx_delivery_package
+add constraint if not exists fk_cx_delivery_package__delivery_id
+foreign key (delivery_id)
+references t_cx_delivery (delivery_id);
+
+
+create table if not exists t_cx_delivery_package_item (
+  item_id varchar(100) primary key,
+  package_id int,
+  warehouse_id int,
+  export_id int,
+  com_id int,
+  quantity numeric,
+  create_time timestamp with time zone
+);
+
+alter table t_cx_delivery_package_item
+add constraint if not exists fk_cx_delivery_package_item__package_id
+foreign key (package_id)
+references t_cx_delivery_package (package_id);
+
+alter table t_cx_delivery_package_item
+add constraint if not exists fk_cx_delivery_package_item__com_id
+foreign key (com_id)
+references t_cx_commodity (com_id);
+
+alter table t_cx_delivery_package_item
+add constraint if not exists fk_cx_delivery_package_item__warehouse_id
+foreign key (warehouse_id)
+references t_cx_warehouse (warehouse_id);
+
+alter table t_cx_delivery_package_item
+add constraint if not exists fk_cx_delivery_package_item__export_id
+foreign key (export_id)
+references t_cx_commodity_export (export_id);
