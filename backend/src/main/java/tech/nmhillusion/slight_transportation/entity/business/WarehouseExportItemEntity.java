@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
  */
 @Entity
 @Table(name = "t_cx_warehouse_item_export")
-public class WarehouseItemExportEntity {
+public class WarehouseExportItemEntity {
     @Id
     @Column(name = "item_id", nullable = false)
     private String itemId;
@@ -33,7 +33,7 @@ public class WarehouseItemExportEntity {
         return itemId;
     }
 
-    public WarehouseItemExportEntity setItemId(String itemId) {
+    public WarehouseExportItemEntity setItemId(String itemId) {
         this.itemId = itemId;
         return this;
     }
@@ -42,7 +42,7 @@ public class WarehouseItemExportEntity {
         return exportId;
     }
 
-    public WarehouseItemExportEntity setExportId(int exportId) {
+    public WarehouseExportItemEntity setExportId(int exportId) {
         this.exportId = exportId;
         return this;
     }
@@ -51,7 +51,7 @@ public class WarehouseItemExportEntity {
         return warehouseId;
     }
 
-    public WarehouseItemExportEntity setWarehouseId(int warehouseId) {
+    public WarehouseExportItemEntity setWarehouseId(int warehouseId) {
         this.warehouseId = warehouseId;
         return this;
     }
@@ -60,7 +60,7 @@ public class WarehouseItemExportEntity {
         return comId;
     }
 
-    public WarehouseItemExportEntity setComId(long comId) {
+    public WarehouseExportItemEntity setComId(long comId) {
         this.comId = comId;
         return this;
     }
@@ -69,7 +69,7 @@ public class WarehouseItemExportEntity {
         return quantity;
     }
 
-    public WarehouseItemExportEntity setQuantity(double quantity) {
+    public WarehouseExportItemEntity setQuantity(double quantity) {
         this.quantity = quantity;
         return this;
     }
@@ -78,7 +78,7 @@ public class WarehouseItemExportEntity {
         return createTime;
     }
 
-    public WarehouseItemExportEntity setCreateTime(ZonedDateTime createTime) {
+    public WarehouseExportItemEntity setCreateTime(ZonedDateTime createTime) {
         this.createTime = createTime;
         return this;
     }

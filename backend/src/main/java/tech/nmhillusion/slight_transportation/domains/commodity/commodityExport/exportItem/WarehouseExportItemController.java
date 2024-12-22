@@ -3,7 +3,7 @@ package tech.nmhillusion.slight_transportation.domains.commodity.commodityExport
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import tech.nmhillusion.slight_transportation.entity.business.WarehouseItemExportEntity;
+import tech.nmhillusion.slight_transportation.entity.business.WarehouseExportItemEntity;
 
 import java.util.Map;
 
@@ -24,15 +24,15 @@ public class WarehouseExportItemController {
     }
 
     @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<WarehouseItemExportEntity> search(@RequestBody Map<String, ?> dto,
+    public Page<WarehouseExportItemEntity> search(@RequestBody Map<String, ?> dto,
                                                   @RequestParam int pageIndex,
                                                   @RequestParam int pageSize) {
         return service.search(dto, pageIndex, pageSize);
     }
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public WarehouseItemExportEntity save(@RequestBody WarehouseItemExportEntity warehouseItemExportEntity) {
-        return service.save(warehouseItemExportEntity);
+    public WarehouseExportItemEntity save(@RequestBody WarehouseExportItemEntity warehouseExportItemEntity) {
+        return service.save(warehouseExportItemEntity);
     }
 
     @DeleteMapping("/delete/{itemId}")
@@ -41,7 +41,7 @@ public class WarehouseExportItemController {
     }
 
     @GetMapping("/{itemId}")
-    public WarehouseItemExportEntity findById(@PathVariable String itemId) {
+    public WarehouseExportItemEntity findById(@PathVariable String itemId) {
         return service.findById(itemId);
     }
 }
