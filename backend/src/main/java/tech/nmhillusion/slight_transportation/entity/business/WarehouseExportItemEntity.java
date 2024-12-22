@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
  * created date: 2024-12-21
  */
 @Entity
-@Table(name = "t_cx_warehouse_item_export")
+@Table(name = "t_cx_warehouse_export_item")
 public class WarehouseExportItemEntity {
     @Id
     @Column(name = "item_id", nullable = false)

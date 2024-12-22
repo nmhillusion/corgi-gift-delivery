@@ -233,7 +233,7 @@ add constraint if not exists fk_cx_commodity_export__warehouse_id
 foreign key (warehouse_id)
 references t_cx_warehouse (warehouse_id);
 
-create table if not exists t_cx_warehouse_item_export (
+create table if not exists t_cx_warehouse_export_item (
   item_id varchar(100) primary key,
   export_id int,
   warehouse_id int,
@@ -242,18 +242,18 @@ create table if not exists t_cx_warehouse_item_export (
   create_time timestamp with time zone
 );
 
-alter table t_cx_warehouse_item_export
-add constraint if not exists fk_cx_warehouse_item_export__export_id
+alter table t_cx_warehouse_export_item
+add constraint if not exists fk_cx_warehouse_export_item__export_id
 foreign key (export_id)
 references t_cx_commodity_export (export_id);
 
-alter table t_cx_warehouse_item_export
-add constraint if not exists fk_cx_warehouse_item_export__com_id
+alter table t_cx_warehouse_export_item
+add constraint if not exists fk_cx_warehouse_export_item__com_id
 foreign key (com_id)
 references t_cx_commodity (com_id);
 
-alter table t_cx_warehouse_item_export
-add constraint if not exists fk_cx_warehouse_item_export__warehouse_id
+alter table t_cx_warehouse_export_item
+add constraint if not exists fk_cx_warehouse_export_item__warehouse_id
 foreign key (warehouse_id)
 references t_cx_warehouse (warehouse_id);
 
