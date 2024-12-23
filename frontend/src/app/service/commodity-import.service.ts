@@ -36,4 +36,10 @@ export class CommodityImportService {
       commodityImport
     );
   }
+
+  findById(importId: string) {
+    return this.$http.get<CommodityImportModel>(
+      this.buildApiUrl("/" + importId)
+    )
+  }
 }
