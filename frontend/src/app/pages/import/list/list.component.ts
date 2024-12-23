@@ -126,7 +126,7 @@ export class ListComponent extends BasePage {
     console.log("editing for import: ", el);
 
     this.$router.navigate(["..", el.importId, "import-item", "list"], {
-      relativeTo: this.$activatedRoute.parent,
+      relativeTo: this.$activatedRoute,
     });
   }
 }

@@ -13,7 +13,7 @@ import tech.nmhillusion.slight_transportation.entity.business.WarehouseExportIte
  */
 public interface WarehouseExportItemRepository extends JpaRepository<WarehouseExportItemEntity, String> {
 
-    @Query("select e from WarehouseItemExportEntity e where e.exportId = :exportId")
+    @Query("select e from WarehouseExportItemEntity e where e.exportId = :exportId")
     Page<WarehouseExportItemEntity> search(long exportId, PageRequest pageRequest);
 
 }
