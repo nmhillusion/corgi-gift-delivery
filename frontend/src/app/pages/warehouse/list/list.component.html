@@ -25,6 +25,12 @@
         <button mat-icon-button (click)="editWarehouse(warehouse)">
           <mat-icon>edit</mat-icon>
         </button>
+        <mat-divider [vertical]="true"></mat-divider>
+        <button mat-icon-button (click)="importToWarehouse(warehouse)"
+          matTooltip="Import to this warehouse"
+        >
+          <mat-icon>publish</mat-icon>
+        </button>
       </div>
     </div>
     }

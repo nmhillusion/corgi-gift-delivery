@@ -29,7 +29,7 @@ export class ListComponent extends BasePage {
     this.registerSubscription(
       this.$warehouseService.findAll().subscribe((result) => {
         console.log("warehouseList: ", result);
-        
+
         this.warehouseList$.set(result);
       })
     );
@@ -59,5 +59,9 @@ export class ListComponent extends BasePage {
         this.search();
       })
     );
+  }
+
+  importToWarehouse(wh: WarehouseModel) {
+    
   }
 }
