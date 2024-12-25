@@ -2,6 +2,8 @@ package tech.nmhillusion.slight_transportation.domains.commodity.commodityType;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tech.nmhillusion.n2mix.constant.ContentType;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityTypeEntity;
 
 import java.util.List;
@@ -30,5 +32,15 @@ public class CommodityTypeController {
     @PostMapping(value = "/sync", produces = MediaType.APPLICATION_JSON_VALUE)
     public CommodityTypeEntity sync(@RequestBody Map<String, ?> dto) {
         return commodityTypeService.sync(dto);
+    }
+
+    @PostMapping(value = "/import/excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CommodityTypeEntity> importExcel(@RequestPart MultipartFile excelFile) {
+        return commodityTypeService.importExcel(excelFile);
+    }
+
+    @GetMapping(value = "/export/excel", produces = ContentType.MS_EXCEL_XLSX)
+    public byte[] exportExcel() {
+        return commodityTypeService.exportExcel();
     }
 }

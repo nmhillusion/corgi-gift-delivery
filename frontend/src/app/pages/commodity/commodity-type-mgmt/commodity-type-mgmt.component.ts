@@ -12,6 +12,7 @@ import { BasePage } from "@app/pages/base.page";
 import { CommodityTypeModel } from "@app/model/business/commodity-type.model";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { EditComponent } from "./edit/edit.component";
+import { BlobUtil } from "@app/util/blob.util";
 
 @Component({
   standalone: true,
@@ -66,6 +67,18 @@ export class CommodityTypeMgmtComponent extends BasePage {
     this.registerSubscription(
       ref.afterClosed().subscribe((result) => {
         this.initLoadData();
+      })
+    );
+  }
+
+  importCommodityType() {
+    throw new Error("Method not implemented.");
+  }
+
+  exportCommodityType() {
+    this.registerSubscription(
+      this.$commodityTypeService.exportExcel().subscribe((data) => {
+        BlobUtil.downloadBlob(data, "commodityType.xlsx");
       })
     );
   }
