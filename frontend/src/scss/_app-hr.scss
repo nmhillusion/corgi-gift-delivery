@@ -1,0 +1,9 @@
+[app-hr] {
+  &.mat-divider-horizontal {
+    margin: 10px 0;
+  }
+
+  &.mat-divider-vertical {
+    margin: 0 10px;
+  }
+}
