@@ -13,6 +13,9 @@ import tech.nmhillusion.slight_transportation.entity.business.CommodityExportEnt
  */
 public interface CommodityExportRepository extends JpaRepository<CommodityExportEntity, Long> {
 
+    @Query("select max(t.exportId) from CommodityExportEntity t")
+    long getMaxId();
+
     @Query("select c from CommodityExportEntity c where c.warehouseId = :warehouseId")
     Page<CommodityExportEntity> search(String warehouseId, PageRequest pageRequest);
 

@@ -4,6 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
+import tech.nmhillusion.slight_transportation.constant.IdConstant;
+import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityExportEntity;
 
 import java.util.Map;
@@ -25,9 +27,11 @@ public interface CommodityExportService {
     @TransactionalService
     class Impl implements CommodityExportService {
         private final CommodityExportRepository repository;
+        private final SequenceService sequenceService;
 
-        public Impl(CommodityExportRepository repository) {
+        public Impl(CommodityExportRepository repository, SequenceService sequenceService) {
             this.repository = repository;
+            this.sequenceService = sequenceService;
         }
 
 
@@ -50,6 +54,18 @@ public interface CommodityExportService {
 
         @Override
         public CommodityExportEntity save(CommodityExportEntity commodityExportEntity) {
+
+            if (IdConstant.MIN_ID > commodityExportEntity.getExportId()) {
+                commodityExportEntity.setExportId(
+                        sequenceService.nextValue(
+                                sequenceService.generateSeqNameForClass(
+                                        getClass()
+                                        , CommodityExportEntity.ID.EXPORT_ID.name()
+                                )
+                        )
+                );
+            }
+
             return repository.save(commodityExportEntity);
         }
     }

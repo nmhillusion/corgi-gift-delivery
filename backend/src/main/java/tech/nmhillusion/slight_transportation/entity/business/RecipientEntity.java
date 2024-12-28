@@ -1,6 +1,9 @@
 package tech.nmhillusion.slight_transportation.entity.business;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
 /**
@@ -12,8 +15,6 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 @Table(name = "t_cx_recipient")
 public class RecipientEntity extends Stringeable {
     @Id
-    @SequenceGenerator(name = "seq_gen__cx_recipient__recipient_id", sequenceName = "seq__cx_recipient__recipient_id", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_recipient__recipient_id")
     @Column(name = "recipient_id", nullable = false)
     private long recipientId;
 
@@ -60,5 +61,9 @@ public class RecipientEntity extends Stringeable {
     public RecipientEntity setRecipientTypeId(int recipientTypeId) {
         this.recipientTypeId = recipientTypeId;
         return this;
+    }
+
+    public enum ID {
+        RECIPIENT_ID
     }
 }

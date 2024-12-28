@@ -13,7 +13,11 @@ import tech.nmhillusion.slight_transportation.entity.business.CommodityImportEnt
  */
 public interface CommodityImportRepository extends JpaRepository<CommodityImportEntity, Long> {
 
+    @Query("select max(t.importId) from CommodityImportEntity t")
+    long getMaxId();
+
     @Query("select c from CommodityImportEntity c where :importName is null or c.importName like %:importName%")
     Page<CommodityImportEntity> search(String importName, PageRequest pageRequest);
+
 
 }

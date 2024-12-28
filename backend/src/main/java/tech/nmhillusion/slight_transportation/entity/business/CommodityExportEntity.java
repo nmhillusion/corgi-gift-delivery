@@ -1,6 +1,9 @@
 package tech.nmhillusion.slight_transportation.entity.business;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.ZonedDateTime;
 
@@ -14,8 +17,6 @@ import java.time.ZonedDateTime;
 public class CommodityExportEntity {
     @Id
     @Column(name = "export_id", nullable = false)
-    @SequenceGenerator(name = "seq_gen__cx_commodity_export__export_id", sequenceName = "seq__cx_commodity_export__export_id", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(generator = "seq_gen__cx_commodity_export__export_id", strategy = GenerationType.SEQUENCE)
     private long exportId;
 
     @Column(name = "export_name", nullable = false)
@@ -61,5 +62,9 @@ public class CommodityExportEntity {
     public CommodityExportEntity setWarehouseId(int warehouseId) {
         this.warehouseId = warehouseId;
         return this;
+    }
+
+    public enum ID {
+        EXPORT_ID
     }
 }

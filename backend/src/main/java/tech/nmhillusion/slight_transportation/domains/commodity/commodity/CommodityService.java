@@ -1,7 +1,8 @@
 package tech.nmhillusion.slight_transportation.domains.commodity.commodity;
 
-import org.springframework.transaction.annotation.Transactional;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
+import tech.nmhillusion.slight_transportation.constant.IdConstant;
+import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityEntity;
 
 import java.time.ZonedDateTime;
@@ -21,9 +22,11 @@ public interface CommodityService {
     @TransactionalService
     class Impl implements CommodityService {
         private final CommodityRepository repository;
+        private final SequenceService sequenceService;
 
-        public Impl(CommodityRepository repository) {
+        public Impl(CommodityRepository repository, SequenceService sequenceService) {
             this.repository = repository;
+            this.sequenceService = sequenceService;
         }
 
         @Override
@@ -31,12 +34,22 @@ public interface CommodityService {
             return repository.findAll();
         }
 
-        @Transactional
         @Override
         public CommodityEntity sync(CommodityEntity commodityEntity) {
             if (null == commodityEntity.getCreateTime()) {
                 commodityEntity.setCreateTime(
                         ZonedDateTime.now()
+                );
+            }
+
+            if (IdConstant.MIN_ID > commodityEntity.getComId()) {
+                commodityEntity.setComId(
+                        sequenceService.nextValue(
+                                sequenceService.generateSeqNameForClass(
+                                        getClass()
+                                        , CommodityEntity.ID.COM_ID.name()
+                                )
+                        )
                 );
             }
 
