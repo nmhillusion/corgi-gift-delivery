@@ -36,4 +36,12 @@ export class CommodityTypeService {
         })
       );
   }
+
+  importExcel(excelFile: File) {
+    const submitForm = new FormData();
+
+    submitForm.append("excelFile", new Blob([excelFile]));
+
+    return this.http.post<CommodityTypeModel[]>(this.buildApiUrl("/import/excel"), submitForm);
+  }
 }

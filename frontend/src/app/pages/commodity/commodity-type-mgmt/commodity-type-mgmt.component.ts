@@ -1,18 +1,14 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  signal,
-  WritableSignal,
-} from "@angular/core";
-import { CommodityTypeService } from "@app/service/commodity-type.service";
-import { Subscription } from "rxjs";
-import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
-import { BasePage } from "@app/pages/base.page";
-import { CommodityTypeModel } from "@app/model/business/commodity-type.model";
+import { Component, signal, WritableSignal } from "@angular/core";
 import { AppCommonModule } from "@app/core/app-common.module";
-import { EditComponent } from "./edit/edit.component";
+import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { SIZE } from "@app/layout/size.constant";
+import { CommodityTypeModel } from "@app/model/business/commodity-type.model";
+import { BasePage } from "@app/pages/base.page";
+import { CommodityTypeService } from "@app/service/commodity-type.service";
 import { BlobUtil } from "@app/util/blob.util";
+import { BehaviorSubject } from "rxjs";
+import { EditComponent } from "./edit/edit.component";
+import { ImportComponent } from "./import/import.component";
 
 @Component({
   standalone: true,
@@ -24,6 +20,8 @@ export class CommodityTypeMgmtComponent extends BasePage {
   /// FIELDS
   commodityTypeList$: WritableSignal<CommodityTypeModel[]> = signal([]);
 
+  importFile$ = new BehaviorSubject<File[]>([]);
+
   /// METHODS
   constructor(private $commodityTypeService: CommodityTypeService) {
     super("Commodity Type Mgmt");
@@ -31,6 +29,12 @@ export class CommodityTypeMgmtComponent extends BasePage {
 
   override __ngOnInit__() {
     this.initLoadData();
+
+    this.registerSubscription(
+      this.importFile$.subscribe((evt) => {
+        console.log("update import file to ", evt);
+      })
+    );
   }
 
   private initLoadData() {
@@ -72,7 +76,16 @@ export class CommodityTypeMgmtComponent extends BasePage {
   }
 
   importCommodityType() {
-    throw new Error("Method not implemented.");
+    const dialogRef = this.$dialog.open<ImportComponent>(ImportComponent, {
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
+    });
+
+    this.registerSubscription(
+      dialogRef.afterClosed().subscribe((_) => {
+        this.initLoadData();
+      })
+    );
   }
 
   exportCommodityType() {

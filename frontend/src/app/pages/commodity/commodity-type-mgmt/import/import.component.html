@@ -1,0 +1,15 @@
+<div class="import-dialog">
+  <div class="form">
+    <app-input-file [inputFile]="inputFile$"></app-input-file>
+
+    @if (logMessage$()) {
+    <div class="inline-block-message {{ logMessage$()?.logType }}">
+      {{ logMessage$()?.message }}
+    </div>
+    }
+
+    <div class="action-box">
+      <button mat-button mat-flat-button (click)="onConfirm()">Confirm</button>
+    </div>
+  </div>
+</div>

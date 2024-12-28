@@ -1,3 +1,7 @@
+create table if not exists t_cx_sequence (
+    seq_name varchar(200) primary key,
+    seq_value numeric
+);
 
 create table if not exists t_cx_recipient_type (
     type_id int primary key,

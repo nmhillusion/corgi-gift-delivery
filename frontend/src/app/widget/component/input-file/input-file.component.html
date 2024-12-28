@@ -1,0 +1,25 @@
+<div class="input-box">
+  <input
+    type="file"
+    name="inpFile"
+    id="inpFile"
+    style="display: none"
+    #inputNative
+    (change)="onChangeFile($event)"
+  />
+  <mat-label>{{ title }}</mat-label>
+  <button
+    mat-button
+    mat-stroked-button
+    color="warn"
+    (click)="inputNative.click()"
+  >
+    Browse
+  </button>
+  @if (inputFileDisplayText$ | async) {
+  <p>
+    Selected:
+    <strong>{{ inputFileDisplayText$ | async }}</strong>
+  </p>
+  }
+</div>

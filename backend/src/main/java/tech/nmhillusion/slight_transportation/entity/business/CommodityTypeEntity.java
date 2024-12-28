@@ -1,6 +1,9 @@
 package tech.nmhillusion.slight_transportation.entity.business;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
 /**
@@ -11,10 +14,9 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 @Entity
 @Table(name = "t_cx_commodity_type")
 public class CommodityTypeEntity extends Stringeable {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_commodity_type__type_id")
-    @SequenceGenerator(name = "seq_gen__cx_commodity_type__type_id", sequenceName = "seq__cx_commodity_type__type_id", allocationSize = 1, initialValue = 1)
+//    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_gen__cx_commodity_type__type_id")
+//    @SequenceGenerator(name = "seq_gen__cx_commodity_type__type_id", sequenceName = "seq__cx_commodity_type__type_id", allocationSize = 1, initialValue = 1)
     @Column(name = "type_id", nullable = false)
     private int typeId;
 
