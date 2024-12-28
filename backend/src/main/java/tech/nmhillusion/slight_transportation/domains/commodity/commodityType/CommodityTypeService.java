@@ -72,7 +72,7 @@ public interface CommodityTypeService {
                         (int) sequenceService.nextValue(
                                 sequenceService.generateSeqNameForClass(
                                         getClass()
-                                        , "typeId"
+                                        , CommodityTypeEntity.ID.TYPE_ID.name()
                                 )
                         )
                 );
@@ -140,6 +140,7 @@ public interface CommodityTypeService {
                 }
 
                 repository.saveAllAndFlush(totalTypeList);
+                moveToMaxTypeIdForSequence();
 
                 return totalTypeList;
             } catch (Throwable ex) {
@@ -173,6 +174,14 @@ public interface CommodityTypeService {
             } catch (Exception e) {
                 throw ExceptionUtil.throwException(e);
             }
+        }
+
+        private void moveToMaxTypeIdForSequence() {
+            final int currentMaxId = repository.getMaxTypeId();
+            sequenceService.modifyCurrentValue(
+                    sequenceService.generateSeqNameForClass(getClass(), CommodityTypeEntity.ID.TYPE_ID.name())
+                    , currentMaxId
+            );
         }
     }
 }

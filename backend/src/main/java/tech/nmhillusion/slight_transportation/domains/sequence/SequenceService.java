@@ -17,6 +17,8 @@ public interface SequenceService {
 
     long nextValue(String seqName);
 
+    void modifyCurrentValue(String seqName, long value);
+
     @TransactionalService
     class Impl implements SequenceService {
         private final SequenceRepository repository;
@@ -52,10 +54,21 @@ public interface SequenceService {
             final long currentValue = mSequence.getSeqValue();
             final long nextValue = currentValue + 1;
 
-            mSequence.setSeqValue(nextValue);
-            repository.saveAndFlush(mSequence);
+            modifyCurrentValue(seqName, nextValue);
 
             return nextValue;
+        }
+
+        @Override
+        public void modifyCurrentValue(String seqName, long value) {
+            final SequenceEntity mSequence = repository.findById(seqName)
+                    .orElse(new SequenceEntity()
+                            .setSeqName(seqName)
+                    );
+
+            mSequence.setSeqValue(value);
+
+            repository.saveAndFlush(mSequence);
         }
     }
 }
