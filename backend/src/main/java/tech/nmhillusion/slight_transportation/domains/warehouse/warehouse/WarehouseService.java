@@ -109,7 +109,7 @@ public interface WarehouseService {
                     .skip(1)
                     .map(row_ -> {
                         final List<CellData> cells = row_.getCells();
-                        if (2 > cells.size()) {
+                        if (3 > cells.size()) {
                             throw new IllegalArgumentException("Invalid row for this sheet: " + sheetData.getSheetName());
                         }
 
