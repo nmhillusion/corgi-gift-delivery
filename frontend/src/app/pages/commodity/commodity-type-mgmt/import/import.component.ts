@@ -6,6 +6,7 @@ import { BasePage } from "@app/pages/base.page";
 import { CommodityTypeService } from "@app/service/commodity-type.service";
 import { BehaviorSubject } from "rxjs";
 import { AppInputFileComponent } from "../../../../widget/component/input-file/input-file.component";
+import { DialogRef } from "@angular/cdk/dialog";
 
 @Component({
   templateUrl: "./import.component.html",
@@ -18,7 +19,10 @@ export class ImportComponent extends BasePage {
 
   /// Methods
 
-  constructor(private $commodityTypeService: CommodityTypeService) {
+  constructor(
+    private $commodityTypeService: CommodityTypeService,
+    private $dialogRef: DialogRef<ImportComponent>
+  ) {
     super("");
   }
 
@@ -49,5 +53,9 @@ export class ImportComponent extends BasePage {
         },
       })
     );
+  }
+
+  onClose() {
+    this.$dialogRef.close();
   }
 }
