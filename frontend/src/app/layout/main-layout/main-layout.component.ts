@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, signal, WritableSignal } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnInit,
+  signal,
+  WritableSignal,
+} from "@angular/core";
 import { Menu } from "@app/model/core/menu.model";
 import { MenuComponent } from "../menu/menu.component";
 import { BasePage } from "@app/pages/base.page";
@@ -38,12 +44,6 @@ export class MainLayoutComponent implements OnInit {
       list.push({
         url: "/delivery/list",
         name: "Delivery Mgmt",
-        icon: "inventory_2",
-      });
-
-      list.push({
-        url: "/shipper/list",
-        name: "Shipper Mgmt",
         icon: "inventory_2",
       });
 
