@@ -19,11 +19,6 @@ export const routes: Routes = [
       import("./pages/delivery/delivery.module").then((m) => m.DeliveryModule),
   },
   {
-    path: "shipper",
-    loadChildren: () =>
-      import("./pages/shipper/shipper.module").then((m) => m.ShipperModule),
-  },
-  {
     path: "recipient",
     loadChildren: () =>
       import("./pages/recipient/recipient.module").then(
@@ -36,10 +31,5 @@ export const routes: Routes = [
       import("./pages/warehouse/warehouse.module").then(
         (m) => m.WarehouseModule
       ),
-  },
-  {
-    path: "import",
-    loadChildren: () =>
-      import("./pages/import/import.module").then((m) => m.ImportModule),
   },
 ];
