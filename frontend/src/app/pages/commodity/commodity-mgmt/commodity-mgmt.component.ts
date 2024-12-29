@@ -5,6 +5,8 @@ import { AppCommonModule } from "@app/core/app-common.module";
 import { CommodityService } from "./commodity.service";
 import { CommodityModel } from "@app/model/business/commodity.model";
 import { EditComponent } from "./edit/edit.component";
+import { ImportComponent } from "./import/import.component";
+import { SIZE } from "@app/layout/size.constant";
 
 @Component({
   standalone: true,
@@ -49,11 +51,24 @@ export class CommodityMgmtComponent extends BasePage {
 
   private openEditDialog(commodity?: CommodityModel) {
     const ref = this.$dialog.open<EditComponent>(EditComponent, {
-      width: "600px",
-      maxHeight: "600px",
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
       data: {
         commodity,
       },
+    });
+
+    this.registerSubscription(
+      ref.afterClosed().subscribe((result) => {
+        this.initLoadData();
+      })
+    );
+  }
+
+  importCommodity() {
+    const ref = this.$dialog.open<ImportComponent>(ImportComponent, {
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
     });
 
     this.registerSubscription(
