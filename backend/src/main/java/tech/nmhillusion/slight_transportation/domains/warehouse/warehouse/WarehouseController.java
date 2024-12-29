@@ -2,6 +2,7 @@ package tech.nmhillusion.slight_transportation.domains.warehouse.warehouse;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseEntity;
 
 import java.util.List;
@@ -33,5 +34,10 @@ public class WarehouseController {
     @PostMapping(value = "/sync", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public WarehouseEntity sync(@RequestBody WarehouseEntity warehouseEntity) {
         return service.sync(warehouseEntity);
+    }
+
+    @PostMapping(value = "/import/excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<WarehouseEntity> importExcelFile(@RequestPart MultipartFile excelFile) {
+        return service.importExcelFile(excelFile);
     }
 }

@@ -7,7 +7,6 @@ import { WarehouseModel } from "@app/model/business/warehouse.model";
   providedIn: "root",
 })
 export class WarehouseService {
-  
   constructor(private $http: HttpClient) {}
 
   buildApiUrl(path: string): string {
@@ -27,5 +26,15 @@ export class WarehouseService {
 
   findById(warehouseId: number) {
     return this.$http.get<WarehouseModel>(this.buildApiUrl(`/${warehouseId}`));
+  }
+
+  importExcel(excelFile: File) {
+    const submitForm = new FormData();
+    submitForm.append("excelFile", new Blob([excelFile]));
+
+    return this.$http.post<WarehouseModel[]>(
+      this.buildApiUrl("/import/excel"),
+      submitForm
+    );
   }
 }

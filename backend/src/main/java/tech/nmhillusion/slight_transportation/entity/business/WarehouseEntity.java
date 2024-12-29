@@ -1,6 +1,9 @@
 package tech.nmhillusion.slight_transportation.entity.business;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
 /**
@@ -13,8 +16,6 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class WarehouseEntity extends Stringeable {
     @Id
     @Column(name = "warehouse_id", nullable = false)
-    @SequenceGenerator(name = "seq_gen__cx_warehouse__warehouse_id", sequenceName = "seq__cx_warehouse__warehouse_id", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_warehouse__warehouse_id")
     private int warehouseId;
 
     @Column(name = "warehouse_name", nullable = false)
@@ -48,5 +49,9 @@ public class WarehouseEntity extends Stringeable {
     public WarehouseEntity setWarehouseAddress(String warehouseAddress) {
         this.warehouseAddress = warehouseAddress;
         return this;
+    }
+
+    public enum ID {
+        WAREHOUSE_ID
     }
 }
