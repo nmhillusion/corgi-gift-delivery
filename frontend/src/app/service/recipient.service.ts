@@ -14,9 +14,13 @@ export class RecipientService {
     return `${environment.LINK.API_BASE_URL}/api/recipient${path}`;
   }
 
-  search(dto: {
-    name?: string
-  }, pageIndex: number, pageSize: number) {
+  search(
+    dto: {
+      name?: string;
+    },
+    pageIndex: number,
+    pageSize: number
+  ) {
     return this.$http.post<Page<RecipientModel>>(
       this.buildApiUrl(`/search`),
       dto,
@@ -33,6 +37,17 @@ export class RecipientService {
     return this.$http.post<RecipientModel>(
       this.buildApiUrl("/sync"),
       recipient
+    );
+  }
+
+  importExcel(currentItem: File) {
+    const submitForm = new FormData();
+
+    submitForm.append("excelFile", new Blob([currentItem]));
+
+    return this.$http.post<RecipientModel[]>(
+      this.buildApiUrl("/import/excel"),
+      submitForm
     );
   }
 }

@@ -3,8 +3,10 @@ package tech.nmhillusion.slight_transportation.domains.recipient.recipient;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.slight_transportation.entity.business.RecipientEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ public class RecipientController {
         this.service = service;
     }
 
-    @PostMapping(value = "/sync", consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/sync", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public RecipientEntity sync(@RequestBody RecipientEntity recipientEntity) {
         return service.sync(recipientEntity);
     }
@@ -31,5 +33,10 @@ public class RecipientController {
     @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<RecipientEntity> search(@RequestBody Map<String, ?> dto, @RequestParam int pageIndex, @RequestParam int pageSize) {
         return service.search(dto, pageIndex, pageSize);
+    }
+
+    @PostMapping(value = "/import/excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<RecipientEntity> importExcelFile(@RequestPart MultipartFile excelFile) {
+        return service.importExcelFile(excelFile);
     }
 }

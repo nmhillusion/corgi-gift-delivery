@@ -2,11 +2,7 @@
   <div class="form">
     <app-input-file [inputFile]="inputFile$"></app-input-file>
 
-    @if (logMessage$()) {
-    <div class="inline-block-message {{ logMessage$()?.logType }}">
-      {{ logMessage$()?.message }}
-    </div>
-    }
+    <app-inline-log-message [logMessage]="logMessage$"></app-inline-log-message>
 
     <div class="action-box">
       <button mat-button mat-flat-button (click)="onConfirm()">Confirm</button>

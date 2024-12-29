@@ -31,6 +31,12 @@ export class AppInputFileComponent extends BasePage {
   })
   title = "File Input";
 
+  @Input({
+    required: false,
+    alias: "fileExtension",
+  })
+  fileExtension: string = "";
+
   /// Methods
 
   constructor() {

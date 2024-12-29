@@ -1,19 +1,20 @@
-import {Component, signal} from "@angular/core";
-import {PageEvent} from "@angular/material/paginator";
-import {MatTableDataSource} from "@angular/material/table";
-import {AppCommonModule} from "@app/core/app-common.module";
-import {MainLayoutComponent} from "@app/layout/main-layout/main-layout.component";
-import {PAGE} from "@app/layout/page.constant";
-import {SIZE} from "@app/layout/size.constant";
+import { Component, signal } from "@angular/core";
+import { PageEvent } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { AppCommonModule } from "@app/core/app-common.module";
+import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { PAGE } from "@app/layout/page.constant";
+import { SIZE } from "@app/layout/size.constant";
 import {
   RecipientModel,
   RecipientFEModel,
 } from "@app/model/business/recipient.model";
-import {Page, PaginatorHandler} from "@app/model/core/page.model";
-import {BasePage} from "@app/pages/base.page";
-import {RecipientTypeService} from "@app/service/recipient-type.service";
-import {RecipientService} from "@app/service/recipient.service";
-import {EditComponent} from "../edit/edit.component";
+import { Page, PaginatorHandler } from "@app/model/core/page.model";
+import { BasePage } from "@app/pages/base.page";
+import { RecipientTypeService } from "@app/service/recipient-type.service";
+import { RecipientService } from "@app/service/recipient.service";
+import { EditComponent } from "../edit/edit.component";
+import { ImportComponent } from "./import/import.component";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -118,6 +119,19 @@ export class ListComponent extends BasePage {
 
     this.registerSubscription(
       ref.afterClosed().subscribe((result) => {
+        this.search();
+      })
+    );
+  }
+
+  importRecipients() {
+    const ref_ = this.$dialog.open<ImportComponent>(ImportComponent, {
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
+    });
+
+    this.registerSubscription(
+      ref_.afterClosed().subscribe((result) => {
         this.search();
       })
     );

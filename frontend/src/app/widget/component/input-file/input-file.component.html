@@ -4,6 +4,7 @@
     name="inpFile"
     id="inpFile"
     style="display: none"
+    [accept]="fileExtension"
     #inputNative
     (change)="onChangeFile($event)"
   />
