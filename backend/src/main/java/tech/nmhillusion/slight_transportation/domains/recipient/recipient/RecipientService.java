@@ -51,10 +51,9 @@ public interface RecipientService {
 
         @Override
         public RecipientEntity sync(RecipientEntity recipientEntity) {
-            final RecipientEntity savedEntity = repository.save(recipientEntity);
 
-            if (IdConstant.MIN_ID > savedEntity.getRecipientId()) {
-                savedEntity.setRecipientId(
+            if (IdConstant.MIN_ID > recipientEntity.getRecipientId()) {
+                recipientEntity.setRecipientId(
                         sequenceService.nextValue(
                                 sequenceService.generateSeqNameForClass(
                                         getClass()
@@ -63,6 +62,8 @@ public interface RecipientService {
                         )
                 );
             }
+
+            final RecipientEntity savedEntity = repository.save(recipientEntity);
 
             LogHelper.getLogger(this).info("savedEntity: {}", savedEntity);
             return savedEntity;
