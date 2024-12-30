@@ -100,4 +100,8 @@ public class DeliveryAttemptEntity extends Stringeable {
         this.deliveryStatusId = deliveryStatusId;
         return this;
     }
+
+    public enum ID {
+        ATTEMPT_ID
+    }
 }

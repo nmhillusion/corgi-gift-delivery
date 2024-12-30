@@ -64,4 +64,8 @@ public class DeliveryPackageEntity {
         this.packageTime = packageTime;
         return this;
     }
+
+    public enum ID {
+        PACKAGE_ID
+    }
 }

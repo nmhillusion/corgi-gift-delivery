@@ -112,4 +112,8 @@ public class NoteEntity extends Stringeable {
         this.warehouseItemId = warehouseItemId;
         return this;
     }
+
+    public enum ID {
+        NOTE_ID
+    }
 }

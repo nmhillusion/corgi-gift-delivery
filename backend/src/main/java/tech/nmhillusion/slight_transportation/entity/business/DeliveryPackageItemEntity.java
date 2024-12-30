@@ -101,4 +101,8 @@ public class DeliveryPackageItemEntity {
         this.createTime = createTime;
         return this;
     }
+
+    public enum ID {
+        ITEM_ID
+    }
 }

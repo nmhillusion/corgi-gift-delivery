@@ -82,4 +82,8 @@ public class WarehouseExportItemEntity {
         this.createTime = createTime;
         return this;
     }
+
+    public enum ID {
+        ITEM_ID
+    }
 }
