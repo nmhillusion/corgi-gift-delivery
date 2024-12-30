@@ -61,7 +61,7 @@ REFERENCES t_cx_commodity_type(type_id);
 ----
 
 create table if not exists t_cx_warehouse_item (
-  item_id varchar(100) primary key,
+  item_id numeric primary key,
   import_id int,
   warehouse_id int,
   com_id int,
@@ -98,7 +98,7 @@ create table if not exists t_cx_delivery_status (
 
 
 create table if not exists t_cx_delivery (
-  delivery_id varchar(200) primary key,
+  delivery_id numeric primary key,
   recipient_id int,
   commodity_id int,
   com_quantity NUMERIC,
@@ -129,7 +129,7 @@ references t_cx_shipper_type (type_id);
 
 ----
 create table if not exists t_cx_delivery_attempt (
-  attempt_id varchar(100) primary key,
+  attempt_id numeric primary key,
   delivery_id int,
   delivery_type_id int,
   shipper_id varchar(100),
@@ -238,7 +238,7 @@ foreign key (warehouse_id)
 references t_cx_warehouse (warehouse_id);
 
 create table if not exists t_cx_warehouse_export_item (
-  item_id varchar(100) primary key,
+  item_id numeric primary key,
   export_id int,
   warehouse_id int,
   com_id int,
@@ -277,7 +277,7 @@ references t_cx_delivery (delivery_id);
 
 
 create table if not exists t_cx_delivery_package_item (
-  item_id varchar(100) primary key,
+  item_id numeric primary key,
   package_id int,
   warehouse_id int,
   export_id int,

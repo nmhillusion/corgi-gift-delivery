@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 public class DeliveryAttemptEntity extends Stringeable {
     @Id
     @Column(name = "attempt_id", nullable = false)
-    private String attemptId;
+    private long attemptId;
 
     @Column(name = "delivery_id", nullable = false)
     private String deliveryId;
@@ -38,11 +38,11 @@ public class DeliveryAttemptEntity extends Stringeable {
     @Column(name = "delivery_status_id")
     private String deliveryStatusId;
 
-    public String getAttemptId() {
+    public long getAttemptId() {
         return attemptId;
     }
 
-    public DeliveryAttemptEntity setAttemptId(String attemptId) {
+    public DeliveryAttemptEntity setAttemptId(long attemptId) {
         this.attemptId = attemptId;
         return this;
     }

@@ -19,7 +19,7 @@ public class DeliveryPackageItemEntity {
 
     @Id
     @Column(name = "item_id", nullable = false)
-    private String itemId;
+    private long itemId;
 
     @Column(name = "package_id", nullable = false)
     private int packageId;
@@ -39,11 +39,11 @@ public class DeliveryPackageItemEntity {
     @Column(name = "create_time", nullable = false)
     private ZonedDateTime createTime;
 
-    public String getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
-    public DeliveryPackageItemEntity setItemId(String itemId) {
+    public DeliveryPackageItemEntity setItemId(long itemId) {
         this.itemId = itemId;
         return this;
     }

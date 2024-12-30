@@ -1,6 +1,9 @@
 package tech.nmhillusion.slight_transportation.entity.business;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.ZonedDateTime;
 
@@ -13,8 +16,6 @@ import java.time.ZonedDateTime;
 @Table(name = "t_cx_delivery_package")
 public class DeliveryPackageEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen__cx_delivery_package__package_id")
-    @SequenceGenerator(name = "seq_gen__cx_delivery_package__package_id", sequenceName = "seq__cx_delivery_package__package_id", allocationSize = 1, initialValue = 1)
     @Column(name = "package_id", nullable = false)
     private long packageId;
 
