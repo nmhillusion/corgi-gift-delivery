@@ -16,4 +16,6 @@ public interface DeliveryPackageRepository extends JpaRepository<DeliveryPackage
     @Query("select d from DeliveryPackageEntity d where d.deliveryId = :deliveryId")
     Page<DeliveryPackageEntity> search(long deliveryId, PageRequest pageRequest);
 
+    @Query("select max(d.packageId) from DeliveryPackageEntity d")
+    long getMaxId();
 }
