@@ -11,9 +11,11 @@ import tech.nmhillusion.slight_transportation.entity.business.DeliveryPackageIte
  * <p>
  * created date: 2024-12-21
  */
-public interface DeliveryPackageItemRepository extends JpaRepository<DeliveryPackageItemEntity, String> {
+public interface DeliveryPackageItemRepository extends JpaRepository<DeliveryPackageItemEntity, Long> {
 
     @Query("select i from DeliveryPackageItemEntity i where i.packageId = :packageId")
     Page<DeliveryPackageItemEntity> search(long packageId, PageRequest pageRequest);
 
+    @Query("select max(i.itemId) from DeliveryPackageItemEntity i")
+    long getMaxId();
 }

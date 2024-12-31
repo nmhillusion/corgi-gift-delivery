@@ -2,8 +2,11 @@ package tech.nmhillusion.slight_transportation.domains.delivery.deliverPackage.p
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
+import tech.nmhillusion.slight_transportation.constant.IdConstant;
+import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryPackageItemEntity;
 
 import java.util.Map;
@@ -17,9 +20,9 @@ public interface DeliveryPackageItemService {
 
     Page<DeliveryPackageItemEntity> search(Map<String, ?> dto, PageRequest pageRequest);
 
-    void deleteById(String packageItemId);
+    void deleteById(long packageItemId);
 
-    DeliveryPackageItemEntity findById(String packageItemId);
+    DeliveryPackageItemEntity findById(long packageItemId);
 
     DeliveryPackageItemEntity save(DeliveryPackageItemEntity entity);
 
@@ -28,9 +31,11 @@ public interface DeliveryPackageItemService {
     class Impl implements DeliveryPackageItemService {
 
         private final DeliveryPackageItemRepository repository;
+        private final SequenceService sequenceService;
 
-        public Impl(DeliveryPackageItemRepository repository) {
+        public Impl(DeliveryPackageItemRepository repository, SequenceService sequenceService) {
             this.repository = repository;
+            this.sequenceService = sequenceService;
         }
 
         @Override
@@ -40,17 +45,33 @@ public interface DeliveryPackageItemService {
         }
 
         @Override
-        public void deleteById(String packageItemId) {
+        public void deleteById(long packageItemId) {
             repository.deleteById(packageItemId);
         }
 
         @Override
-        public DeliveryPackageItemEntity findById(String packageItemId) {
+        public DeliveryPackageItemEntity findById(long packageItemId) {
             return repository.findById(packageItemId).orElse(null);
+        }
+
+        private long generateId(DeliveryPackageItemEntity dto) {
+            if (IdConstant.MIN_ID > dto.getItemId()) {
+                return sequenceService.nextValue(
+                        sequenceService.generateSeqNameForClass(
+                                getClass()
+                                , DeliveryPackageItemEntity.ID.ITEM_ID.name()
+                        )
+                );
+            }
+            return dto.getItemId();
         }
 
         @Override
         public DeliveryPackageItemEntity save(DeliveryPackageItemEntity entity) {
+            entity.setItemId(generateId(entity));
+
+            LogHelper.getLogger(this).info("entity: {}", entity);
+
             return repository.save(entity);
         }
     }

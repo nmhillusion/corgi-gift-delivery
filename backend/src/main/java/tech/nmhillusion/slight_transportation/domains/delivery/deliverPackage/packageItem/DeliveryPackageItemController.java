@@ -36,12 +36,12 @@ public class DeliveryPackageItemController {
     }
 
     @DeleteMapping("/delete/{packageItemId}")
-    public void deleteById(@PathVariable String packageItemId) {
+    public void deleteById(@PathVariable long packageItemId) {
         service.deleteById(packageItemId);
     }
 
     @GetMapping("/{packageItemId}")
-    public DeliveryPackageItemEntity findById(@PathVariable String packageItemId) {
+    public DeliveryPackageItemEntity findById(@PathVariable long packageItemId) {
         return service.findById(packageItemId);
     }
 }
