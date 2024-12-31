@@ -2,8 +2,11 @@ package tech.nmhillusion.slight_transportation.domains.warehouse.warehouseItem;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
+import tech.nmhillusion.slight_transportation.constant.IdConstant;
+import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseItemEntity;
 
 import java.time.ZonedDateTime;
@@ -21,14 +24,16 @@ public interface WarehouseItemService {
 
     WarehouseItemEntity sync(WarehouseItemEntity dto);
 
-    void deleteById(String itemId);
+    void deleteById(long itemId);
 
     @TransactionalService
     class Impl implements WarehouseItemService {
         private final WarehouseItemRepository repository;
+        private final SequenceService sequenceService;
 
-        public Impl(WarehouseItemRepository repository) {
+        public Impl(WarehouseItemRepository repository, SequenceService sequenceService) {
             this.repository = repository;
+            this.sequenceService = sequenceService;
         }
 
         @Override
@@ -64,13 +69,30 @@ public interface WarehouseItemService {
                     , PageRequest.of(pageIndex, pageSize));
         }
 
+        private long generateId(WarehouseItemEntity dto) {
+            if (IdConstant.MIN_ID > dto.getItemId()) {
+                return sequenceService.nextValue(
+                        sequenceService.generateSeqNameForClass(
+                                getClass()
+                                , WarehouseItemEntity.ID.ITEM_ID.name()
+                        )
+                );
+            }
+
+            return dto.getItemId();
+        }
+
         @Override
         public WarehouseItemEntity sync(WarehouseItemEntity dto) {
+            dto.setItemId(generateId(dto));
+
+            LogHelper.getLogger(this).info("dto: {}", dto);
+
             return repository.save(dto);
         }
 
         @Override
-        public void deleteById(String itemId) {
+        public void deleteById(long itemId) {
             repository.deleteById(itemId);
         }
     }

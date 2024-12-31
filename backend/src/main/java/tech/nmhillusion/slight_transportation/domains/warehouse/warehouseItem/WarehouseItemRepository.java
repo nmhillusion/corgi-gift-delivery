@@ -13,11 +13,14 @@ import java.time.ZonedDateTime;
  * <p>
  * created date: 2024-12-15
  */
-public interface WarehouseItemRepository extends JpaRepository<WarehouseItemEntity, String> {
+public interface WarehouseItemRepository extends JpaRepository<WarehouseItemEntity, Long> {
 
     @Query("select w from WarehouseItemEntity w where w.warehouseId = :warehouseId and w.createTime between :from and :to")
     Page<WarehouseItemEntity> searchItemsInWarehouse(int warehouseId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
 
     @Query("select w from WarehouseItemEntity w where w.importId = :importId and w.createTime between :from and :to")
     Page<WarehouseItemEntity> searchItemsInImport(int importId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
+
+    @Query("select max(w.itemId) from WarehouseItemEntity w")
+    long getMaxId();
 }
