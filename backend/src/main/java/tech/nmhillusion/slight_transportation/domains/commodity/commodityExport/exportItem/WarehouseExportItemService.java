@@ -2,7 +2,10 @@ package tech.nmhillusion.slight_transportation.domains.commodity.commodityExport
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
+import tech.nmhillusion.slight_transportation.constant.IdConstant;
+import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseExportItemEntity;
 
 import java.util.Map;
@@ -17,16 +20,18 @@ public interface WarehouseExportItemService {
 
     WarehouseExportItemEntity save(WarehouseExportItemEntity warehouseExportItemEntity);
 
-    void deleteById(String itemId);
+    void deleteById(long itemId);
 
-    WarehouseExportItemEntity findById(String itemId);
+    WarehouseExportItemEntity findById(long itemId);
 
     @TransactionalService
     class Impl implements WarehouseExportItemService {
         private final WarehouseExportItemRepository repository;
+        private final SequenceService sequenceService;
 
-        public Impl(WarehouseExportItemRepository repository) {
+        public Impl(WarehouseExportItemRepository repository, SequenceService sequenceService) {
             this.repository = repository;
+            this.sequenceService = sequenceService;
         }
 
         @Override
@@ -36,18 +41,34 @@ public interface WarehouseExportItemService {
             return repository.search(exportId, PageRequest.of(pageIndex, pageSize));
         }
 
+        private long generateId(WarehouseExportItemEntity dto) {
+            if (IdConstant.MIN_ID > dto.getItemId()) {
+                return sequenceService.nextValue(
+                        sequenceService.generateSeqNameForClass(
+                                getClass()
+                                , WarehouseExportItemEntity.ID.ITEM_ID.name()
+                        )
+                );
+            }
+            return dto.getItemId();
+        }
+
         @Override
         public WarehouseExportItemEntity save(WarehouseExportItemEntity warehouseExportItemEntity) {
+            warehouseExportItemEntity.setItemId(generateId(warehouseExportItemEntity));
+
+            LogHelper.getLogger(this).info("warehouseExportItemEntity: {}", warehouseExportItemEntity);
+
             return repository.save(warehouseExportItemEntity);
         }
 
         @Override
-        public void deleteById(String itemId) {
+        public void deleteById(long itemId) {
             repository.deleteById(itemId);
         }
 
         @Override
-        public WarehouseExportItemEntity findById(String itemId) {
+        public WarehouseExportItemEntity findById(long itemId) {
             return repository.findById(itemId).orElse(null);
         }
     }

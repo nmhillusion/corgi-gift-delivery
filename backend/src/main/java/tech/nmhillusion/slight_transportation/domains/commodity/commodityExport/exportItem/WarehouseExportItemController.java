@@ -36,12 +36,12 @@ public class WarehouseExportItemController {
     }
 
     @DeleteMapping("/delete/{itemId}")
-    public void deleteById(@PathVariable String itemId) {
+    public void deleteById(@PathVariable long itemId) {
         service.deleteById(itemId);
     }
 
     @GetMapping("/{itemId}")
-    public WarehouseExportItemEntity findById(@PathVariable String itemId) {
+    public WarehouseExportItemEntity findById(@PathVariable long itemId) {
         return service.findById(itemId);
     }
 }

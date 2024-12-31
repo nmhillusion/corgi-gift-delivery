@@ -28,7 +28,7 @@ public class WarehouseItemController {
     }
 
     @DeleteMapping(value = "/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteById(@PathVariable String itemId) {
+    public void deleteById(@PathVariable long itemId) {
         service.deleteById(itemId);
     }
 
