@@ -13,10 +13,10 @@ const routes: Routes = [
       import("./list/list.component").then((m) => m.ListComponent),
   },
   {
-    path: ":warehouseId/import",
+    path: ":warehouseId/commodity-import",
     loadComponent: () =>
-      import("./import-item/import-item.component").then(
-        (m) => m.ImportItemComponent
+      import("./commodity-import/commodity-import.component").then(
+        (m) => m.CommodityImportComponent
       ),
   },
 ];

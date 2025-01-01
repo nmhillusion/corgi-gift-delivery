@@ -4,24 +4,26 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { PAGE } from "@app/layout/page.constant";
+import { CommodityImportModel } from "@app/model/business/commodity-import.model";
 import { WarehouseItemModel } from "@app/model/business/warehouse-item.model";
 import { WarehouseModel } from "@app/model/business/warehouse.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
+import { CommodityImportService } from "@app/service/commodity-import.service";
 import { WarehouseItemService } from "@app/service/warehouse-item.service";
 import { WarehouseService } from "@app/service/warehouse.service";
 
 @Component({
-  templateUrl: "./import-item.component.html",
-  styleUrls: ["./import-item.component.scss"],
+  templateUrl: "./commodity-import.component.html",
+  styleUrls: ["./commodity-import.component.scss"],
   imports: [AppCommonModule, MainLayoutComponent],
 })
-export class ImportItemComponent extends BasePage {
+export class CommodityImportComponent extends BasePage {
   warehouseId: number = 0;
   warehouse$ = signal<Nullable<WarehouseModel>>(null);
 
-  tableDatasource = new MatTableDataSource<WarehouseItemModel>();
+  tableDatasource = new MatTableDataSource<CommodityImportModel>();
 
   paginator: PaginatorHandler = {
     pageIndex$: signal(0),
@@ -33,12 +35,14 @@ export class ImportItemComponent extends BasePage {
     },
   };
 
+  displayedColumns = ["importId", "importName", "importDate", "action"];
+
   /// Methods
   constructor(
     private $warehouseService: WarehouseService,
-    private $warehouseItemService: WarehouseItemService
+    private $commodityImportService: CommodityImportService
   ) {
-    super("Import Item");
+    super("Commodity Import");
   }
 
   protected override __ngOnInit__() {
@@ -61,22 +65,29 @@ export class ImportItemComponent extends BasePage {
 
   private search(pageEvt: PageEvent) {
     this.registerSubscription(
-      this.$warehouseItemService
-        .searchItemsInWarehouse(
-          this.warehouseId,
-          pageEvt.pageIndex,
-          pageEvt.pageSize,
-          {
-            name: "",
-          }
-        )
+      this.$commodityImportService
+        .search("", pageEvt.pageIndex, pageEvt.pageSize)
         .subscribe((result) => {
-          this.handlePageDataUpdate<WarehouseItemModel>(
+          this.handlePageDataUpdate<CommodityImportModel>(
             result,
             this.paginator,
             this.tableDatasource
           );
         })
     );
+  }
+
+  onBack() {
+    this.$router.navigate(["list"], {
+      relativeTo: this.$activatedRoute.parent,
+    });
+  }
+
+  addCommodityImport() {
+    throw new Error("Method not implemented.");
+  }
+
+  editCommodityImport(commodityImport: CommodityImportModel) {
+    throw new Error("Method not implemented.");
   }
 }

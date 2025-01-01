@@ -1,0 +1,52 @@
+<main-layout [basePage]="this">
+  <h1>
+    <button mat-icon-button color="primary" (click)="onBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    Commodity Import for warehouse
+    <div class="warehouse-name">
+      [{{ warehouseId }}] - {{ warehouse$()?.warehouseName }}
+    </div>
+  </h1>
+
+  <div class="header-action-box">
+    <button mat-stroked-button color="primary" (click)="addCommodityImport()">
+      Add commodity import
+    </button>
+  </div>
+
+  <mat-divider app-hr></mat-divider>
+
+  <div class="commodity-import-list">
+    <table mat-table [dataSource]="tableDatasource" class="app-table">
+      <ng-container matColumnDef="importId">
+        <th mat-header-cell *matHeaderCellDef>Import ID</th>
+        <td mat-cell *matCellDef="let el">{{ el.importId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="importName">
+        <th mat-header-cell *matHeaderCellDef>Import name</th>
+        <td mat-cell *matCellDef="let el">{{ el.importName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="importDate">
+        <th mat-header-cell *matHeaderCellDef>Import date</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.importDate | date: "dd/MM/yyyy" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let el">
+          <button mat-icon-button (click)="editCommodityImport(el)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</main-layout>

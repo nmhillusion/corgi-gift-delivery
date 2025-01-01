@@ -79,7 +79,7 @@ export class ListComponent extends BasePage {
   }
 
   importToWarehouse(wh: WarehouseModel) {
-    this.$router.navigate([wh.warehouseId, "import"], {
+    this.$router.navigate([wh.warehouseId, "commodity-import"], {
       relativeTo: this.$activatedRoute.parent,
     });
   }
