@@ -12,6 +12,13 @@ const routes: Routes = [
     loadComponent: () =>
       import("./list/list.component").then((m) => m.ListComponent),
   },
+  {
+    path: ":warehouseId/import",
+    loadComponent: () =>
+      import("./import-item/import-item.component").then(
+        (m) => m.ImportItemComponent
+      ),
+  },
 ];
 
 @NgModule({

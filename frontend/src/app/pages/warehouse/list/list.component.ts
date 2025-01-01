@@ -79,6 +79,8 @@ export class ListComponent extends BasePage {
   }
 
   importToWarehouse(wh: WarehouseModel) {
-    throw new Error("Method not implemented.");
+    this.$router.navigate([wh.warehouseId, "import"], {
+      relativeTo: this.$activatedRoute.parent,
+    });
   }
 }
