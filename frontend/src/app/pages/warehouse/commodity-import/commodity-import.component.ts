@@ -35,7 +35,7 @@ export class CommodityImportComponent extends BasePage {
     },
   };
 
-  displayedColumns = ["importId", "importName", "importDate", "action"];
+  displayedColumns = ["importId", "importName", "importTime", "action"];
 
   /// Methods
   constructor(

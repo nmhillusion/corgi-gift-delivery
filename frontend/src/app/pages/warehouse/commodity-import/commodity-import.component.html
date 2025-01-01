@@ -29,10 +29,10 @@
         <td mat-cell *matCellDef="let el">{{ el.importName }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="importDate">
-        <th mat-header-cell *matHeaderCellDef>Import date</th>
+      <ng-container matColumnDef="importTime">
+        <th mat-header-cell *matHeaderCellDef>Import time</th>
         <td mat-cell *matCellDef="let el">
-          {{ el.importDate | date: "dd/MM/yyyy" }}
+          {{ el.importTime | date: "dd/MM/yyyy HH:mm" }}
         </td>
       </ng-container>
 
