@@ -59,24 +59,6 @@ export class MainLayoutComponent implements OnInit {
         icon: "inventory_2",
       });
 
-      list.push({
-        url: "",
-        name: "Import Mgmt",
-        icon: "inventory_2",
-        children: [
-          {
-            url: "/import/list",
-            name: "Import List",
-            icon: "inventory_2",
-          },
-          {
-            url: "/import/import",
-            name: "Import",
-            icon: "",
-          },
-        ],
-      });
-
       return list;
     });
   }
