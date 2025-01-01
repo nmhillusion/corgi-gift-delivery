@@ -6,7 +6,7 @@ import { BasePage } from "@app/pages/base.page";
 import { EditComponent } from "../edit/edit.component";
 import { SIZE } from "@app/layout/size.constant";
 import { WarehouseService } from "@app/service/warehouse.service";
-import { ImportComponent } from "./import/import.component";
+import { ImportDialogComponent } from "./import-dialog/import-dialog.component";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -63,10 +63,13 @@ export class ListComponent extends BasePage {
   }
 
   importWarehouse() {
-    const ref = this.$dialog.open<ImportComponent>(ImportComponent, {
-      width: SIZE.DIALOG.width,
-      maxHeight: SIZE.DIALOG.height,
-    });
+    const ref = this.$dialog.open<ImportDialogComponent>(
+      ImportDialogComponent,
+      {
+        width: SIZE.DIALOG.width,
+        maxHeight: SIZE.DIALOG.height,
+      }
+    );
 
     this.registerSubscription(
       ref.afterClosed().subscribe((result) => {

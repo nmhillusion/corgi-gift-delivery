@@ -10,18 +10,19 @@ import { AppInputFileComponent } from "@app/widget/component/input-file/input-fi
 import { BehaviorSubject } from "rxjs";
 
 @Component({
-  templateUrl: "./import.component.html",
-  styleUrls: ["./import.component.scss"],
+  templateUrl: "./import-dialog.component.html",
+  styleUrls: ["./import-dialog.component.scss"],
   imports: [AppCommonModule, AppInputFileComponent, AppInlineLogMessage],
 })
-export class ImportComponent extends BasePage {
+export class ImportDialogComponent extends BasePage {
   logMessage$ = signal<Nullable<LogModel>>(null);
 
   inputFile$ = new BehaviorSubject<File[]>([]);
 
   /// Methods
-  constructor(private $warehouseService: WarehouseService,
-    private $dialogRef: DialogRef<ImportComponent>
+  constructor(
+    private $warehouseService: WarehouseService,
+    private $dialogRef: DialogRef<ImportDialogComponent>
   ) {
     super("");
   }
