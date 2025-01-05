@@ -43,10 +43,8 @@ public interface CommodityImportService {
 
         @Override
         public CommodityImportEntity sync(CommodityImportEntity dto) {
-            final CommodityImportEntity savedEntity = repository.save(dto);
-
-            if (IdConstant.MIN_ID > savedEntity.getImportId()) {
-                savedEntity.setImportId(
+            if (IdConstant.MIN_ID > dto.getImportId()) {
+                dto.setImportId(
                         (int) sequenceService.nextValue(
                                 sequenceService.generateSeqNameForClass(
                                         getClass()
@@ -56,9 +54,9 @@ public interface CommodityImportService {
                 );
             }
 
-            LogHelper.getLogger(this).info("savedEntity: {}", savedEntity);
+            LogHelper.getLogger(this).info("savedEntity: {}", dto);
 
-            return savedEntity;
+            return repository.save(dto);
         }
 
         @Override

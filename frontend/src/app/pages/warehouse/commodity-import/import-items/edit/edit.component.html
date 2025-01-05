@@ -1,0 +1,12 @@
+<div class="dialog-container">
+  <h2>Edit Import Items</h2>
+
+  @if (logMessage$()) {
+  <app-inline-log-message [logMessage]="logMessage$" />
+  }
+
+  <div class="action-box">
+    <button mat-flat-button color="primary" (click)="onConfirm()">Confirm</button>
+    <button mat-stroked-button color="accent" (click)="onClose()">Close</button>
+  </div>
+</div>

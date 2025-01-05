@@ -4,15 +4,15 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { PAGE } from "@app/layout/page.constant";
+import { SIZE } from "@app/layout/size.constant";
 import { CommodityImportModel } from "@app/model/business/commodity-import.model";
-import { WarehouseItemModel } from "@app/model/business/warehouse-item.model";
 import { WarehouseModel } from "@app/model/business/warehouse.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { CommodityImportService } from "@app/service/commodity-import.service";
-import { WarehouseItemService } from "@app/service/warehouse-item.service";
 import { WarehouseService } from "@app/service/warehouse.service";
+import { EditDialog } from "./edit/edit.component";
 
 @Component({
   templateUrl: "./commodity-import.component.html",
@@ -83,11 +83,35 @@ export class CommodityImportComponent extends BasePage {
     });
   }
 
+  private openEditDialog(commodityImport?: CommodityImportModel) {
+    const dialogRef = this.$dialog.open(EditDialog, {
+      data: {
+        commodityImport,
+      },
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
+    });
+
+    this.registerSubscription(
+      dialogRef.afterClosed().subscribe((_) => {
+        this.search(PAGE.DEFAULT_PAGE_EVENT);
+      })
+    );
+  }
+
   addCommodityImport() {
-    throw new Error("Method not implemented.");
+    this.openEditDialog({
+      warehouseId: this.warehouseId,
+    });
   }
 
   editCommodityImport(commodityImport: CommodityImportModel) {
-    throw new Error("Method not implemented.");
+    this.openEditDialog(commodityImport);
+  }
+
+  listItems(commodityImport: CommodityImportModel) {
+    this.$router.navigate([commodityImport.importId, "items"], {
+      relativeTo: this.$activatedRoute,
+    });
   }
 }

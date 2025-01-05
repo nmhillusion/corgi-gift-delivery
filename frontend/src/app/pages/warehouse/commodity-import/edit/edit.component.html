@@ -1,0 +1,49 @@
+<div class="dialog-container">
+  <h2>
+    @if (dialogData.commodityImport.importId) {
+    <!-- -->
+    Edit Commodity import [{{ dialogData.commodityImport.importId }}]
+    <!-- -->
+    } @else {
+    <!-- -->
+    Add Commodity import
+    <!-- -->
+    }
+  </h2>
+  <form [formGroup]="formGroup">
+    <mat-form-field class="dialog-block">
+      <mat-label>Import name</mat-label>
+      <input matInput formControlName="importName" />
+    </mat-form-field>
+
+    <mat-form-field class="dialog-block">
+      <mat-label>Import date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="importTime" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-divider app-hr></mat-divider>
+
+    @if (logMessage$()) {
+    <app-inline-log-message [logMessage]="logMessage$" />
+    }
+
+    <div class="action-box">
+      <button
+        mat-flat-button
+        [disabled]="formGroup.invalid"
+        type="submit"
+        color="primary"
+        (click)="onConfirm()"
+      >
+        Confirm
+      </button>
+      <button mat-stroked-button color="warn" type="button" (click)="onClose()">Close</button>
+    </div>
+  </form>
+</div>

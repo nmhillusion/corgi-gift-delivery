@@ -13,16 +13,13 @@ const routes: Routes = [
       import("./list/list.component").then((m) => m.ListComponent),
   },
   {
-    path: ":warehouseId/commodity-import",
-    loadChildren: () =>
-      import("./commodity-import/commodity-import.module").then(
-        (m) => m.CommodityImportModule
-      ),
-  },
+    path: ":importId/import-item/list",
+    loadComponent: () => import("./import-item/list/list.component").then(m => m.ListComponent),
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class WarehouseRoutingModule {}
+export class ImportRoutingModule {}

@@ -1,0 +1,75 @@
+@use "./variables" as var_;
+
+.mdc-button {
+  font-weight: 400 !important;
+  margin: 0.05em 0.15em;
+
+  &:not(mat-flat-button) {
+    --mdc-filled-button-label-text-color: #{var_.$primaryColor};
+  }
+}
+
+[mat-stroked-button]:not(:disabled) {
+  @mixin strokedStyle($color) {
+    color: #{$color} !important;
+    background-color: transparent !important;
+    border-color: currentColor !important;
+  }
+
+  @include strokedStyle(var_.$themeColor);
+
+  &[color="primary"] {
+    @include strokedStyle(var_.$primaryColor);
+  }
+
+  &[color="accent"] {
+    @include strokedStyle(var_.$accentColor);
+  }
+
+  &[color="warn"] {
+    @include strokedStyle(var_.$warnColor);
+  }
+}
+
+[mat-flat-button]:not(:disabled) {
+  @mixin flatStyle($color) {
+    color: white !important;
+    background-color: #{$color} !important;
+    border-color: #{$color} !important;
+  }
+
+  @include flatStyle(var_.$themeColor);
+
+  &[color="primary"] {
+    @include flatStyle(var_.$primaryColor);
+  }
+
+  &[color="accent"] {
+    @include flatStyle(var_.$accentColor);
+  }
+
+  &[color="warn"] {
+    @include flatStyle(var_.$warnColor);
+  }
+}
+
+[mat-icon-button]:not(:disabled) {
+  @mixin iconStyle($color) {
+    color: $color !important;
+    background-color: transparent !important;
+  }
+
+  @include iconStyle(var_.$themeColor);
+
+  &[color="primary"] {
+    @include iconStyle(var_.$primaryColor);
+  }
+
+  &[color="accent"] {
+    @include iconStyle(var_.$accentColor);
+  }
+
+  &[color="warn"] {
+    @include iconStyle(var_.$warnColor);
+  }
+}

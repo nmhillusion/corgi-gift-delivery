@@ -24,11 +24,11 @@
         {{ warehouse.warehouseAddress }}
       </p>
       <div class="action-box">
-        <button mat-icon-button (click)="editWarehouse(warehouse)">
+        <button mat-icon-button color="primary" (click)="editWarehouse(warehouse)">
           <mat-icon>edit</mat-icon>
         </button>
         <mat-divider [vertical]="true"></mat-divider>
-        <button mat-icon-button (click)="importToWarehouse(warehouse)"
+        <button mat-icon-button color="warn" (click)="importToWarehouse(warehouse)"
           matTooltip="Import to this warehouse"
         >
           <mat-icon>publish</mat-icon>

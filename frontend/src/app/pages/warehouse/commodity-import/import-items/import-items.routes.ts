@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { Route, RouterModule } from "@angular/router";
 
-const routes: Routes = [
+const routes: Route[] = [
   {
     path: "",
     redirectTo: "list",
@@ -12,17 +12,10 @@ const routes: Routes = [
     loadComponent: () =>
       import("./list/list.component").then((m) => m.ListComponent),
   },
-  {
-    path: ":warehouseId/commodity-import",
-    loadChildren: () =>
-      import("./commodity-import/commodity-import.module").then(
-        (m) => m.CommodityImportModule
-      ),
-  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class WarehouseRoutingModule {}
+export class ImportItemsRoutingModule {}
