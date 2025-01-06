@@ -5,10 +5,12 @@ import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { CommodityImportModel } from "@app/model/business/commodity-import.model";
 import { CommodityModel } from "@app/model/business/commodity.model";
+import { WarehouseItemModel } from "@app/model/business/warehouse-item.model";
 import { LogModel } from "@app/model/core/log.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
 import { CommodityService } from "@app/pages/commodity/commodity-mgmt/commodity.service";
+import { WarehouseItemService } from "@app/service/warehouse-item.service";
 import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/inline-log-message.component";
 
 @Component({
@@ -17,9 +19,11 @@ import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/in
   imports: [AppCommonModule, AppInlineLogMessage],
 })
 export class EditDialog extends BasePage {
-  dialogData = inject<{ commodityImport: CommodityImportModel }>(
-    MAT_DIALOG_DATA
-  );
+  dialogData = inject<{
+    commodityImport: CommodityImportModel;
+    warehouseItem: WarehouseItemModel;
+  }>(MAT_DIALOG_DATA);
+
   logMessage$ = signal<Nullable<LogModel>>(null);
   $dialogRef = inject(MatDialogRef<EditDialog>);
 
@@ -31,7 +35,10 @@ export class EditDialog extends BasePage {
   commodityList$ = signal<CommodityModel[]>([]);
 
   /// methods
-  constructor(private $commodityService: CommodityService) {
+  constructor(
+    private $commodityService: CommodityService,
+    private $warehouseItemService: WarehouseItemService
+  ) {
     super("");
   }
 
@@ -45,6 +52,32 @@ export class EditDialog extends BasePage {
 
   onConfirm() {
     console.log("on confirm - import items");
+
+    const warehouseItem = this.dialogData.warehouseItem || {};
+
+    warehouseItem.warehouseId = this.dialogData.commodityImport.warehouseId;
+    warehouseItem.importId = this.dialogData.commodityImport.importId;
+
+    warehouseItem.comId = this.formGroup.value.comId || 0;
+    warehouseItem.quantity = this.formGroup.value.quantity || -1;
+
+    warehouseItem.createTime = new Date();
+
+    console.log("confirm to sync import entity: ", warehouseItem);
+
+    this.registerSubscription(
+      this.$warehouseItemService.sync(warehouseItem).subscribe({
+        next: (value) => {
+          this.onClose();
+        },
+        error: (err) => {
+          this.logMessage$.set({
+            logType: "error",
+            message: JSON.stringify(err),
+          });
+        },
+      })
+    );
   }
 
   onClose() {

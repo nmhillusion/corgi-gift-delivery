@@ -37,7 +37,7 @@ export class WarehouseItemService {
   }
 
   searchItemsInImport(
-    importId: number,
+    importId: number | string,
     pageIndex: number,
     pageSize: number,
     searchDto: {

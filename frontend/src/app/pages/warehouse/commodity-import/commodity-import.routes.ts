@@ -10,7 +10,7 @@ const routes: Route[] = [
       ),
   },
   {
-    path: ":importId/items",
+    path: ":commodityImportId/items",
     loadChildren: () =>
       import("./import-items/import-items.module").then(
         (m) => m.ImportItemsModule

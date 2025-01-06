@@ -2,13 +2,12 @@ import { Component, inject, Inject, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { ActivatedRoute, Router } from "@angular/router";
+import { environment } from "@app/../environments/environment";
 import { Page, PaginatorHandler } from "@app/model/core/page.model";
+import { FormUtils } from "@app/util/form.util";
 import { AlertDialog } from "@app/widget/dialog/alert-dialog/alert.dialog";
 import { ConfirmDialog } from "@app/widget/dialog/confirm-dialog/confirm.dialog";
 import { Subscription } from "rxjs";
-import { environment } from "@app/../environments/environment";
-import { AbstractControl, FormControl } from "@angular/forms";
-import { FormUtils } from "@app/util/form.util";
 
 @Component({
   selector: "",
@@ -23,6 +22,7 @@ export class BasePage implements OnInit, OnDestroy {
   CONSTATNTS = {
     FORMAT: {
       DATE_FORMAT: environment.FORMAT.DATE_FORMAT,
+      DATETIME_FORMAT: environment.FORMAT.DATETIME_FORMAT,
     },
   };
 

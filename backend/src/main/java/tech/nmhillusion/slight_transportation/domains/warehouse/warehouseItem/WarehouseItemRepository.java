@@ -15,10 +15,22 @@ import java.time.ZonedDateTime;
  */
 public interface WarehouseItemRepository extends JpaRepository<WarehouseItemEntity, Long> {
 
-    @Query("select w from WarehouseItemEntity w where w.warehouseId = :warehouseId and w.createTime between :from and :to")
+    @Query("""
+            select w
+                from WarehouseItemEntity w
+                where w.warehouseId = :warehouseId
+                and (:from is null or w.createTime >= :from)
+                and (:to is null or w.createTime <= :to)
+            """)
     Page<WarehouseItemEntity> searchItemsInWarehouse(int warehouseId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
 
-    @Query("select w from WarehouseItemEntity w where w.importId = :importId and w.createTime between :from and :to")
+    @Query("""
+                select w
+                from WarehouseItemEntity w
+                where w.importId = :importId
+                and (:from is null or w.createTime >= :from)
+                and (:to is null or w.createTime <= :to)
+            """)
     Page<WarehouseItemEntity> searchItemsInImport(int importId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
 
     @Query("select max(w.itemId) from WarehouseItemEntity w")
