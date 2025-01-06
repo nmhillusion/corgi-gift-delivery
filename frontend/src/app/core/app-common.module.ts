@@ -12,6 +12,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTableModule } from "@angular/material/table";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
 
 const commonModules = [
   CommonModule,
@@ -29,7 +30,8 @@ const commonModules = [
   MatTableModule,
   MatPaginatorModule,
   MatDatepickerModule,
-  MatTooltipModule
+  MatMomentDateModule,
+  MatTooltipModule,
 ];
 
 @NgModule({

@@ -19,7 +19,7 @@
     <mat-form-field class="dialog-block">
       <mat-label>Import date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="importTime" />
-      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-hint>{{ CONSTATNTS.FORMAT.DATE_FORMAT }}</mat-hint>
       <mat-datepicker-toggle
         matIconSuffix
         [for]="picker"
@@ -43,7 +43,9 @@
       >
         Confirm
       </button>
-      <button mat-stroked-button color="warn" type="button" (click)="onClose()">Close</button>
+      <button mat-stroked-button color="warn" type="button" (click)="onClose()">
+        Close
+      </button>
     </div>
   </form>
 </div>

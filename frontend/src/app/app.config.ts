@@ -2,10 +2,11 @@ import { ApplicationConfig, provideZoneChangeDetection } from "@angular/core";
 import { provideRouter } from "@angular/router";
 
 import { provideHttpClient, withFetch } from "@angular/common/http";
+import { provideMomentDateAdapter } from "@angular/material-moment-adapter";
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { routes } from "./app.routes";
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
-import { provideNativeDateAdapter } from "@angular/material/core";
+import { environment } from "@app/../environments/environment";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +22,16 @@ export const appConfig: ApplicationConfig = {
       provide: "PAGE_TITLE_DEFAULT",
       useValue: "Slight Transportation",
     },
-    provideNativeDateAdapter()
+    provideMomentDateAdapter({
+      parse: {
+        dateInput: environment.FORMAT.DATE_FORMAT.toUpperCase(),
+      },
+      display: {
+        dateInput: environment.FORMAT.DATE_FORMAT.toUpperCase(),
+        monthYearLabel: "MMM YYYY",
+        dateA11yLabel: "LL",
+        monthYearA11yLabel: "MMMM YYYY",
+      },
+    }),
   ],
 };

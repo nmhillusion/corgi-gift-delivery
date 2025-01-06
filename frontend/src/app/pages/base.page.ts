@@ -6,6 +6,7 @@ import { Page, PaginatorHandler } from "@app/model/core/page.model";
 import { AlertDialog } from "@app/widget/dialog/alert-dialog/alert.dialog";
 import { ConfirmDialog } from "@app/widget/dialog/confirm-dialog/confirm.dialog";
 import { Subscription } from "rxjs";
+import { environment } from "@app/../environments/environment";
 
 @Component({
   selector: "",
@@ -16,6 +17,12 @@ export class BasePage implements OnInit, OnDestroy {
   protected $router: Router = inject(Router);
   protected $activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   protected $dialog = inject(MatDialog);
+
+  CONSTATNTS = {
+    FORMAT: {
+      DATE_FORMAT: environment.FORMAT.DATE_FORMAT,
+    },
+  };
 
   constructor(@Inject("PAGE_TITLE_DEFAULT") public pageTitle: string) {
     document.title = pageTitle;
