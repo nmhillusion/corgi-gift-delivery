@@ -7,6 +7,8 @@ import { AlertDialog } from "@app/widget/dialog/alert-dialog/alert.dialog";
 import { ConfirmDialog } from "@app/widget/dialog/confirm-dialog/confirm.dialog";
 import { Subscription } from "rxjs";
 import { environment } from "@app/../environments/environment";
+import { AbstractControl, FormControl } from "@angular/forms";
+import { FormUtils } from "@app/util/form.util";
 
 @Component({
   selector: "",
@@ -23,6 +25,8 @@ export class BasePage implements OnInit, OnDestroy {
       DATE_FORMAT: environment.FORMAT.DATE_FORMAT,
     },
   };
+
+  formUtils = new FormUtils();
 
   constructor(@Inject("PAGE_TITLE_DEFAULT") public pageTitle: string) {
     document.title = pageTitle;
