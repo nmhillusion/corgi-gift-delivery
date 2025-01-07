@@ -37,4 +37,8 @@ public class CommodityController {
         return commodityService.importExcelFile(excelFile);
     }
 
+    @GetMapping(value = "/{commodityId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CommodityEntity findById(@PathVariable long commodityId) {
+        return commodityService.findById(commodityId);
+    }
 }

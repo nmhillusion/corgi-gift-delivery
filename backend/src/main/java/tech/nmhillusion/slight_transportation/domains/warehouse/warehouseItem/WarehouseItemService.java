@@ -38,12 +38,12 @@ public interface WarehouseItemService {
 
         @Override
         public Page<WarehouseItemEntity> searchItemsInWarehouse(int warehouseId, Map<String, ?> dto, int pageIndex, int pageSize) {
-            final ZonedDateTime createTimeFrom = ZonedDateTime.parse(
+            final ZonedDateTime createTimeFrom = dto.containsKey("createTimeFrom") ? ZonedDateTime.parse(
                     StringUtil.trimWithNull(dto.get("createTimeFrom"))
-            );
-            final ZonedDateTime createTimeTo = ZonedDateTime.parse(
+            ) : null;
+            final ZonedDateTime createTimeTo = dto.containsKey("createTimeTo") ? ZonedDateTime.parse(
                     StringUtil.trimWithNull(dto.get("createTimeTo"))
-            );
+            ) : null;
 
             return repository.searchItemsInWarehouse(
                     warehouseId

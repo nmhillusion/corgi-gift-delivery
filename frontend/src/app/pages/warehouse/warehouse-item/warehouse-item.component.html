@@ -1,0 +1,37 @@
+<main-layout [basePage]="this">
+  <h2>Warehouse Item</h2>
+
+  <div class="item-list-container">
+    <table mat-table [dataSource]="tableDatasource" class="app-table">
+      <ng-container matColumnDef="itemId">
+        <th mat-header-cell *matHeaderCellDef>Item ID</th>
+        <td mat-cell *matCellDef="let el">{{ el.itemId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="importId">
+        <th mat-header-cell *matHeaderCellDef>Import</th>
+        <td mat-cell *matCellDef="let el">{{ el.commodityImport$()?.importName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="comId">
+        <th mat-header-cell *matHeaderCellDef>Commodity</th>
+        <td mat-cell *matCellDef="let el">{{ el.commodity$()?.comName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Quantity</th>
+        <td mat-cell *matCellDef="let el">{{ el.quantity }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="createTime">
+        <th mat-header-cell *matHeaderCellDef>Create Time</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.createTime | date : CONSTATNTS.FORMAT.DATETIME_FORMAT }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</main-layout>

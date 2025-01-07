@@ -30,4 +30,8 @@ export class CommodityService {
       formData
     );
   }
+
+  findById(comId: number | string) {
+    return this.$httpClient.get<CommodityModel>(this.buildApiUrl(`/${comId}`));
+  }
 }

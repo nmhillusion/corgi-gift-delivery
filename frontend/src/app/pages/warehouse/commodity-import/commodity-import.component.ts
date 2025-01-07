@@ -78,8 +78,8 @@ export class CommodityImportComponent extends BasePage {
   }
 
   onBack() {
-    this.$router.navigate(["list"], {
-      relativeTo: this.$activatedRoute.parent,
+    this.$router.navigate(["warehouse", "list"], {
+      relativeTo: this.$activatedRoute.root,
     });
   }
 

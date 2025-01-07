@@ -1,8 +1,14 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, Injector, signal } from "@angular/core";
 import { environment } from "@app/../environments/environment";
-import { WarehouseItemModel } from "@app/model/business/warehouse-item.model";
+import {
+  WarehouseItemFEModel,
+  WarehouseItemModel,
+} from "@app/model/business/warehouse-item.model";
 import { Page } from "@app/model/core/page.model";
+import { CommodityService } from "@app/pages/commodity/commodity-mgmt/commodity.service";
+import { CommodityImportService } from "./commodity-import.service";
+import { BasePage } from "@app/pages/base.page";
 
 @Injectable({ providedIn: "root" })
 export class WarehouseItemService {
@@ -17,7 +23,7 @@ export class WarehouseItemService {
   }
 
   searchItemsInWarehouse(
-    warehouseId: number,
+    warehouseId: number | string,
     pageIndex: number,
     pageSize: number,
     searchDto: {
@@ -34,6 +40,51 @@ export class WarehouseItemService {
         },
       }
     );
+  }
+
+  convertToWarehouseItemFE(
+    warehouseItem: WarehouseItemModel,
+    basePage: BasePage
+  ) {
+    const warehouseItemFE: WarehouseItemFEModel = {
+      ...warehouseItem,
+      commodity$: signal(null),
+      commodityImport$: signal(null),
+    };
+
+    (function (
+      commodityService: CommodityService,
+      commodityImportService: CommodityImportService
+    ) {
+      if (warehouseItem.comId) {
+        basePage.registerSubscription(
+          commodityService
+            .findById(warehouseItem.comId)
+            .subscribe((commodity) => {
+              if (commodity) {
+                warehouseItemFE.commodity$?.set(commodity);
+              }
+            })
+        );
+      }
+
+      if (warehouseItem.importId) {
+        basePage.registerSubscription(
+          commodityImportService
+            .findById(warehouseItem.importId)
+            .subscribe((importModel) => {
+              if (importModel) {
+                warehouseItemFE.commodityImport$?.set(importModel);
+              }
+            })
+        );
+      }
+    })(
+      basePage.$injector.get(CommodityService),
+      basePage.$injector.get(CommodityImportService)
+    );
+
+    return warehouseItemFE;
   }
 
   searchItemsInImport(

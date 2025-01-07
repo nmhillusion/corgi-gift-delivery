@@ -33,6 +33,8 @@ public interface CommodityService {
 
     List<CommodityEntity> importExcelFile(MultipartFile excelFile);
 
+    CommodityEntity findById(long commodityId);
+
     @TransactionalService
     class Impl implements CommodityService {
         private final CommodityRepository repository;
@@ -93,6 +95,11 @@ public interface CommodityService {
             } catch (Throwable ex) {
                 throw ExceptionUtil.throwException(ex);
             }
+        }
+
+        @Override
+        public CommodityEntity findById(long commodityId) {
+            return repository.findById(commodityId).orElse(null);
         }
 
         private Collection<? extends CommodityEntity> parseCommodityFromSheet(SheetData sheetData) {
