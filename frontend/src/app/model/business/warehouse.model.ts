@@ -1,5 +1,7 @@
+import { IdType } from "../core/id.model";
+
 export interface WarehouseModel {
-  warehouseId?: number;
+  warehouseId?: IdType;
   warehouseName?: string;
   warehouseAddress?: string;
 }

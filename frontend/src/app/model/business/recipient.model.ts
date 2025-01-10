@@ -1,12 +1,13 @@
-import {WritableSignal} from "@angular/core";
-import {RecipientTypeModel} from "./recipient-type.model";
-import {Nullable} from "../core/nullable.model";
+import { WritableSignal } from "@angular/core";
+import { RecipientTypeModel } from "./recipient-type.model";
+import { Nullable } from "../core/nullable.model";
+import { IdType } from "../core/id.model";
 
 export interface RecipientModel {
-  recipientId?: number;
+  recipientId?: IdType;
   fullName?: string;
   idCardNumber?: string;
-  recipientTypeId?: number;
+  recipientTypeId?: IdType;
 }
 
 export interface RecipientFEModel extends RecipientModel {

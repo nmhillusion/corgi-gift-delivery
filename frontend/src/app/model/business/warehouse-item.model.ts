@@ -2,12 +2,13 @@ import { WritableSignal } from "@angular/core";
 import { CommodityImportModel } from "./commodity-import.model";
 import { CommodityModel } from "./commodity.model";
 import { Nullable } from "../core/nullable.model";
+import { IdType } from "../core/id.model";
 
 export interface WarehouseItemModel {
-  itemId?: string;
-  importId?: number;
-  warehouseId?: number;
-  comId?: number;
+  itemId?: IdType;
+  importId?: IdType;
+  warehouseId?: IdType;
+  comId?: IdType;
   quantity?: number;
   createTime?: Date;
 }
