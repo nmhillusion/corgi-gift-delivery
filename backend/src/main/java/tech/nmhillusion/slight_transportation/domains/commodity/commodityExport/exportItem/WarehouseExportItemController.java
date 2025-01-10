@@ -44,4 +44,11 @@ public class WarehouseExportItemController {
     public WarehouseExportItemEntity findById(@PathVariable long itemId) {
         return service.findById(itemId);
     }
+
+    @GetMapping(path = "/commodity/exported/count", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Integer countExportedCommodity(@RequestParam int warehouseId,
+                                          @RequestParam int commodityId) {
+        return service.getExportQuantityOfCommodityWarehouse(warehouseId, commodityId);
+    }
+
 }

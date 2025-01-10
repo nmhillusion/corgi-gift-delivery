@@ -18,4 +18,12 @@ public interface WarehouseExportItemRepository extends JpaRepository<WarehouseEx
 
     @Query("select max(e.itemId) from WarehouseExportItemEntity e")
     long getMaxId();
+
+    @Query("""
+            select sum(e.quantity)
+              from WarehouseExportItemEntity e
+             where e.warehouseId = :warehouseId
+               and e.comId = :commodityId
+           """)
+    int getExportQuantityOfCommodityWarehouse(int warehouseId, int commodityId);
 }

@@ -24,6 +24,8 @@ public interface WarehouseExportItemService {
 
     WarehouseExportItemEntity findById(long itemId);
 
+    int getExportQuantityOfCommodityWarehouse(int warehouseId, int commodityId);
+
     @TransactionalService
     class Impl implements WarehouseExportItemService {
         private final WarehouseExportItemRepository repository;
@@ -70,6 +72,11 @@ public interface WarehouseExportItemService {
         @Override
         public WarehouseExportItemEntity findById(long itemId) {
             return repository.findById(itemId).orElse(null);
+        }
+
+        @Override
+        public int getExportQuantityOfCommodityWarehouse(int warehouseId, int commodityId) {
+            return repository.getExportQuantityOfCommodityWarehouse(warehouseId, commodityId);
         }
     }
 }
