@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { RecipientTypeModel } from "@app/model/business/recipient-type.model";
 import { RecipientModel } from "@app/model/business/recipient.model";
+import { IdType } from "@app/model/core/id.model";
 import { LogModel } from "@app/model/core/log.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
@@ -27,7 +28,7 @@ export class EditComponent extends BasePage {
   formGroup = new FormGroup({
     fullName: new FormControl("", [Validators.required]),
     idCardNumber: new FormControl("", [Validators.required]),
-    recipientTypeId: new FormControl(-1, [Validators.required]),
+    recipientTypeId: new FormControl<IdType>(-1, [Validators.required]),
   });
 
   recipientTypeList$ = signal<RecipientTypeModel[]>([]);
