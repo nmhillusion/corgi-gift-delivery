@@ -16,16 +16,16 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class DeliveryTypeEntity extends Stringeable {
     @Id
     @Column(name = "type_id", nullable = false)
-    private String typeId;
+    private int typeId;
 
     @Column(name = "type_name", nullable = false, unique = true)
     private String typeName;
 
-    public String getTypeId() {
+    public int getTypeId() {
         return typeId;
     }
 
-    public DeliveryTypeEntity setTypeId(String typeId) {
+    public DeliveryTypeEntity setTypeId(int typeId) {
         this.typeId = typeId;
         return this;
     }

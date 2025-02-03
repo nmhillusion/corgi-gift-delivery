@@ -7,8 +7,6 @@ import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEntity;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +22,7 @@ public interface DeliveryAttemptService {
 
     void deleteById(long attemptId);
 
-    Page<DeliveryAttemptEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
+    Page<DeliveryAttemptEntity> search(long deliveryId, Map<String, ?> dto, int pageIndex, int pageSize);
 
     @TransactionalService
     class Impl implements DeliveryAttemptService {
@@ -64,8 +62,9 @@ public interface DeliveryAttemptService {
         }
 
         @Override
-        public Page<DeliveryAttemptEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
+        public Page<DeliveryAttemptEntity> search(long deliveryId, Map<String, ?> dto, int pageIndex, int pageSize) {
             return repository.search(
+                    deliveryId,
                     PageRequest.of(pageIndex, pageSize)
             );
         }

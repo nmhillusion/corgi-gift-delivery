@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEntity;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,11 +22,12 @@ public class DeliveryAttemptController {
         this.deliveryAttemptService = deliveryAttemptService;
     }
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<DeliveryAttemptEntity> search(@RequestBody Map<String, ?> dto,
+    @GetMapping(value = "{deliveryId}/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<DeliveryAttemptEntity> search(@PathVariable long deliveryId,
+                                              @RequestBody Map<String, ?> dto,
                                               @RequestParam int pageIndex,
                                               @RequestParam int pageSize) {
-        return deliveryAttemptService.search(dto, pageIndex, pageSize);
+        return deliveryAttemptService.search(deliveryId, dto, pageIndex, pageSize);
     }
 
     @GetMapping(value = "/{attemptId}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,24 +1,17 @@
-import { Component, inject, model, signal } from "@angular/core";
-import { BasePage } from "@app/pages/base.page";
-import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
-import { DeliveryStatusService } from "@app/service/delivery-status.service";
-import { AppCommonModule } from "@app/core/app-common.module";
-import { AppSelectCommodityWidget } from "@app/pages/shared/commodity/app-select-commotity/widget.component";
-import { CommodityModel } from "@app/model/business/commodity.model";
-import { Nullable } from "@app/model/core/nullable.model";
-import { IdType } from "@app/model/core/id.model";
-import { AppSelectRecipientWidget } from "@app/pages/shared/recipient/app-select-recipient/widget.component";
+import { Component } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { AppCommonModule } from "@app/core/app-common.module";
+import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { PAGE } from "@app/layout/page.constant";
+import { SIZE } from "@app/layout/size.constant";
 import {
   DeliveryFEModel,
   DeliveryModel,
 } from "@app/model/business/delivery.model";
-import { PaginatorHandler } from "@app/model/core/page.model";
+import { BasePage } from "@app/pages/base.page";
 import { DeliveryService } from "@app/service/delivery.service";
 import { EditComponent } from "../edit/edit.component";
-import { SIZE } from "@app/layout/size.constant";
 
 @Component({
   standalone: true,
@@ -107,5 +100,9 @@ export class ListComponent extends BasePage {
 
   viewDeliveryAttempt(delivery: DeliveryModel) {
     console.log("do viewDeliveryAttempt: ", delivery);
+
+    this.$router.navigate([delivery.deliveryId, "delivery-attempt", "list"], {
+      relativeTo: this.$activatedRoute.parent,
+    });
   }
 }

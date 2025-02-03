@@ -1,0 +1,61 @@
+<main-layout [basePage]="this">
+  <div class="header-action-box">
+    <button mat-button mat-stroked-button color="primary" (click)="addAttempt()">Add attempt</button>
+  </div>
+
+  <div class="data-list">
+    <table mat-table [dataSource]="tableDatasource" class="app-table">
+      <ng-container matColumnDef="attemptId">
+        <th mat-header-cell *matHeaderCellDef>Attempt ID</th>
+        <td mat-cell *matCellDef="let el">{{ el.attemptId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="deliveryType">
+        <th mat-header-cell *matHeaderCellDef>Delivery Type</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.deliveryType$()?.typeName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="shipper">
+        <th mat-header-cell *matHeaderCellDef>Shipper</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.shipper$()?.shipperName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="deliveryStatus">
+        <th mat-header-cell *matHeaderCellDef>Delivery status</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.deliveryStatus$()?.statusName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startTime">
+        <th mat-header-cell *matHeaderCellDef>Start time</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.startTime | date : CONSTATNTS.FORMAT.DATE_FORMAT }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="endTime">
+        <th mat-header-cell *matHeaderCellDef>End time</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.endTime | date : CONSTATNTS.FORMAT.DATE_FORMAT }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let el">
+          <button mat-icon-button (click)="editAttempt(el)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</main-layout>

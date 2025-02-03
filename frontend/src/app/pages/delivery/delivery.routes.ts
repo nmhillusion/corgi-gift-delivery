@@ -2,15 +2,22 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 const routes: Routes = [
-  { 
-    path: "", 
+  {
+    path: "",
     redirectTo: "list",
     pathMatch: "full",
   },
   {
     path: "list",
     loadComponent: () =>
-      import("./list/list.component").then((m) => m.ListComponent),
+      import("./delivery/list/list.component").then((m) => m.ListComponent),
+  },
+  {
+    path: ":deliveryId/delivery-attempt",
+    loadChildren: () =>
+      import("./delivery-attempt/delivery-attempt.module").then(
+        (m) => m.DeliveryAttemptModule
+      ),
   },
 ];
 
