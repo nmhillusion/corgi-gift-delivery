@@ -58,12 +58,16 @@
               ],
               "optimization": true,
               "outputPath": "dist/frontend",
-              "sourceMap": false
+              "sourceMap": false,
+              "namedChunks": true,
+              "aot": true,
+              "extractLicenses": true
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": false
             }
           },
           "defaultConfiguration": "production"
