@@ -22,7 +22,7 @@ public class DeliveryAttemptController {
         this.deliveryAttemptService = deliveryAttemptService;
     }
 
-    @GetMapping(value = "{deliveryId}/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{deliveryId}/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<DeliveryAttemptEntity> search(@PathVariable long deliveryId,
                                               @RequestBody Map<String, ?> dto,
                                               @RequestParam int pageIndex,

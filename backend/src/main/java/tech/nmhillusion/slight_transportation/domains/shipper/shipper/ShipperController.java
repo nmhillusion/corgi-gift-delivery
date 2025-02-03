@@ -3,8 +3,10 @@ package tech.nmhillusion.slight_transportation.domains.shipper.shipper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.slight_transportation.entity.business.ShipperEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,5 +44,10 @@ public class ShipperController {
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ShipperEntity save(@RequestBody ShipperEntity shipperEntity) {
         return service.save(shipperEntity);
+    }
+
+    @PostMapping(value = "/import/excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ShipperEntity> importExcelFile(@RequestPart MultipartFile excelFile) {
+        return service.importExcelFile(excelFile);
     }
 }

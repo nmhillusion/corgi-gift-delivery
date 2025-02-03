@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { signal } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { environment } from "@app/../environments/environment";
 import {
   DeliveryAttemptFEModel,
@@ -12,6 +12,7 @@ import { DeliveryTypeService } from "./delivery-type.service";
 import { ShipperService } from "./shipper.service";
 import { DeliveryStatusService } from "./delivery-status.service";
 
+@Injectable({ providedIn: "root" })
 export class DeliveryAttemptService {
   constructor(private $http: HttpClient) {}
 
@@ -26,9 +27,9 @@ export class DeliveryAttemptService {
     pageSize: number
   ) {
     return this.$http.post<Page<DeliveryAttemptModel>>(
-      this.buildApiUrl("search"),
+      this.buildApiUrl(`${deliveryId}/search`),
       dto,
-      { params: { deliveryId, pageIndex, pageSize } }
+      { params: { pageIndex, pageSize } }
     );
   }
 

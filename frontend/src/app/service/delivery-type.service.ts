@@ -9,7 +9,7 @@ export class DeliveryTypeService {
   constructor(private $http: HttpClient) {}
 
   private buildApiUrl(path: string | IdType) {
-    return `${environment.LINK.API_BASE_URL}/delivery-type/${path}`;
+    return `${environment.LINK.API_BASE_URL}/api/delivery-type/${path}`;
   }
 
   findAll() {

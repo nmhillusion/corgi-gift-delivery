@@ -1,4 +1,4 @@
-<main-layout [basePage]="this">
+<div class="dialog-container">
   <h2>Edit delivery attempt</h2>
 
   <form [formGroup]="formGroup">
@@ -13,6 +13,11 @@
       </mat-select>
     </mat-form-field>
 
+    <app-select-shipper-widget
+      [value$]="formModels.shipperId.$"
+      [validators]="formModels.shipperId.validators"
+    />
+
     <div app-hr></div>
 
     @if (logMessage$()) {
@@ -25,4 +30,4 @@
       </button>
     </div>
   </form>
-</main-layout>
+</div>

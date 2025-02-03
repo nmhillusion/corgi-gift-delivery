@@ -68,13 +68,15 @@ export class ShipperService {
       shipperType$: typeSignal$,
     };
   }
-}
-function toSignal(
-  arg0: Observable<ShipperModel>
-):
-  | import("@angular/core").WritableSignal<
-      import("../model/business/shipper-type.model").ShipperTypeModel
-    >
-  | undefined {
-  throw new Error("Function not implemented.");
+
+  importExcel(currentItem: File) {
+    const submitForm = new FormData();
+
+    submitForm.append("excelFile", new Blob([currentItem]));
+
+    return this.$http.post<ShipperModel[]>(
+      this.buildApiUrl("import/excel"),
+      submitForm
+    );
+  }
 }

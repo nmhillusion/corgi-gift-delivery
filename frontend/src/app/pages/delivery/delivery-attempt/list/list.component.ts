@@ -23,7 +23,16 @@ export class ListComponent extends BasePage {
   tableDatasource = new MatTableDataSource<DeliveryAttemptFEModel>();
   paginator = this.generatePaginator();
 
-  displayedColumns = [];
+  displayedColumns = [
+    "attemptId",
+    "deliveryType",
+    "shipper",
+    "deliveryStatus",
+    "startTime",
+    "endTime",
+    ///
+    "action",
+  ];
   /// methods
 
   constructor(private $deliveryAttemptService: DeliveryAttemptService) {

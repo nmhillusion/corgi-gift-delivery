@@ -12,13 +12,15 @@ import { BasePage } from "@app/pages/base.page";
 import { DeliveryAttemptService } from "@app/service/delivery-attempt.service";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
 import { ShipperService } from "@app/service/shipper.service";
-import { AppInlineLogMessage } from "../../../../widget/component/inline-log-message/inline-log-message.component";
+import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/inline-log-message.component";
+import { AddSelectShipperWidget } from "@app/pages/shared/shipper/app-select-shipper/widget.component";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
   standalone: true,
   templateUrl: "./edit.component.html",
   styleUrls: ["./edit.component.scss"],
-  imports: [AppCommonModule, MainLayoutComponent, AppInlineLogMessage],
+  imports: [AppCommonModule, AppInlineLogMessage, AddSelectShipperWidget],
 })
 export class EditComponent extends BasePage {
   formGroup = new FormGroup({
@@ -33,6 +35,13 @@ export class EditComponent extends BasePage {
   }>(MAT_DIALOG_DATA);
 
   deliveryTypeList$: WritableSignal<DeliveryTypeModel[]> = signal([]);
+
+  formModels = {
+    shipperId: {
+      $: new BehaviorSubject<Nullable<IdType>>(null),
+      validators: [Validators.required],
+    },
+  };
 
   /// methods
   constructor(

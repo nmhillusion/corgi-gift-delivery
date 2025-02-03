@@ -13,6 +13,7 @@ import { BasePage } from "@app/pages/base.page";
 import { ShipperTypeService } from "@app/service/shipper-type.service";
 import { ShipperService } from "@app/service/shipper.service";
 import { EditComponent } from "../edit/edit.component";
+import { ImportComponent } from "./import/import.component";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -97,6 +98,19 @@ export class ListComponent extends BasePage {
     this.registerSubscription(
       ref.afterClosed().subscribe((result) => {
         console.log({ result });
+        this.search(PAGE.DEFAULT_PAGE_EVENT);
+      })
+    );
+  }
+
+  importShipper() {
+    const dialogRef = this.$dialog.open<ImportComponent>(ImportComponent, {
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
+    });
+
+    this.registerSubscription(
+      dialogRef.afterClosed().subscribe((_) => {
         this.search(PAGE.DEFAULT_PAGE_EVENT);
       })
     );

@@ -31,6 +31,7 @@ export class ListComponent extends BasePage {
     "fullName",
     "idCardNumber",
     "recipientType",
+    ///
     "action",
   ];
 

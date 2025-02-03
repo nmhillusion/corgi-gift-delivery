@@ -15,4 +15,7 @@ public interface ShipperRepository extends JpaRepository<ShipperEntity, Integer>
 
     @Query(" select s from ShipperEntity s where :name is null or lower(s.shipperName) like %:name% ")
     Page<ShipperEntity> search(String name, PageRequest pageRequest);
+
+    @Query(" select max(s.shipperId) from ShipperEntity s ")
+    long getMaxId();
 }
