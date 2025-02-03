@@ -5,10 +5,12 @@ import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
+import tech.nmhillusion.slight_transportation.constant.DeliveryStatus;
 import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryEntity;
 
+import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
@@ -35,7 +37,9 @@ public interface DeliveryService {
 
         @Override
         public Page<DeliveryEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
-            final String recipientId = StringUtil.trimWithNull(dto.get("recipientId"));
+            final String recipientId = dto.containsKey("recipientId")
+                    ? StringUtil.trimWithNull(dto.get("recipientId"))
+                    : null;
 
             return repository.search(recipientId, PageRequest.of(pageIndex, pageSize));
         }
@@ -45,21 +49,25 @@ public interface DeliveryService {
             return repository.findById(deliveryId).orElse(null);
         }
 
-        private long generateId(DeliveryEntity dto) {
-            if (IdConstant.MIN_ID > dto.getDeliveryId()) {
-                return sequenceService.nextValue(
-                        sequenceService.generateSeqNameForClass(
-                                getClass()
-                                , DeliveryEntity.ID.DELIVERY_ID.name()
-                        )
-                );
-            }
-            return dto.getDeliveryId();
-        }
-
         @Override
         public DeliveryEntity save(DeliveryEntity deliveryEntity) {
-            deliveryEntity.setDeliveryId(generateId(deliveryEntity));
+            if (IdConstant.MIN_ID > deliveryEntity.getDeliveryId()) {
+                deliveryEntity.setDeliveryId(
+                                sequenceService.nextValue(
+                                        sequenceService.generateSeqNameForClass(
+                                                getClass()
+                                                , DeliveryEntity.ID.DELIVERY_ID.name()
+                                        )
+                                )
+                        )
+                        .setDeliveryStatusId(
+                                DeliveryStatus.CREATED.getDbValue()
+                        )
+                        .setStartTime(
+                                ZonedDateTime.now()
+                        )
+                ;
+            }
 
             LogHelper.getLogger(this).info("deliveryEntity: {}", deliveryEntity);
 

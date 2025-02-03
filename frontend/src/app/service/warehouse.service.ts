@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@app/../environments/environment";
 import { WarehouseModel } from "@app/model/business/warehouse.model";
+import { IdType } from "@app/model/core/id.model";
 
 @Injectable({
   providedIn: "root",
@@ -24,7 +25,7 @@ export class WarehouseService {
     );
   }
 
-  findById(warehouseId: number) {
+  findById(warehouseId: IdType) {
     return this.$http.get<WarehouseModel>(this.buildApiUrl(`/${warehouseId}`));
   }
 
@@ -35,6 +36,15 @@ export class WarehouseService {
     return this.$http.post<WarehouseModel[]>(
       this.buildApiUrl("/import/excel"),
       submitForm
+    );
+  }
+
+  remainingQuantityOfCommodityOfWarehouse(
+    warehouseId: IdType,
+    commodityId: IdType
+  ) {
+    return this.$http.get<string>(
+      this.buildApiUrl(`/${warehouseId}/commodity/${commodityId}/remaining-quantity`)
     );
   }
 }

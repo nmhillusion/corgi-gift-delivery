@@ -40,4 +40,10 @@ public class WarehouseController {
     public List<WarehouseEntity> importExcelFile(@RequestPart MultipartFile excelFile) {
         return service.importExcelFile(excelFile);
     }
+
+    @GetMapping(value = "/{warehouseId}/commodity/{commodityId}/remaining-quantity", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Double remainingQuantityOfCommodityOfWarehouse(@PathVariable int warehouseId,
+                                                          @PathVariable long commodityId) {
+        return service.remainingQuantityOfCommodityOfWarehouse(warehouseId, commodityId);
+    }
 }

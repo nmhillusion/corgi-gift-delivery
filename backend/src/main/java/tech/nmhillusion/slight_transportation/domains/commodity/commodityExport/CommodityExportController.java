@@ -23,10 +23,11 @@ public class CommodityExportController {
     }
 
     @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<CommodityExportEntity> search(@RequestBody Map<String, ?> dto,
+    public Page<CommodityExportEntity> search(@RequestParam String warehouseId,
+                                              @RequestBody Map<String, ?> dto,
                                               @RequestParam int pageIndex,
                                               @RequestParam int pageSize) {
-        return commodityExportService.search(dto, pageIndex, pageSize);
+        return commodityExportService.search(warehouseId, dto, pageIndex, pageSize);
     }
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -23,12 +23,26 @@
         <td mat-cell *matCellDef="let el">{{ el.quantity }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="usedQuantity">
+        <th mat-header-cell *matHeaderCellDef>Used quantity</th>
+        <td mat-cell *matCellDef="let el">{{ el.usedQuantity }}</td>
+      </ng-container>
+
+
       <ng-container matColumnDef="createTime">
         <th mat-header-cell *matHeaderCellDef>Create Time</th>
         <td mat-cell *matCellDef="let el">
           {{ el.createTime | date : CONSTATNTS.FORMAT.DATETIME_FORMAT }}
         </td>
       </ng-container>
+
+      <ng-container matColumnDef="updateTime">
+        <th mat-header-cell *matHeaderCellDef>Update Time</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.updateTime | date : CONSTATNTS.FORMAT.DATETIME_FORMAT }}
+        </td>
+      </ng-container>
+
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

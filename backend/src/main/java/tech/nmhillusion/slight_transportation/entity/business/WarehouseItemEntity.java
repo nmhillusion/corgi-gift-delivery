@@ -31,8 +31,14 @@ public class WarehouseItemEntity {
     @Column(name = "quantity", nullable = false)
     private double quantity;
 
+    @Column(name = "used_quantity", columnDefinition = "numeric default 0")
+    private double usedQuantity;
+
     @Column(name = "create_time", nullable = false)
     private ZonedDateTime createTime;
+
+    @Column(name = "update_time", nullable = true)
+    private ZonedDateTime updateTime;
 
     public long getItemId() {
         return itemId;
@@ -85,6 +91,24 @@ public class WarehouseItemEntity {
 
     public WarehouseItemEntity setCreateTime(ZonedDateTime createTime) {
         this.createTime = createTime;
+        return this;
+    }
+
+    public double getUsedQuantity() {
+        return usedQuantity;
+    }
+
+    public WarehouseItemEntity setUsedQuantity(double usedQuantity) {
+        this.usedQuantity = usedQuantity;
+        return this;
+    }
+
+    public ZonedDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public WarehouseItemEntity setUpdateTime(ZonedDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 

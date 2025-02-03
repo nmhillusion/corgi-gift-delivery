@@ -9,9 +9,11 @@ import { Page } from "@app/model/core/page.model";
 import { CommodityService } from "@app/pages/commodity/commodity-mgmt/commodity.service";
 import { CommodityImportService } from "./commodity-import.service";
 import { BasePage } from "@app/pages/base.page";
+import { IdType } from "@app/model/core/id.model";
 
 @Injectable({ providedIn: "root" })
 export class WarehouseItemService {
+  
   constructor(private $http: HttpClient) {}
 
   buildApiUrl(path: string): string {

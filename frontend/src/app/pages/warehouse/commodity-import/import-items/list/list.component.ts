@@ -1,18 +1,17 @@
-import { Component, Input, signal } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { PAGE } from "@app/layout/page.constant";
+import { SIZE } from "@app/layout/size.constant";
 import { WarehouseItemModel } from "@app/model/business/warehouse-item.model";
+import { Nullable } from "@app/model/core/nullable.model";
 import { PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
-import { EditDialog } from "../edit/edit.component";
-import { SIZE } from "@app/layout/size.constant";
-import { PAGE } from "@app/layout/page.constant";
-import { Nullable } from "@app/model/core/nullable.model";
-import { CommodityService } from "@app/pages/commodity/commodity-mgmt/commodity.service";
 import { CommodityImportService } from "@app/service/commodity-import.service";
 import { WarehouseItemService } from "@app/service/warehouse-item.service";
+import { EditDialog } from "../edit/edit.component";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -41,7 +40,7 @@ export class ListComponent extends BasePage {
     "warehouseId",
     "comId",
     "quantity",
-    "createTime",
+    "createTime"
   ];
 
   /// methods

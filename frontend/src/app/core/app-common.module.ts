@@ -13,6 +13,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatTableModule } from "@angular/material/table";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 const commonModules = [
   CommonModule,
@@ -32,6 +33,7 @@ const commonModules = [
   MatDatepickerModule,
   MatMomentDateModule,
   MatTooltipModule,
+  MatAutocompleteModule,
 ];
 
 @NgModule({

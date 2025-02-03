@@ -23,11 +23,12 @@ public class WarehouseExportItemController {
         this.service = service;
     }
 
-    @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<WarehouseExportItemEntity> search(@RequestBody Map<String, ?> dto,
+    @PostMapping(value = "/{exportId}/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<WarehouseExportItemEntity> search(@PathVariable String exportId,
+                                                  @RequestBody Map<String, ?> dto,
                                                   @RequestParam int pageIndex,
                                                   @RequestParam int pageSize) {
-        return service.search(dto, pageIndex, pageSize);
+        return service.search(exportId, dto, pageIndex, pageSize);
     }
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

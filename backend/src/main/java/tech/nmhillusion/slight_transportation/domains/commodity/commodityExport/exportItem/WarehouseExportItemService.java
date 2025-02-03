@@ -16,7 +16,7 @@ import java.util.Map;
  * created date: 2024-12-21
  */
 public interface WarehouseExportItemService {
-    Page<WarehouseExportItemEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
+    Page<WarehouseExportItemEntity> search(String exportId, Map<String, ?> dto, int pageIndex, int pageSize);
 
     WarehouseExportItemEntity save(WarehouseExportItemEntity warehouseExportItemEntity);
 
@@ -37,10 +37,10 @@ public interface WarehouseExportItemService {
         }
 
         @Override
-        public Page<WarehouseExportItemEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
-            long exportId = Long.parseLong(String.valueOf(dto.get("exportId")));
-
-            return repository.search(exportId, PageRequest.of(pageIndex, pageSize));
+        public Page<WarehouseExportItemEntity> search(String exportId, Map<String, ?> dto, int pageIndex, int pageSize) {
+            return repository.search(
+                    Long.parseLong(exportId),
+                    PageRequest.of(pageIndex, pageSize));
         }
 
         private long generateId(WarehouseExportItemEntity dto) {

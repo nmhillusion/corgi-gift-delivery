@@ -1,6 +1,6 @@
 import { IdType } from "../core/id.model";
 
-export interface CommodityExportEntity {
+export interface CommodityExportModel {
   exportId: IdType;
   exportName: string;
   exportTime: Date;

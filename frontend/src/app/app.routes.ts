@@ -26,6 +26,11 @@ export const routes: Routes = [
       ),
   },
   {
+    path: "shipper",
+    loadChildren: () =>
+      import("./pages/shipper/shipper.module").then((m) => m.ShipperModule),
+  },
+  {
     path: "warehouse",
     loadChildren: () =>
       import("./pages/warehouse/warehouse.module").then(

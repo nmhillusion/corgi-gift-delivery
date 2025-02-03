@@ -30,6 +30,8 @@ public interface WarehouseService {
 
     List<WarehouseEntity> importExcelFile(MultipartFile excelFile);
 
+    double remainingQuantityOfCommodityOfWarehouse(int warehouseId, long commodityId);
+
     @TransactionalService
     class Impl implements WarehouseService {
         private final WarehouseRepository repository;
@@ -126,6 +128,13 @@ public interface WarehouseService {
 
             getLogger(this).info("constructItems: {}", constructItems);
             return constructItems;
+        }
+
+        @Override
+        public double remainingQuantityOfCommodityOfWarehouse(int warehouseId, long commodityId) {
+            return repository.sumQuantityOfCommodityOfWarehouse(warehouseId, commodityId)
+                    - repository.sumUsedQuantityOfCommodityOfWarehouse(warehouseId, commodityId)
+                    ;
         }
     }
 }

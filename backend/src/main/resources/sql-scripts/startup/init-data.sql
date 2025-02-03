@@ -14,13 +14,16 @@ insert into t_cx_delivery_type (type_id, type_name) values (
 ---------
 
 insert into t_cx_delivery_status ( status_id , status_name )
-values (1, 'Tiếp nhận giao hàng');
+values (1, 'Tạo giao hàng. Chưa tiếp nhận.');
 
 insert into t_cx_delivery_status ( status_id , status_name )
-values (2, 'Giao hàng thành công');
+values (2, 'Đang giao hàng');
 
 insert into t_cx_delivery_status ( status_id , status_name )
-values (3, 'Giao hàng thất bại');
+values (3, 'Giao hàng thành công');
+
+insert into t_cx_delivery_status ( status_id , status_name )
+values (4, 'Giao hàng thất bại');
 
 ---------
 

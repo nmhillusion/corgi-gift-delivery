@@ -76,7 +76,7 @@ public interface RecipientService {
 
         @Override
         public Page<RecipientEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
-            final String name = StringUtil.trimWithNull(dto.get("name"));
+            final String name = StringUtil.trimWithNull(dto.get("name")).toLowerCase();
 
             LogHelper.getLogger(this).info("name: {}", name);
             return repository.search(

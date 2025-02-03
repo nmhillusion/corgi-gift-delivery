@@ -2,7 +2,6 @@ package tech.nmhillusion.slight_transportation.domains.commodity.commodityExport
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
@@ -16,7 +15,7 @@ import java.util.Map;
  * created date: 2024-12-21
  */
 public interface CommodityExportService {
-    Page<CommodityExportEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
+    Page<CommodityExportEntity> search(String warehouseId, Map<String, ?> dto, int pageIndex, int pageSize);
 
     CommodityExportEntity findById(long exportId);
 
@@ -36,9 +35,7 @@ public interface CommodityExportService {
 
 
         @Override
-        public Page<CommodityExportEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
-            final String warehouseId = StringUtil.trimWithNull(dto.get("warehouseId"));
-
+        public Page<CommodityExportEntity> search(String warehouseId, Map<String, ?> dto, int pageIndex, int pageSize) {
             return repository.search(warehouseId, PageRequest.of(pageIndex, pageSize));
         }
 

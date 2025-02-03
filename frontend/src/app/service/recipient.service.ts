@@ -2,12 +2,14 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@app/../environments/environment";
 import { RecipientModel } from "@app/model/business/recipient.model";
+import { IdType } from "@app/model/core/id.model";
 import { Page } from "@app/model/core/page.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class RecipientService {
+  
   constructor(private $http: HttpClient) {}
 
   private buildApiUrl(path: string) {
@@ -49,5 +51,9 @@ export class RecipientService {
       this.buildApiUrl("/import/excel"),
       submitForm
     );
+  }
+
+  findById(recipientId: IdType) {
+    return this.$http.get<RecipientModel>(this.buildApiUrl(`/${recipientId}`));
   }
 }

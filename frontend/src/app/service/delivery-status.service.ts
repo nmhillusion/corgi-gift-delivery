@@ -1,11 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@app/../environments/environment";
-
-export interface DeliveryStatus {
-  statusId: string;
-  statusName: string;
-}
+import { DeliveryStatusModel } from "@app/model/business/delivery-status.model";
+import { IdType } from "@app/model/core/id.model";
 
 @Injectable({
   providedIn: "root",
@@ -17,7 +14,13 @@ export class DeliveryStatusService {
     return `${environment.LINK.API_BASE_URL}/api/v1/delivery-status/${path}`;
   }
 
-  getDeliveryStatus() {
-    return this.http.get<DeliveryStatus[]>(this.buildApiUrl("list"));
+  getDeliveryStatusList() {
+    return this.http.get<DeliveryStatusModel[]>(this.buildApiUrl("find-all"));
+  }
+
+  findById(deliveryStatusId: IdType) {
+    return this.http.get<DeliveryStatusModel>(
+      this.buildApiUrl(`${deliveryStatusId}`)
+    );
   }
 }

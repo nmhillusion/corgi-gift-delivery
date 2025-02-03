@@ -14,4 +14,19 @@ public interface WarehouseRepository extends JpaRepository<WarehouseEntity, Inte
     @Query("select max(t.warehouseId) from WarehouseEntity t")
     int getMaxId();
 
+    @Query("""
+            select nvl(sum(w.quantity), 0)
+            from WarehouseItemEntity w
+            where w.warehouseId = :warehouseId
+            and w.comId = :commodityId
+            """)
+    double sumQuantityOfCommodityOfWarehouse(int warehouseId, long commodityId);
+
+    @Query("""
+            select nvl(sum(nvl(w.usedQuantity, 0)), 0)
+            from WarehouseItemEntity w
+            where w.warehouseId = :warehouseId
+            and w.comId = :commodityId
+            """)
+    double sumUsedQuantityOfCommodityOfWarehouse(int warehouseId, long commodityId);
 }

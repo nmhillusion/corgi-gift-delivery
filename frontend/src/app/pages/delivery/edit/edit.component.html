@@ -1,0 +1,39 @@
+<div class="dialog-container">
+  <h2>Edit delivery</h2>
+
+  <app-select-recipient-widget
+    [value$]="formModels.recipientId.$"
+    [validators]="formModels.commodityId.validators"
+  />
+
+  <app-select-commodity-widget
+    [value$]="formModels.commodityId.$"
+    [validators]="formModels.commodityId.validators"
+  />
+
+  <form [formGroup]="formGroup">
+    <input type="hidden" formControlName="recipientId" />
+    <input type="hidden" formControlName="commodityId" />
+
+    <mat-form-field class="dialog-block">
+      <mat-label>Commodity quantity</mat-label>
+      <input
+        matInput
+        placeholder="Commodity quantity"
+        formControlName="comQuantity"
+      />
+    </mat-form-field>
+
+    <hr />
+
+    @if (logMessage$()) {
+    <app-inline-log-message [logMessage]="logMessage$" />
+    }
+
+    <div class="action-box">
+      <button type="submit" mat-stroked-button color="primary" (click)="save()">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

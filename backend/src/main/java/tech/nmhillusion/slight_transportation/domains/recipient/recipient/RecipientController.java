@@ -39,4 +39,10 @@ public class RecipientController {
     public List<RecipientEntity> importExcelFile(@RequestPart MultipartFile excelFile) {
         return service.importExcelFile(excelFile);
     }
+
+    @GetMapping(value = "/{recipientId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RecipientEntity findById(@PathVariable String recipientId) {
+        return service.findById(recipientId);
+    }
+
 }

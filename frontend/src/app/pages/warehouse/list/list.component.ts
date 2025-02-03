@@ -89,4 +89,10 @@ export class ListComponent extends BasePage {
       relativeTo: this.$activatedRoute.parent,
     });
   }
+
+  exportFromWarehouse(wh: WarehouseModel) {
+    this.$router.navigate([wh.warehouseId, "commodity-export"], {
+      relativeTo: this.$activatedRoute.parent,
+    });
+  }
 }

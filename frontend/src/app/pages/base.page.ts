@@ -10,6 +10,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { ActivatedRoute, Router } from "@angular/router";
 import { environment } from "@app/../environments/environment";
+import { Nullable } from "@app/model/core/nullable.model";
 import { Page, PaginatorHandler } from "@app/model/core/page.model";
 import { FormUtils } from "@app/util/form.util";
 import { ParamUtils } from "@app/util/param.util";
@@ -38,8 +39,12 @@ export class BasePage implements OnInit, OnDestroy {
   formUtils = new FormUtils();
   paramUtils = new ParamUtils();
 
-  constructor(@Inject("PAGE_TITLE_DEFAULT") public pageTitle: string) {
-    document.title = pageTitle;
+  constructor(
+    @Inject("PAGE_TITLE_DEFAULT") public pageTitle?: Nullable<string>
+  ) {
+    if (pageTitle) {
+      document.title = pageTitle;
+    }
   }
 
   ngOnInit() {
@@ -54,8 +59,8 @@ export class BasePage implements OnInit, OnDestroy {
     this.subscriptions.forEach((sub_) => sub_.unsubscribe());
   }
 
-  registerSubscription(subscription: Subscription) {
-    this.subscriptions.push(subscription);
+  registerSubscription(...subscriptions: Subscription[]) {
+    this.subscriptions.push(...subscriptions);
   }
 
   handlePageDataUpdate<T>(

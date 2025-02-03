@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@app/../environments/environment";
 import { WarehouseExportItemModel } from "@app/model/business/warehouse-export-item.model";
+import { IdType } from "@app/model/core/id.model";
 import { Page } from "@app/model/core/page.model";
 
 @Injectable({
@@ -11,10 +12,11 @@ export class WarehouseExportItemService {
   constructor(private $http: HttpClient) {}
 
   private buildApiUrl(path: string): string {
-    return `${environment.LINK.API_BASE_URL}/warehouse-export-item/${path}`;
+    return `${environment.LINK.API_BASE_URL}/api/warehouse-export-item/${path}`;
   }
 
   search(
+    exportId: IdType,
     dto: {
       name?: string;
     },
@@ -22,7 +24,7 @@ export class WarehouseExportItemService {
     pageSize: number
   ) {
     return this.$http.post<Page<WarehouseExportItemModel>>(
-      this.buildApiUrl("search"),
+      this.buildApiUrl(`${exportId}/search`),
       dto,
       {
         params: {

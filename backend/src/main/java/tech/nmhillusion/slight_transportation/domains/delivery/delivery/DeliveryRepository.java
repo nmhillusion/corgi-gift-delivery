@@ -13,10 +13,10 @@ import tech.nmhillusion.slight_transportation.entity.business.DeliveryEntity;
  */
 public interface DeliveryRepository extends JpaRepository<DeliveryEntity, Long> {
 
-    @Query("select d from DeliveryEntity d where d.recipientId = :recipientId")
+    @Query(" select d from DeliveryEntity d where :recipientId is null or d.recipientId = :recipientId ")
     Page<DeliveryEntity> search(String recipientId, PageRequest pageRequest);
 
-    @Query("select max(d.deliveryId) from DeliveryEntity d")
+    @Query(" select max(d.deliveryId) from DeliveryEntity d ")
     long getMaxId();
 
 }

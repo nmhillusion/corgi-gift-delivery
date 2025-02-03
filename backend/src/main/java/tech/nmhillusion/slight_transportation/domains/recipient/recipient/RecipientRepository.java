@@ -16,7 +16,7 @@ public interface RecipientRepository extends JpaRepository<RecipientEntity, Long
     @Query("select max(t.recipientId) from RecipientEntity t")
     long getMaxId();
 
-    @Query(" select s from RecipientEntity s where :name is null or s.fullName like %:name% ")
+    @Query(" select s from RecipientEntity s where :name is null or lower(s.fullName) like %:name% ")
     Page<RecipientEntity> search(String name, PageRequest pageRequest);
 
 }

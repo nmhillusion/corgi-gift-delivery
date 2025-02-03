@@ -31,7 +31,15 @@ export class WarehouseItemComponent extends BasePage {
     },
   };
 
-  displayedColumns = ["itemId", "importId", "comId", "quantity", "createTime"];
+  displayedColumns = [
+    "itemId",
+    "importId",
+    "comId",
+    "quantity",
+    "usedQuantity",
+    "createTime",
+    "updateTime"
+  ];
 
   /// methods
   constructor(private $warehouseItemService: WarehouseItemService) {

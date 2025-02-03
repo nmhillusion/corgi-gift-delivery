@@ -66,7 +66,9 @@ create table if not exists t_cx_warehouse_item (
   warehouse_id int,
   com_id int,
   quantity numeric,
-  create_time timestamp with time zone
+  used_quantity numeric default 0,
+  create_time timestamp with time zone,
+  update_time timestamp with time zone
 );
 
 alter table t_cx_warehouse_item
