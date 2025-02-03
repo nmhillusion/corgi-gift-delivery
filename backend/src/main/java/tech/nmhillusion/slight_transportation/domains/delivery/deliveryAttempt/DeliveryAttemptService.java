@@ -3,10 +3,12 @@ package tech.nmhillusion.slight_transportation.domains.delivery.deliveryAttempt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
+import tech.nmhillusion.slight_transportation.constant.DeliveryStatus;
 import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEntity;
 
+import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
@@ -39,13 +41,19 @@ public interface DeliveryAttemptService {
         public DeliveryAttemptEntity save(DeliveryAttemptEntity deliveryAttemptEntity) {
             if (IdConstant.MIN_ID > deliveryAttemptEntity.getAttemptId()) {
                 deliveryAttemptEntity.setAttemptId(
-                        sequenceService.nextValue(
-                                sequenceService.generateSeqNameForClass(
-                                        getClass()
-                                        , DeliveryAttemptEntity.ID.ATTEMPT_ID.name()
+                                sequenceService.nextValue(
+                                        sequenceService.generateSeqNameForClass(
+                                                getClass()
+                                                , DeliveryAttemptEntity.ID.ATTEMPT_ID.name()
+                                        )
                                 )
                         )
-                );
+                        .setDeliveryStatusId(
+                                DeliveryStatus.CREATED.getDbValue()
+                        )
+                        .setStartTime(
+                                ZonedDateTime.now()
+                        );
             }
 
             return repository.save(deliveryAttemptEntity);

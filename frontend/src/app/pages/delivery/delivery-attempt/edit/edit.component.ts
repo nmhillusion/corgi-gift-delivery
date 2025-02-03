@@ -1,19 +1,19 @@
+import { DialogRef } from "@angular/cdk/dialog";
 import { Component, inject, signal, WritableSignal } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AppCommonModule } from "@app/core/app-common.module";
-import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { DeliveryAttemptModel } from "@app/model/business/delivery-attempt.model";
 import { DeliveryTypeModel } from "@app/model/business/delivery-type.model";
 import { IdType } from "@app/model/core/id.model";
 import { LogModel } from "@app/model/core/log.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
+import { AddSelectShipperWidget } from "@app/pages/shared/shipper/app-select-shipper/widget.component";
 import { DeliveryAttemptService } from "@app/service/delivery-attempt.service";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
 import { ShipperService } from "@app/service/shipper.service";
 import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/inline-log-message.component";
-import { AddSelectShipperWidget } from "@app/pages/shared/shipper/app-select-shipper/widget.component";
 import { BehaviorSubject } from "rxjs";
 
 @Component({
@@ -31,6 +31,7 @@ export class EditComponent extends BasePage {
   logMessage$ = signal<Nullable<LogModel>>(null);
 
   dialogData = inject<{
+    deliveryId: string;
     deliveryAttempt: DeliveryAttemptModel;
   }>(MAT_DIALOG_DATA);
 
@@ -47,7 +48,8 @@ export class EditComponent extends BasePage {
   constructor(
     private $deliveryAttemptService: DeliveryAttemptService,
     private $deliveryTypeService: DeliveryTypeService,
-    private $shipperService: ShipperService
+    private $shipperService: ShipperService,
+    private $dialogRef: DialogRef<DeliveryAttemptModel>
   ) {
     super();
   }
@@ -59,10 +61,36 @@ export class EditComponent extends BasePage {
       })
     );
 
+    this.registerSubscription(
+      this.formModels.shipperId.$.subscribe((shipperId) => {
+        this.formGroup.patchValue({
+          shipperId,
+        });
+      })
+    );
+
     this.formGroup.patchValue(this.dialogData.deliveryAttempt);
   }
 
   save() {
     console.log("do save form...", this.formGroup.value);
+
+    if (!this.dialogData.deliveryAttempt) {
+      this.dialogData.deliveryAttempt = {};
+    }
+
+    this.dialogData.deliveryAttempt.deliveryId = this.dialogData.deliveryId;
+    this.dialogData.deliveryAttempt.deliveryTypeId =
+      this.formGroup.controls["deliveryTypeId"].value || 0;
+    this.dialogData.deliveryAttempt.shipperId =
+      this.formGroup.controls["shipperId"].value || 0;
+
+    this.registerSubscription(
+      this.$deliveryAttemptService
+        .save(this.dialogData.deliveryAttempt)
+        .subscribe((result) => {
+          this.$dialogRef.close(result);
+        })
+    );
   }
 }

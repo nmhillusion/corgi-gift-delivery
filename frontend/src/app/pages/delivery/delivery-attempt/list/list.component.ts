@@ -82,6 +82,7 @@ export class ListComponent extends BasePage {
     const dialogRef = this.$dialog.open<EditComponent>(EditComponent, {
       data: {
         deliveryAttempt,
+        deliveryId: this.deliveryId,
       },
       width: SIZE.DIALOG.width,
       maxHeight: SIZE.DIALOG.height,

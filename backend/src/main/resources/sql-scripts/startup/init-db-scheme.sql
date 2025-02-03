@@ -107,7 +107,7 @@ create table if not exists t_cx_delivery (
   start_time TIMESTAMP with time zone,
   end_time TIMESTAMP with time zone,
   current_attempt_id varchar(100),
-  delivery_status_id int
+  delivery_status_id int default 1
 );
 
 ----
@@ -137,7 +137,7 @@ create table if not exists t_cx_delivery_attempt (
   shipper_id varchar(100),
   start_time timestamp with time zone,
   end_time timestamp with time zone,
-  delivery_status_id int
+  delivery_status_id int default 1
 );
 
 alter table t_cx_delivery_attempt
