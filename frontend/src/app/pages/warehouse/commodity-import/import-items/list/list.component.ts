@@ -24,15 +24,7 @@ export class ListComponent extends BasePage {
 
   tableDatasource = new MatTableDataSource<WarehouseItemModel>();
 
-  paginator: PaginatorHandler = {
-    pageIndex$: signal(0),
-    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
-    length$: signal(0),
-    pageSize$: signal(0),
-    onPageChange: (evt) => {
-      this.search(evt);
-    },
-  };
+  paginator = this.generatePaginator();
 
   displayedColumns = [
     "itemId",
@@ -40,7 +32,7 @@ export class ListComponent extends BasePage {
     "warehouseId",
     "comId",
     "quantity",
-    "createTime"
+    "createTime",
   ];
 
   /// methods
@@ -66,7 +58,7 @@ export class ListComponent extends BasePage {
     this.search(PAGE.DEFAULT_PAGE_EVENT);
   }
 
-  search(pageEvt: PageEvent) {
+  override search(pageEvt: PageEvent) {
     this.registerSubscription(
       this.$warehouseItemService
         .searchItemsInImport(

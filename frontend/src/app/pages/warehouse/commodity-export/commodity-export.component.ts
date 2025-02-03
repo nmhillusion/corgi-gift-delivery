@@ -25,13 +25,7 @@ export class CommodityExportComponent extends BasePage {
   warehouse$: WritableSignal<Nullable<WarehouseModel>> = signal(null);
 
   tableDatasource = new MatTableDataSource<CommodityExportModel>();
-  paginator: PaginatorHandler = {
-    length$: signal(0),
-    pageIndex$: signal(0),
-    pageSize$: signal(10),
-    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
-    onPageChange: (evt) => {},
-  };
+  paginator = this.generatePaginator();
 
   displayedColumns = [
     "exportId",
@@ -64,7 +58,7 @@ export class CommodityExportComponent extends BasePage {
     this.search(PAGE.DEFAULT_PAGE_EVENT);
   }
 
-  search(pageEvt: PageEvent) {
+  override search(pageEvt: PageEvent) {
     this.registerSubscription(
       this.$commodityExportService
         .search(
@@ -86,11 +80,9 @@ export class CommodityExportComponent extends BasePage {
   }
 
   listItems(ex: CommodityExportModel) {
-    this.$router.navigate(
-      [ex.exportId, "list"], {
-        relativeTo: this.$activatedRoute
-      }
-    )
+    this.$router.navigate([ex.exportId, "list"], {
+      relativeTo: this.$activatedRoute,
+    });
   }
 
   addCommodityExport() {

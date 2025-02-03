@@ -22,13 +22,7 @@ import { ImportComponent } from "./import/import.component";
   imports: [AppCommonModule, MainLayoutComponent],
 })
 export class ListComponent extends BasePage {
-  pageHandler: PaginatorHandler = {
-    length$: signal(0),
-    pageSize$: signal(10),
-    pageIndex$: signal(0),
-    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
-    onPageChange: this.search.bind(this),
-  };
+  pageHandler = this.generatePaginator();
 
   recipientDataSource = new MatTableDataSource<RecipientFEModel>();
 
@@ -53,7 +47,7 @@ export class ListComponent extends BasePage {
     this.search();
   }
 
-  search(pageEvent?: PageEvent) {
+  override search(pageEvent?: PageEvent) {
     if (!pageEvent) {
       pageEvent = {
         pageIndex: this.pageHandler.pageIndex$(),

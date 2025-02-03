@@ -26,7 +26,7 @@ export class ListComponent extends BasePage {
     this.search();
   }
 
-  search() {
+  override search() {
     this.registerSubscription(
       this.$warehouseService.findAll().subscribe((result) => {
         console.log("warehouseList: ", result);

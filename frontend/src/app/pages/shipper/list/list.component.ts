@@ -1,20 +1,18 @@
-import { Component, signal } from "@angular/core";
+import { Component } from "@angular/core";
+import { PageEvent } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { PAGE } from "@app/layout/page.constant";
+import { SIZE } from "@app/layout/size.constant";
 import {
   ShipperFEModel,
   ShipperModel,
 } from "@app/model/business/shipper.model";
 import { BasePage } from "@app/pages/base.page";
-import { EditComponent } from "../edit/edit.component";
-import { SIZE } from "@app/layout/size.constant";
-import { ShipperService } from "@app/service/shipper.service";
 import { ShipperTypeService } from "@app/service/shipper-type.service";
-import { firstValueFrom } from "rxjs";
-import { MatTableDataSource } from "@angular/material/table";
-import { PaginatorHandler } from "@app/model/core/page.model";
-import { PAGE } from "@app/layout/page.constant";
-import { PageEvent } from "@angular/material/paginator";
+import { ShipperService } from "@app/service/shipper.service";
+import { EditComponent } from "../edit/edit.component";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -24,15 +22,7 @@ import { PageEvent } from "@angular/material/paginator";
 export class ListComponent extends BasePage {
   tableDatasource = new MatTableDataSource<ShipperFEModel>();
 
-  paginator: PaginatorHandler = {
-    length$: signal(0),
-    pageIndex$: signal(0),
-    pageSize$: signal(10),
-    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
-    onPageChange: (evt) => {
-      this.search(evt);
-    },
-  };
+  paginator = this.generatePaginator();
 
   displayedColumns = [
     "shipperId",
@@ -56,7 +46,7 @@ export class ListComponent extends BasePage {
     this.search(PAGE.DEFAULT_PAGE_EVENT);
   }
 
-  private search(pageEvt: PageEvent) {
+  override search(pageEvt: PageEvent) {
     this.registerSubscription(
       this.$shipperService
         .search(

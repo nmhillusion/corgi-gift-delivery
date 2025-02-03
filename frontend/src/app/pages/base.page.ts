@@ -5,11 +5,14 @@ import {
   Injector,
   OnDestroy,
   OnInit,
+  signal,
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { ActivatedRoute, Router } from "@angular/router";
 import { environment } from "@app/../environments/environment";
+import { PAGE } from "@app/layout/page.constant";
 import { Nullable } from "@app/model/core/nullable.model";
 import { Page, PaginatorHandler } from "@app/model/core/page.model";
 import { FormUtils } from "@app/util/form.util";
@@ -53,6 +56,22 @@ export class BasePage implements OnInit, OnDestroy {
 
   protected __ngOnInit__(): any {
     // default: do nothing
+  }
+
+  generatePaginator() {
+    return {
+      pageIndex$: signal(0),
+      pageSize$: signal(10),
+      length$: signal(0),
+      pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
+      onPageChange: (evt) => {
+        this.search(evt);
+      },
+    } as PaginatorHandler;
+  }
+
+  search(pageEvt: PageEvent) {
+    throw new Error("Method not implemented.");
   }
 
   ngOnDestroy() {

@@ -11,7 +11,10 @@ import { AppSelectRecipientWidget } from "@app/pages/shared/recipient/app-select
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { PAGE } from "@app/layout/page.constant";
-import { DeliveryFEModel, DeliveryModel } from "@app/model/business/delivery.model";
+import {
+  DeliveryFEModel,
+  DeliveryModel,
+} from "@app/model/business/delivery.model";
 import { PaginatorHandler } from "@app/model/core/page.model";
 import { DeliveryService } from "@app/service/delivery.service";
 import { EditComponent } from "../edit/edit.component";
@@ -29,15 +32,8 @@ import { SIZE } from "@app/layout/size.constant";
 })
 export class ListComponent extends BasePage {
   tableDatasource = new MatTableDataSource<DeliveryFEModel>();
-  paginator: PaginatorHandler = {
-    length$: signal(0),
-    pageIndex$: signal(0),
-    pageSize$: signal(10),
-    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
-    onPageChange: (evt) => {
-      this.search(evt);
-    },
-  };
+  paginator = this.generatePaginator();
+
   displayedColumns = [
     "deliveryId",
     "recipient",
@@ -60,7 +56,7 @@ export class ListComponent extends BasePage {
     this.search(PAGE.DEFAULT_PAGE_EVENT);
   }
 
-  search(pageEvt: PageEvent) {
+  override search(pageEvt: PageEvent) {
     this.registerSubscription(
       this.$deliveryService
         .search(
@@ -107,5 +103,9 @@ export class ListComponent extends BasePage {
 
   editDelivery(delivery: DeliveryModel) {
     this.openEditDialog(delivery);
+  }
+
+  viewDeliveryAttempt(delivery: DeliveryModel) {
+    console.log("do viewDeliveryAttempt: ", delivery);
   }
 }

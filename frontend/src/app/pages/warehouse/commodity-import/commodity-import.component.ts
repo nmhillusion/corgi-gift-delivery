@@ -25,15 +25,7 @@ export class CommodityImportComponent extends BasePage {
 
   tableDatasource = new MatTableDataSource<CommodityImportModel>();
 
-  paginator: PaginatorHandler = {
-    pageIndex$: signal(0),
-    pageSize$: signal(10),
-    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
-    length$: signal(0),
-    onPageChange: (pageEvt) => {
-      this.search(pageEvt);
-    },
-  };
+  paginator = this.generatePaginator();
 
   displayedColumns = ["importId", "importName", "importTime", "action"];
 
@@ -63,7 +55,7 @@ export class CommodityImportComponent extends BasePage {
     this.search(PAGE.DEFAULT_PAGE_EVENT);
   }
 
-  private search(pageEvt: PageEvent) {
+  override search(pageEvt: PageEvent) {
     this.registerSubscription(
       this.$commodityImportService
         .search("", pageEvt.pageIndex, pageEvt.pageSize)

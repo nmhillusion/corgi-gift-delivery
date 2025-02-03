@@ -25,15 +25,7 @@ export class ListComponent extends BasePage {
 
   tableDatasource = new MatTableDataSource<WarehouseExportItemModel>();
 
-  paginator: PaginatorHandler = {
-    pageIndex$: signal(0),
-    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
-    length$: signal(0),
-    pageSize$: signal(0),
-    onPageChange: (evt) => {
-      this.search(evt);
-    },
-  };
+  paginator = this.generatePaginator();
 
   displayedColumns = [
     "itemId",
@@ -41,7 +33,7 @@ export class ListComponent extends BasePage {
     "warehouseId",
     "comId",
     "quantity",
-    "createTime"
+    "createTime",
   ];
 
   /// methods
@@ -53,7 +45,10 @@ export class ListComponent extends BasePage {
   }
 
   protected override __ngOnInit__() {
-    this.commodityeExportId = this.paramUtils.getParamOrThrow(this.$activatedRoute, "commodityExportId");
+    this.commodityeExportId = this.paramUtils.getParamOrThrow(
+      this.$activatedRoute,
+      "commodityExportId"
+    );
 
     this.registerSubscription(
       this.$commodityExportService
@@ -66,16 +61,16 @@ export class ListComponent extends BasePage {
     this.search(PAGE.DEFAULT_PAGE_EVENT);
   }
 
-  search(pageEvt: PageEvent) {
+  override search(pageEvt: PageEvent) {
     this.registerSubscription(
       this.$warehouseExportItemService
         .search(
           this.commodityeExportId,
           {
-            name: ""
+            name: "",
           },
           pageEvt.pageIndex,
-          pageEvt.pageSize,
+          pageEvt.pageSize
         )
         .subscribe((result) => {
           console.log("result of search items in export: ", result);
