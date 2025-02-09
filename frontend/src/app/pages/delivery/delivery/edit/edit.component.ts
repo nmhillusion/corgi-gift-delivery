@@ -64,8 +64,6 @@ export class EditComponent extends BasePage {
 
     console.log("do save form...", this.formGroup.value);
 
-    return; // TESTING
-
     this.registerSubscription(
       this.$deliveryService
         .save({
