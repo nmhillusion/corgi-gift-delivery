@@ -1,14 +1,15 @@
-<mat-form-field>
+<mat-form-field [ngClass]="{ disabled: disableState$() }">
   <mat-label>Recipient</mat-label>
   <input
     type="text"
     placeholder="Pick a recipient"
-    [formControl]="keywordControl"
+    [formControl]="formControl"
     matInput
     [matAutocomplete]="auto"
   />
   <mat-autocomplete
     #auto="matAutocomplete"
+    [requireSelection]="true"
     [displayWith]="displayFn.bind(this)"
   >
     @for (option of filteredOptions$ | async; track option.recipientId) {
@@ -19,6 +20,6 @@
   </mat-autocomplete>
 
   <mat-error>
-    {{ formUtils.extractError(keywordControl) }}
+    {{ formUtils.extractError(formControl) }}
   </mat-error>
 </mat-form-field>

@@ -9,18 +9,17 @@ import { IdType } from "@app/model/core/id.model";
 import { LogModel } from "@app/model/core/log.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
-import { AddSelectShipperWidget } from "@app/pages/shared/shipper/app-select-shipper/widget.component";
+import { AppSelectShipperWidget } from "@app/pages/shared/shipper/app-select-shipper/widget.component";
 import { DeliveryAttemptService } from "@app/service/delivery-attempt.service";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
 import { ShipperService } from "@app/service/shipper.service";
 import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/inline-log-message.component";
-import { BehaviorSubject } from "rxjs";
 
 @Component({
   standalone: true,
   templateUrl: "./edit.component.html",
   styleUrls: ["./edit.component.scss"],
-  imports: [AppCommonModule, AppInlineLogMessage, AddSelectShipperWidget],
+  imports: [AppCommonModule, AppInlineLogMessage, AppSelectShipperWidget],
 })
 export class EditComponent extends BasePage {
   formGroup = new FormGroup({
@@ -37,13 +36,6 @@ export class EditComponent extends BasePage {
 
   deliveryTypeList$: WritableSignal<DeliveryTypeModel[]> = signal([]);
 
-  formModels = {
-    shipperId: {
-      $: new BehaviorSubject<Nullable<IdType>>(null),
-      validators: [Validators.required],
-    },
-  };
-
   /// methods
   constructor(
     private $deliveryAttemptService: DeliveryAttemptService,
@@ -58,14 +50,6 @@ export class EditComponent extends BasePage {
     this.registerSubscription(
       this.$deliveryTypeService.findAll().subscribe((deliveryTypeList) => {
         this.deliveryTypeList$.set(deliveryTypeList);
-      })
-    );
-
-    this.registerSubscription(
-      this.formModels.shipperId.$.subscribe((shipperId) => {
-        this.formGroup.patchValue({
-          shipperId,
-        });
       })
     );
 

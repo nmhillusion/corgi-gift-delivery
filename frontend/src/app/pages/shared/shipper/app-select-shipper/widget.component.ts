@@ -1,5 +1,10 @@
-import { Component, Input } from "@angular/core";
-import { ValidatorFn, FormControl, Validators } from "@angular/forms";
+import { Component, forwardRef, Input, signal } from "@angular/core";
+import {
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+  Validators
+} from "@angular/forms";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { ShipperModel } from "@app/model/business/shipper.model";
 import { IdType } from "@app/model/core/id.model";
@@ -13,23 +18,46 @@ import { BehaviorSubject, map, Observable, startWith } from "rxjs";
   templateUrl: "./widget.component.html",
   styleUrls: ["./widget.component.scss"],
   imports: [AppCommonModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => AppSelectShipperWidget),
+      multi: true,
+    },
+  ],
 })
-export class AddSelectShipperWidget extends BasePage {
+export class AppSelectShipperWidget
+  extends BasePage
+  implements ControlValueAccessor
+{
   @Input({ required: true })
-  value$!: BehaviorSubject<Nullable<IdType>>;
-
-  @Input()
-  validators?: ValidatorFn | ValidatorFn[] | null = null;
+  formControl = new FormControl<Nullable<IdType>>("", [Validators.required]);
 
   list$ = new BehaviorSubject<ShipperModel[]>([]);
-  keywordControl = new FormControl<string>("", [Validators.required]);
 
   filteredOptions$?: Observable<ShipperModel[]>;
+
+  disableState$ = signal<boolean>(false);
 
   /// methods
 
   constructor(private $shipperService: ShipperService) {
     super();
+  }
+
+  writeValue(obj: any): void {
+    console.log("writeValue: ", obj);
+    this.formControl.setValue(obj);
+  }
+  registerOnChange(fn: any): void {
+    // DO NOTHING
+  }
+  registerOnTouched(fn: any): void {
+    // DO NOTHING
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    console.log("setDisabledState: ", isDisabled);
+    this.disableState$.set(isDisabled);
   }
 
   protected override __ngOnInit__() {
@@ -45,7 +73,7 @@ export class AddSelectShipperWidget extends BasePage {
         .subscribe((shipperPage) => {
           this.list$.next(shipperPage.content);
 
-          this.filteredOptions$ = this.keywordControl.valueChanges.pipe(
+          this.filteredOptions$ = this.formControl.valueChanges.pipe(
             startWith(""),
             map((value) =>
               this.list$
@@ -62,20 +90,12 @@ export class AddSelectShipperWidget extends BasePage {
           );
         })
     );
-
-    this.registerSubscription(
-      this.keywordControl.valueChanges.subscribe((value) => {
-        this.value$.next(value);
-      })
-    );
-
-    if (this.validators) {
-      this.keywordControl.setValidators(this.validators);
-    }
   }
 
   displayFn(shipperId: IdType): string {
-    const com_ = this.list$?.getValue().find((com) => com.shipperId === shipperId);
+    const com_ = this.list$
+      ?.getValue()
+      .find((com) => com.shipperId === shipperId);
     return com_ ? `${com_.shipperName} (${com_.shipperId})` : "";
   }
 }

@@ -1,19 +1,14 @@
 <div class="dialog-container">
   <h2>Edit delivery</h2>
 
-  <app-select-recipient-widget
-    [value$]="formModels.recipientId.$"
-    [validators]="formModels.commodityId.validators"
-  />
-
-  <app-select-commodity-widget
-    [value$]="formModels.commodityId.$"
-    [validators]="formModels.commodityId.validators"
-  />
-
   <form [formGroup]="formGroup">
-    <input type="hidden" formControlName="recipientId" />
-    <input type="hidden" formControlName="commodityId" />
+    <app-select-recipient-widget
+      [formControl]="formGroup.controls.recipientId"
+    />
+
+    <app-select-commodity-widget
+      [formControl]="formGroup.controls.commodityId"
+    />
 
     <mat-form-field class="dialog-block">
       <mat-label>Commodity quantity</mat-label>

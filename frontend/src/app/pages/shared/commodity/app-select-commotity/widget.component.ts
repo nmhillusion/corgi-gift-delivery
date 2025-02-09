@@ -1,8 +1,8 @@
-import { Component, Input, ModelSignal, WritableSignal } from "@angular/core";
+import { Component, forwardRef, Input, signal } from "@angular/core";
 import {
+  ControlValueAccessor,
   FormControl,
-  FormControlOptions,
-  ValidatorFn,
+  NG_VALUE_ACCESSOR,
   Validators,
 } from "@angular/forms";
 import { AppCommonModule } from "@app/core/app-common.module";
@@ -19,22 +19,46 @@ import { BehaviorSubject, map, Observable, startWith } from "rxjs";
   templateUrl: "./widget.component.html",
   styleUrls: ["./widget.component.scss"],
   imports: [AppCommonModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => AppSelectCommodityWidget),
+      multi: true,
+    },
+  ],
 })
-export class AppSelectCommodityWidget extends BasePage {
+export class AppSelectCommodityWidget
+  extends BasePage
+  implements ControlValueAccessor
+{
   @Input({ required: true })
-  value$!: BehaviorSubject<Nullable<IdType>>;
-
-  @Input()
-  validators?: ValidatorFn | ValidatorFn[] | null = null;
+  formControl = new FormControl<Nullable<IdType>>("", [Validators.required]);
 
   list$ = new BehaviorSubject<CommodityModel[]>([]);
-  keywordControl = new FormControl<string>("", [Validators.required]);
 
   filteredOptions$?: Observable<CommodityModel[]>;
+
+  disableState$ = signal<boolean>(false);
 
   /// methods
   constructor(private $commodityService: CommodityService) {
     super();
+  }
+
+  writeValue(obj: any): void {
+    console.log("writeValue: ", obj);
+    this.formControl.setValue(obj);
+  }
+  registerOnChange(fn: any): void {
+    // DO NOTHING
+  }
+
+  registerOnTouched(fn: any): void {
+    // DO NOTHING
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    console.log("setDisabledState: ", isDisabled);
+    this.disableState$.set(isDisabled);
   }
 
   protected override __ngOnInit__() {
@@ -42,7 +66,7 @@ export class AppSelectCommodityWidget extends BasePage {
       this.$commodityService.findAll().subscribe((commodityList) => {
         this.list$.next(commodityList);
 
-        this.filteredOptions$ = this.keywordControl.valueChanges.pipe(
+        this.filteredOptions$ = this.formControl.valueChanges.pipe(
           startWith(""),
           map((value) =>
             this.list$
@@ -57,16 +81,6 @@ export class AppSelectCommodityWidget extends BasePage {
         );
       })
     );
-
-    this.registerSubscription(
-      this.keywordControl.valueChanges.subscribe((value) => {
-        this.value$.next(value);
-      })
-    );
-
-    if (this.validators) {
-      this.keywordControl.setValidators(this.validators);
-    }
   }
 
   displayFn(comId: IdType): string {

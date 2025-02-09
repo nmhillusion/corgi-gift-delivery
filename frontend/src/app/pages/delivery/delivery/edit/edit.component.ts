@@ -12,7 +12,6 @@ import { AppSelectCommodityWidget } from "@app/pages/shared/commodity/app-select
 import { AppSelectRecipientWidget } from "@app/pages/shared/recipient/app-select-recipient/widget.component";
 import { DeliveryService } from "@app/service/delivery.service";
 import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/inline-log-message.component";
-import { BehaviorSubject } from "rxjs";
 
 @Component({
   standalone: true,
@@ -36,17 +35,6 @@ export class EditComponent extends BasePage {
     comQuantity: new FormControl(0, [Validators.required, Validators.min(0)]),
   });
 
-  formModels = {
-    recipientId: {
-      $: new BehaviorSubject<Nullable<IdType>>(-1),
-      validators: [Validators.required],
-    },
-    commodityId: {
-      $: new BehaviorSubject<Nullable<IdType>>(-1),
-      validators: [Validators.required],
-    },
-  };
-
   logMessage$ = signal<Nullable<LogModel>>(null);
 
   /// methods
@@ -61,22 +49,6 @@ export class EditComponent extends BasePage {
     if (this.dialogData && this.dialogData.delivery) {
       this.formGroup.patchValue(this.dialogData.delivery);
     }
-
-    this.registerSubscription(
-      this.formModels.recipientId.$.subscribe((recipientId) => {
-        this.formGroup.patchValue({
-          recipientId,
-        });
-      })
-    );
-
-    this.registerSubscription(
-      this.formModels.commodityId.$.subscribe((commodityId) => {
-        this.formGroup.patchValue({
-          commodityId,
-        });
-      })
-    );
   }
 
   save() {
@@ -91,6 +63,8 @@ export class EditComponent extends BasePage {
     }
 
     console.log("do save form...", this.formGroup.value);
+
+    return; // TESTING
 
     this.registerSubscription(
       this.$deliveryService

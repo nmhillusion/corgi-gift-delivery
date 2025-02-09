@@ -1,5 +1,14 @@
-import { Component, Input, ModelSignal } from "@angular/core";
-import { FormControl, ValidatorFn } from "@angular/forms";
+import {
+  Component,
+  forwardRef,
+  Input,
+  signal
+} from "@angular/core";
+import {
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR
+} from "@angular/forms";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { RecipientModel } from "@app/model/business/recipient.model";
 import { IdType } from "@app/model/core/id.model";
@@ -14,22 +23,48 @@ import { BehaviorSubject, map, Observable, startWith } from "rxjs";
   templateUrl: "./widget.component.html",
   styleUrls: ["./widget.component.scss"],
   imports: [AppCommonModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => AppSelectRecipientWidget),
+      multi: true,
+    },
+  ],
 })
-export class AppSelectRecipientWidget extends BasePage {
+export class AppSelectRecipientWidget
+  extends BasePage
+  implements ControlValueAccessor
+{
   @Input({ required: true })
-  value$!: BehaviorSubject<Nullable<IdType>>;
-
-  @Input()
-  validators?: ValidatorFn | ValidatorFn[] | null = null;
+  formControl = new FormControl<Nullable<IdType>>("");
 
   list$ = new BehaviorSubject<RecipientModel[]>([]);
-  keywordControl = new FormControl<string>("");
 
   filteredOptions$?: Observable<RecipientModel[]>;
+
+  disableState$ = signal<boolean>(false);
 
   /// methods
   constructor(private $recipientService: RecipientService) {
     super();
+  }
+
+  writeValue(obj: any): void {
+    console.log("writeValue: ", obj);
+    this.formControl.setValue(obj);
+  }
+
+  registerOnChange(fn: any): void {
+    // DO NOTHING
+  }
+
+  registerOnTouched(fn: any): void {
+    // DO NOTHING
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    console.log("setDisabledState: ", isDisabled);
+    this.disableState$.set(isDisabled);
   }
 
   protected override __ngOnInit__() {
@@ -45,7 +80,7 @@ export class AppSelectRecipientWidget extends BasePage {
         .subscribe((recipientPage) => {
           this.list$.next(recipientPage.content);
 
-          this.filteredOptions$ = this.keywordControl.valueChanges.pipe(
+          this.filteredOptions$ = this.formControl.valueChanges.pipe(
             startWith(""),
             map((value) =>
               this.list$
@@ -60,16 +95,6 @@ export class AppSelectRecipientWidget extends BasePage {
           );
         })
     );
-
-    this.registerSubscription(
-      this.keywordControl.valueChanges.subscribe((value) => {
-        this.value$.next(value);
-      })
-    );
-
-    if (this.validators) {
-      this.keywordControl.setValidators(this.validators);
-    }
   }
 
   displayFn(comId: IdType): string {

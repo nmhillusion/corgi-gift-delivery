@@ -14,8 +14,7 @@
     </mat-form-field>
 
     <app-select-shipper-widget
-      [value$]="formModels.shipperId.$"
-      [validators]="formModels.shipperId.validators"
+      [formControl]="formGroup.controls.shipperId"
     />
 
     <div app-hr></div>
