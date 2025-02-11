@@ -49,7 +49,12 @@ export class EditComponent extends BasePage {
   protected override __ngOnInit__() {
     this.registerSubscription(
       this.$deliveryTypeService.findAll().subscribe((deliveryTypeList) => {
-        this.deliveryTypeList$.set(deliveryTypeList);
+        this.deliveryTypeList$.set(
+          deliveryTypeList.map((it) => {
+            it.typeId = String(it.typeId);
+            return it;
+          })
+        );
       })
     );
 
