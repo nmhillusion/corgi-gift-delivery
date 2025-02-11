@@ -105,4 +105,8 @@ export class ListComponent extends BasePage {
       relativeTo: this.$activatedRoute.parent,
     });
   }
+
+  collectPackage(delivery: DeliveryModel) {
+    throw new Error("Method not implemented.");
+  }
 }

@@ -1,13 +1,8 @@
-import {
-  Component,
-  forwardRef,
-  Input,
-  signal
-} from "@angular/core";
+import { Component, forwardRef, Input, signal } from "@angular/core";
 import {
   ControlValueAccessor,
   FormControl,
-  NG_VALUE_ACCESSOR
+  NG_VALUE_ACCESSOR,
 } from "@angular/forms";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { RecipientModel } from "@app/model/business/recipient.model";
@@ -36,13 +31,15 @@ export class AppSelectRecipientWidget
   implements ControlValueAccessor
 {
   @Input({ required: true })
-  formControl = new FormControl<Nullable<IdType>>("");
+  formControl = new FormControl<Nullable<IdType>>(null);
 
   list$ = new BehaviorSubject<RecipientModel[]>([]);
 
   filteredOptions$?: Observable<RecipientModel[]>;
 
   disableState$ = signal<boolean>(false);
+
+  initedValueState$ = new BehaviorSubject<Nullable<IdType>>(null);
 
   /// methods
   constructor(private $recipientService: RecipientService) {
@@ -51,7 +48,7 @@ export class AppSelectRecipientWidget
 
   writeValue(obj: any): void {
     console.log("writeValue: ", obj);
-    this.formControl.setValue(obj);
+    this.initedValueState$.next(obj);
   }
 
   registerOnChange(fn: any): void {
@@ -67,6 +64,12 @@ export class AppSelectRecipientWidget
     this.disableState$.set(isDisabled);
   }
 
+  private triggerUpdateFormControlValue() {
+    if (0 < this.list$?.getValue().length) {
+      this.formControl.setValue(this.initedValueState$.getValue());
+    }
+  }
+
   protected override __ngOnInit__() {
     this.registerSubscription(
       this.$recipientService
@@ -79,6 +82,8 @@ export class AppSelectRecipientWidget
         )
         .subscribe((recipientPage) => {
           this.list$.next(recipientPage.content);
+
+          this.triggerUpdateFormControlValue();
 
           this.filteredOptions$ = this.formControl.valueChanges.pipe(
             startWith(""),
@@ -95,12 +100,12 @@ export class AppSelectRecipientWidget
           );
         })
     );
+
+    this.triggerUpdateFormControlValue();
   }
 
   displayFn(comId: IdType): string {
-    const com_ = this.list$
-      ?.getValue()
-      .find((com) => com.recipientId === comId);
+    const com_ = this.list$?.getValue().find((com) => com.recipientId == comId);
     return com_ ? `${com_.fullName} (${com_.recipientId})` : "";
   }
 }

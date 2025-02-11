@@ -40,6 +40,8 @@ export class AppSelectCommodityWidget
 
   disableState$ = signal<boolean>(false);
 
+  initedValueState$ = new BehaviorSubject<Nullable<IdType>>(null);
+
   /// methods
   constructor(private $commodityService: CommodityService) {
     super();
@@ -47,7 +49,7 @@ export class AppSelectCommodityWidget
 
   writeValue(obj: any): void {
     console.log("writeValue: ", obj);
-    this.formControl.setValue(obj);
+    this.initedValueState$.next(obj);
   }
   registerOnChange(fn: any): void {
     // DO NOTHING
@@ -61,10 +63,18 @@ export class AppSelectCommodityWidget
     this.disableState$.set(isDisabled);
   }
 
+  private triggerUpdateFormControlValue() {
+    if (0 < this.list$?.getValue().length) {
+      this.formControl.setValue(this.initedValueState$.getValue());
+    }
+  }
+
   protected override __ngOnInit__() {
     this.registerSubscription(
       this.$commodityService.findAll().subscribe((commodityList) => {
         this.list$.next(commodityList);
+
+        this.triggerUpdateFormControlValue();
 
         this.filteredOptions$ = this.formControl.valueChanges.pipe(
           startWith(""),
@@ -81,10 +91,11 @@ export class AppSelectCommodityWidget
         );
       })
     );
+    this.triggerUpdateFormControlValue();
   }
 
   displayFn(comId: IdType): string {
-    const com_ = this.list$?.getValue().find((com) => com.comId === comId);
+    const com_ = this.list$?.getValue().find((com) => com.comId == comId);
     return com_ ? `${com_.comName} (${com_.comId})` : "";
   }
 }

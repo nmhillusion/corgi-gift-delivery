@@ -3,7 +3,7 @@ import {
   ControlValueAccessor,
   FormControl,
   NG_VALUE_ACCESSOR,
-  Validators
+  Validators,
 } from "@angular/forms";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { ShipperModel } from "@app/model/business/shipper.model";
@@ -39,6 +39,8 @@ export class AppSelectShipperWidget
 
   disableState$ = signal<boolean>(false);
 
+  initedValueState$ = new BehaviorSubject<Nullable<IdType>>(null);
+
   /// methods
 
   constructor(private $shipperService: ShipperService) {
@@ -47,7 +49,7 @@ export class AppSelectShipperWidget
 
   writeValue(obj: any): void {
     console.log("writeValue: ", obj);
-    this.formControl.setValue(obj);
+    this.initedValueState$.next(obj);
   }
   registerOnChange(fn: any): void {
     // DO NOTHING
@@ -58,6 +60,12 @@ export class AppSelectShipperWidget
   setDisabledState?(isDisabled: boolean): void {
     console.log("setDisabledState: ", isDisabled);
     this.disableState$.set(isDisabled);
+  }
+
+  private triggerUpdateFormControlValue() {
+    if (0 < this.list$?.getValue().length) {
+      this.formControl.setValue(this.initedValueState$.getValue());
+    }
   }
 
   protected override __ngOnInit__() {
@@ -72,6 +80,8 @@ export class AppSelectShipperWidget
         )
         .subscribe((shipperPage) => {
           this.list$.next(shipperPage.content);
+
+          this.triggerUpdateFormControlValue();
 
           this.filteredOptions$ = this.formControl.valueChanges.pipe(
             startWith(""),
@@ -90,12 +100,14 @@ export class AppSelectShipperWidget
           );
         })
     );
+
+    this.triggerUpdateFormControlValue();
   }
 
   displayFn(shipperId: IdType): string {
     const com_ = this.list$
       ?.getValue()
-      .find((com) => com.shipperId === shipperId);
+      .find((com) => com.shipperId == shipperId);
     return com_ ? `${com_.shipperName} (${com_.shipperId})` : "";
   }
 }
