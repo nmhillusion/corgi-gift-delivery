@@ -21,10 +21,10 @@ public class DeliveryEntity extends Stringeable {
     private long deliveryId;
 
     @Column(name = "recipient_id", nullable = false)
-    private String recipientId;
+    private long recipientId;
 
     @Column(name = "commodity_id", nullable = false)
-    private String commodityId;
+    private long commodityId;
 
     @Column(name = "com_quantity", nullable = false)
     private double comQuantity;
@@ -36,10 +36,10 @@ public class DeliveryEntity extends Stringeable {
     private ZonedDateTime endTime;
 
     @Column(name = "current_attempt_id")
-    private String currentAttemptId;
+    private long currentAttemptId;
 
     @Column(name = "delivery_status_id", nullable = false)
-    private String deliveryStatusId;
+    private int deliveryStatusId;
 
     public long getDeliveryId() {
         return deliveryId;
@@ -50,20 +50,20 @@ public class DeliveryEntity extends Stringeable {
         return this;
     }
 
-    public String getRecipientId() {
+    public long getRecipientId() {
         return recipientId;
     }
 
-    public DeliveryEntity setRecipientId(String recipientId) {
+    public DeliveryEntity setRecipientId(long recipientId) {
         this.recipientId = recipientId;
         return this;
     }
 
-    public String getCommodityId() {
+    public long getCommodityId() {
         return commodityId;
     }
 
-    public DeliveryEntity setCommodityId(String commodityId) {
+    public DeliveryEntity setCommodityId(long commodityId) {
         this.commodityId = commodityId;
         return this;
     }
@@ -95,20 +95,20 @@ public class DeliveryEntity extends Stringeable {
         return this;
     }
 
-    public String getCurrentAttemptId() {
+    public long getCurrentAttemptId() {
         return currentAttemptId;
     }
 
-    public DeliveryEntity setCurrentAttemptId(String currentAttemptId) {
+    public DeliveryEntity setCurrentAttemptId(long currentAttemptId) {
         this.currentAttemptId = currentAttemptId;
         return this;
     }
 
-    public String getDeliveryStatusId() {
+    public int getDeliveryStatusId() {
         return deliveryStatusId;
     }
 
-    public DeliveryEntity setDeliveryStatusId(String deliveryStatusId) {
+    public DeliveryEntity setDeliveryStatusId(int deliveryStatusId) {
         this.deliveryStatusId = deliveryStatusId;
         return this;
     }

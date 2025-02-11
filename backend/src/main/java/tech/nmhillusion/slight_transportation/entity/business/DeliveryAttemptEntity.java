@@ -21,13 +21,13 @@ public class DeliveryAttemptEntity extends Stringeable {
     private long attemptId;
 
     @Column(name = "delivery_id", nullable = false)
-    private String deliveryId;
+    private long deliveryId;
 
     @Column(name = "delivery_type_id", nullable = false)
-    private String deliveryTypeId;
+    private int deliveryTypeId;
 
     @Column(name = "shipper_id")
-    private String shipperId;
+    private long shipperId;
 
     @Column(name = "start_time")
     private ZonedDateTime startTime;
@@ -36,7 +36,7 @@ public class DeliveryAttemptEntity extends Stringeable {
     private ZonedDateTime endTime;
 
     @Column(name = "delivery_status_id")
-    private String deliveryStatusId;
+    private int deliveryStatusId;
 
     public long getAttemptId() {
         return attemptId;
@@ -47,29 +47,29 @@ public class DeliveryAttemptEntity extends Stringeable {
         return this;
     }
 
-    public String getDeliveryId() {
+    public long getDeliveryId() {
         return deliveryId;
     }
 
-    public DeliveryAttemptEntity setDeliveryId(String deliveryId) {
+    public DeliveryAttemptEntity setDeliveryId(long deliveryId) {
         this.deliveryId = deliveryId;
         return this;
     }
 
-    public String getDeliveryTypeId() {
+    public int getDeliveryTypeId() {
         return deliveryTypeId;
     }
 
-    public DeliveryAttemptEntity setDeliveryTypeId(String deliveryTypeId) {
+    public DeliveryAttemptEntity setDeliveryTypeId(int deliveryTypeId) {
         this.deliveryTypeId = deliveryTypeId;
         return this;
     }
 
-    public String getShipperId() {
+    public long getShipperId() {
         return shipperId;
     }
 
-    public DeliveryAttemptEntity setShipperId(String shipperId) {
+    public DeliveryAttemptEntity setShipperId(long shipperId) {
         this.shipperId = shipperId;
         return this;
     }
@@ -92,11 +92,11 @@ public class DeliveryAttemptEntity extends Stringeable {
         return this;
     }
 
-    public String getDeliveryStatusId() {
+    public int getDeliveryStatusId() {
         return deliveryStatusId;
     }
 
-    public DeliveryAttemptEntity setDeliveryStatusId(String deliveryStatusId) {
+    public DeliveryAttemptEntity setDeliveryStatusId(int deliveryStatusId) {
         this.deliveryStatusId = deliveryStatusId;
         return this;
     }
