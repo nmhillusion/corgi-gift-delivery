@@ -16,7 +16,7 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class RecipientEntity extends Stringeable {
     @Id
     @Column(name = "recipient_id", nullable = false)
-    private long recipientId;
+    private String recipientId;
 
     @Column(name = "full_name", nullable = false)
     private String fullName;
@@ -25,13 +25,13 @@ public class RecipientEntity extends Stringeable {
     private String idCardNumber;
 
     @Column(name = "recipient_type_id", nullable = false)
-    private int recipientTypeId;
+    private String recipientTypeId;
 
-    public long getRecipientId() {
+    public String getRecipientId() {
         return recipientId;
     }
 
-    public RecipientEntity setRecipientId(long recipientId) {
+    public RecipientEntity setRecipientId(String recipientId) {
         this.recipientId = recipientId;
         return this;
     }
@@ -54,11 +54,11 @@ public class RecipientEntity extends Stringeable {
         return this;
     }
 
-    public int getRecipientTypeId() {
+    public String getRecipientTypeId() {
         return recipientTypeId;
     }
 
-    public RecipientEntity setRecipientTypeId(int recipientTypeId) {
+    public RecipientEntity setRecipientTypeId(String recipientTypeId) {
         this.recipientTypeId = recipientTypeId;
         return this;
     }

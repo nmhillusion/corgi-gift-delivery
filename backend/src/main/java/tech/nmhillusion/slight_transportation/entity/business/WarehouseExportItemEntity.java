@@ -17,50 +17,50 @@ import java.time.ZonedDateTime;
 public class WarehouseExportItemEntity {
     @Id
     @Column(name = "item_id", nullable = false)
-    private long itemId;
+    private String itemId;
     @Column(name = "export_id", nullable = false)
-    private int exportId;
+    private String exportId;
     @Column(name = "warehouse_id", nullable = false)
-    private int warehouseId;
+    private String warehouseId;
     @Column(name = "com_id", nullable = false)
-    private long comId;
+    private String comId;
     @Column(name = "quantity", nullable = false)
     private double quantity;
     @Column(name = "create_time", nullable = false)
     private ZonedDateTime createTime;
 
-    public long getItemId() {
+    public String getItemId() {
         return itemId;
     }
 
-    public WarehouseExportItemEntity setItemId(long itemId) {
+    public WarehouseExportItemEntity setItemId(String itemId) {
         this.itemId = itemId;
         return this;
     }
 
-    public int getExportId() {
+    public String getExportId() {
         return exportId;
     }
 
-    public WarehouseExportItemEntity setExportId(int exportId) {
+    public WarehouseExportItemEntity setExportId(String exportId) {
         this.exportId = exportId;
         return this;
     }
 
-    public int getWarehouseId() {
+    public String getWarehouseId() {
         return warehouseId;
     }
 
-    public WarehouseExportItemEntity setWarehouseId(int warehouseId) {
+    public WarehouseExportItemEntity setWarehouseId(String warehouseId) {
         this.warehouseId = warehouseId;
         return this;
     }
 
-    public long getComId() {
+    public String getComId() {
         return comId;
     }
 
-    public WarehouseExportItemEntity setComId(long comId) {
+    public WarehouseExportItemEntity setComId(String comId) {
         this.comId = comId;
         return this;
     }

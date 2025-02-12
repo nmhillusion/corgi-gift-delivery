@@ -5,9 +5,9 @@ import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
-import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseItemEntity;
+import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -69,9 +69,9 @@ public interface WarehouseItemService {
                     , PageRequest.of(pageIndex, pageSize));
         }
 
-        private long generateId(WarehouseItemEntity dto) {
-            if (IdConstant.MIN_ID > dto.getItemId()) {
-                return sequenceService.nextValue(
+        private String generateId(WarehouseItemEntity dto) {
+            if (IdValidator.isNotSetId(dto.getItemId())) {
+                return sequenceService.nextValueInString(
                         sequenceService.generateSeqNameForClass(
                                 getClass()
                                 , WarehouseItemEntity.ID.ITEM_ID.name()

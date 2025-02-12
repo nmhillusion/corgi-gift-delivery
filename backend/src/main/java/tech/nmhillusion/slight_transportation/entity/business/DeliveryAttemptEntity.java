@@ -18,16 +18,16 @@ import java.time.ZonedDateTime;
 public class DeliveryAttemptEntity extends Stringeable {
     @Id
     @Column(name = "attempt_id", nullable = false)
-    private long attemptId;
+    private String attemptId;
 
     @Column(name = "delivery_id", nullable = false)
-    private long deliveryId;
+    private String deliveryId;
 
     @Column(name = "delivery_type_id", nullable = false)
-    private int deliveryTypeId;
+    private String deliveryTypeId;
 
     @Column(name = "shipper_id")
-    private long shipperId;
+    private String shipperId;
 
     @Column(name = "start_time")
     private ZonedDateTime startTime;
@@ -36,40 +36,40 @@ public class DeliveryAttemptEntity extends Stringeable {
     private ZonedDateTime endTime;
 
     @Column(name = "delivery_status_id")
-    private int deliveryStatusId;
+    private String deliveryStatusId;
 
-    public long getAttemptId() {
+    public String getAttemptId() {
         return attemptId;
     }
 
-    public DeliveryAttemptEntity setAttemptId(long attemptId) {
+    public DeliveryAttemptEntity setAttemptId(String attemptId) {
         this.attemptId = attemptId;
         return this;
     }
 
-    public long getDeliveryId() {
+    public String getDeliveryId() {
         return deliveryId;
     }
 
-    public DeliveryAttemptEntity setDeliveryId(long deliveryId) {
+    public DeliveryAttemptEntity setDeliveryId(String deliveryId) {
         this.deliveryId = deliveryId;
         return this;
     }
 
-    public int getDeliveryTypeId() {
+    public String getDeliveryTypeId() {
         return deliveryTypeId;
     }
 
-    public DeliveryAttemptEntity setDeliveryTypeId(int deliveryTypeId) {
+    public DeliveryAttemptEntity setDeliveryTypeId(String deliveryTypeId) {
         this.deliveryTypeId = deliveryTypeId;
         return this;
     }
 
-    public long getShipperId() {
+    public String getShipperId() {
         return shipperId;
     }
 
-    public DeliveryAttemptEntity setShipperId(long shipperId) {
+    public DeliveryAttemptEntity setShipperId(String shipperId) {
         this.shipperId = shipperId;
         return this;
     }
@@ -92,11 +92,11 @@ public class DeliveryAttemptEntity extends Stringeable {
         return this;
     }
 
-    public int getDeliveryStatusId() {
+    public String getDeliveryStatusId() {
         return deliveryStatusId;
     }
 
-    public DeliveryAttemptEntity setDeliveryStatusId(int deliveryStatusId) {
+    public DeliveryAttemptEntity setDeliveryStatusId(String deliveryStatusId) {
         this.deliveryStatusId = deliveryStatusId;
         return this;
     }

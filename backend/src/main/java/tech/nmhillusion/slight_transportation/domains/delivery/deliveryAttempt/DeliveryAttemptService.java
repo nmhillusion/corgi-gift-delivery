@@ -4,9 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.constant.DeliveryStatus;
-import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEntity;
+import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -39,9 +39,9 @@ public interface DeliveryAttemptService {
 
         @Override
         public DeliveryAttemptEntity save(DeliveryAttemptEntity deliveryAttemptEntity) {
-            if (IdConstant.MIN_ID > deliveryAttemptEntity.getAttemptId()) {
+            if (IdValidator.isNotSetId(deliveryAttemptEntity.getAttemptId())) {
                 deliveryAttemptEntity.setAttemptId(
-                                sequenceService.nextValue(
+                                sequenceService.nextValueInString(
                                         sequenceService.generateSeqNameForClass(
                                                 getClass()
                                                 , DeliveryAttemptEntity.ID.ATTEMPT_ID.name()

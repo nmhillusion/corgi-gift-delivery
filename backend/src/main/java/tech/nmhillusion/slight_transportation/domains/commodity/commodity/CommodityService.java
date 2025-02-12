@@ -8,9 +8,10 @@ import tech.nmhillusion.n2mix.helper.office.excel.reader.model.RowData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 import tech.nmhillusion.n2mix.util.ExceptionUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
-import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityEntity;
+import tech.nmhillusion.slight_transportation.util.NumberUtil;
+import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -58,9 +59,9 @@ public interface CommodityService {
                 );
             }
 
-            if (IdConstant.MIN_ID > commodityEntity.getComId()) {
+            if (IdValidator.isNotSetId(commodityEntity.getComId())) {
                 commodityEntity.setComId(
-                        sequenceService.nextValue(
+                        sequenceService.nextValueInString(
                                 sequenceService.generateSeqNameForClass(
                                         getClass()
                                         , CommodityEntity.ID.COM_ID.name()
@@ -141,9 +142,9 @@ public interface CommodityService {
                         final String createTime = cells.get(3).getStringValue();
 
                         return new CommodityEntity()
-                                .setComId((long) Double.parseDouble(comId))
+                                .setComId(NumberUtil.parseStringFromDoubleToLong(comId))
                                 .setComName(comName)
-                                .setComTypeId((int) Double.parseDouble(comTypeId))
+                                .setComTypeId(NumberUtil.parseStringFromDoubleToLong(comTypeId))
                                 .setCreateTime(ZonedDateTime.parse(createTime));
                     })
                     .toList();

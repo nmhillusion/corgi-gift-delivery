@@ -4,9 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
-import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseExportItemEntity;
+import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.util.Map;
 
@@ -43,9 +43,9 @@ public interface WarehouseExportItemService {
                     PageRequest.of(pageIndex, pageSize));
         }
 
-        private long generateId(WarehouseExportItemEntity dto) {
-            if (IdConstant.MIN_ID > dto.getItemId()) {
-                return sequenceService.nextValue(
+        private String generateId(WarehouseExportItemEntity dto) {
+            if (IdValidator.isNotSetId(dto.getItemId())) {
+                return sequenceService.nextValueInString(
                         sequenceService.generateSeqNameForClass(
                                 getClass()
                                 , WarehouseExportItemEntity.ID.ITEM_ID.name()

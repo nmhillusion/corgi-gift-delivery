@@ -5,9 +5,9 @@ import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
-import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryPackageItemEntity;
+import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.util.Map;
 
@@ -54,9 +54,9 @@ public interface DeliveryPackageItemService {
             return repository.findById(packageItemId).orElse(null);
         }
 
-        private long generateId(DeliveryPackageItemEntity dto) {
-            if (IdConstant.MIN_ID > dto.getItemId()) {
-                return sequenceService.nextValue(
+        private String generateId(DeliveryPackageItemEntity dto) {
+            if (IdValidator.isNotSetId(dto.getItemId())) {
+                return sequenceService.nextValueInString(
                         sequenceService.generateSeqNameForClass(
                                 getClass()
                                 , DeliveryPackageItemEntity.ID.ITEM_ID.name()

@@ -16,6 +16,7 @@ import tech.nmhillusion.n2mix.validator.StringValidator;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityTypeEntity;
+import tech.nmhillusion.slight_transportation.util.NumberUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,10 +67,10 @@ public interface CommodityTypeService {
             getLogger(this).info("currentTypeId: {}", currentTypeId);
             if (!StringValidator.isBlank(currentTypeId)) {
                 /// Mark: For update
-                entity.setTypeId(Integer.parseInt(currentTypeId));
+                entity.setTypeId(currentTypeId);
             } else {
                 entity.setTypeId(
-                        (int) sequenceService.nextValue(
+                        sequenceService.nextValueInString(
                                 sequenceService.generateSeqNameForClass(
                                         getClass()
                                         , CommodityTypeEntity.ID.TYPE_ID.name()
@@ -109,7 +110,9 @@ public interface CommodityTypeService {
                         final String typeName = cells.get(1).getStringValue();
 
                         return new CommodityTypeEntity()
-                                .setTypeId((int) Double.parseDouble(typeId))
+                                .setTypeId(
+                                        NumberUtil.parseStringFromDoubleToLong(typeId)
+                                )
                                 .setTypeName(typeName);
                     })
                     .toList();

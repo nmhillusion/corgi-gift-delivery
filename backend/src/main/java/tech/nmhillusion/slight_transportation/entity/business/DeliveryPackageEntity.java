@@ -17,7 +17,7 @@ import java.time.ZonedDateTime;
 public class DeliveryPackageEntity {
     @Id
     @Column(name = "package_id", nullable = false)
-    private long packageId;
+    private String packageId;
 
     @Column(name = "delivery_id", nullable = false)
     private String deliveryId;
@@ -28,12 +28,11 @@ public class DeliveryPackageEntity {
     @Column(name = "package_time", nullable = false)
     private ZonedDateTime packageTime;
 
-
-    public long getPackageId() {
+    public String getPackageId() {
         return packageId;
     }
 
-    public DeliveryPackageEntity setPackageId(long packageId) {
+    public DeliveryPackageEntity setPackageId(String packageId) {
         this.packageId = packageId;
         return this;
     }

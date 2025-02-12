@@ -17,16 +17,16 @@ import java.time.ZonedDateTime;
 public class WarehouseItemEntity {
     @Id
     @Column(name = "item_id", nullable = false)
-    private long itemId;
+    private String itemId;
 
     @Column(name = "import_id", nullable = false)
-    private int importId;
+    private String importId;
 
     @Column(name = "warehouse_id", nullable = false)
-    private int warehouseId;
+    private String warehouseId;
 
     @Column(name = "com_id", nullable = false)
-    private long comId;
+    private String comId;
 
     @Column(name = "quantity", nullable = false)
     private double quantity;
@@ -40,38 +40,38 @@ public class WarehouseItemEntity {
     @Column(name = "update_time", nullable = true)
     private ZonedDateTime updateTime;
 
-    public long getItemId() {
+    public String getItemId() {
         return itemId;
     }
 
-    public WarehouseItemEntity setItemId(long itemId) {
+    public WarehouseItemEntity setItemId(String itemId) {
         this.itemId = itemId;
         return this;
     }
 
-    public int getImportId() {
+    public String getImportId() {
         return importId;
     }
 
-    public WarehouseItemEntity setImportId(int importId) {
+    public WarehouseItemEntity setImportId(String importId) {
         this.importId = importId;
         return this;
     }
 
-    public int getWarehouseId() {
+    public String getWarehouseId() {
         return warehouseId;
     }
 
-    public WarehouseItemEntity setWarehouseId(int warehouseId) {
+    public WarehouseItemEntity setWarehouseId(String warehouseId) {
         this.warehouseId = warehouseId;
         return this;
     }
 
-    public long getComId() {
+    public String getComId() {
         return comId;
     }
 
-    public WarehouseItemEntity setComId(long comId) {
+    public WarehouseItemEntity setComId(String comId) {
         this.comId = comId;
         return this;
     }
@@ -85,21 +85,21 @@ public class WarehouseItemEntity {
         return this;
     }
 
-    public ZonedDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public WarehouseItemEntity setCreateTime(ZonedDateTime createTime) {
-        this.createTime = createTime;
-        return this;
-    }
-
     public double getUsedQuantity() {
         return usedQuantity;
     }
 
     public WarehouseItemEntity setUsedQuantity(double usedQuantity) {
         this.usedQuantity = usedQuantity;
+        return this;
+    }
+
+    public ZonedDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public WarehouseItemEntity setCreateTime(ZonedDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
 

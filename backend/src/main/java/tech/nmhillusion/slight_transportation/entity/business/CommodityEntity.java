@@ -18,19 +18,19 @@ import java.time.ZonedDateTime;
 public class CommodityEntity extends Stringeable {
     @Id
     @Column(name = "com_id", nullable = false)
-    private Long comId;
+    private String comId;
     @Column(name = "com_name", nullable = false)
     private String comName;
     @Column(name = "com_type_id", nullable = false)
-    private int comTypeId;
+    private String comTypeId;
     @Column(name = "create_time", nullable = false)
     private ZonedDateTime createTime;
 
-    public Long getComId() {
+    public String getComId() {
         return comId;
     }
 
-    public CommodityEntity setComId(Long comId) {
+    public CommodityEntity setComId(String comId) {
         this.comId = comId;
         return this;
     }
@@ -44,11 +44,11 @@ public class CommodityEntity extends Stringeable {
         return this;
     }
 
-    public int getComTypeId() {
+    public String getComTypeId() {
         return comTypeId;
     }
 
-    public CommodityEntity setComTypeId(int comTypeId) {
+    public CommodityEntity setComTypeId(String comTypeId) {
         this.comTypeId = comTypeId;
         return this;
     }

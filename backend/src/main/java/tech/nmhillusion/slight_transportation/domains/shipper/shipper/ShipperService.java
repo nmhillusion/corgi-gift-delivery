@@ -12,10 +12,11 @@ import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 import tech.nmhillusion.n2mix.util.ExceptionUtil;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
-import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.RecipientEntity;
 import tech.nmhillusion.slight_transportation.entity.business.ShipperEntity;
+import tech.nmhillusion.slight_transportation.util.NumberUtil;
+import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,9 +54,9 @@ public interface ShipperService {
 
         @Override
         public ShipperEntity save(ShipperEntity shipperEntity) {
-            if (IdConstant.MIN_ID > shipperEntity.getShipperId()) {
+            if (IdValidator.isNotSetId(shipperEntity.getShipperId())) {
                 shipperEntity.setShipperId(
-                        (int) sequenceService.nextValue(
+                        sequenceService.nextValueInString(
                                 sequenceService.generateSeqNameForClass(
                                         getClass()
                                         , ShipperEntity.ID.SHIPPER_ID.name()
@@ -126,10 +127,10 @@ public interface ShipperService {
 
                         return new ShipperEntity()
                                 .setShipperId(
-                                        (int) Double.parseDouble(shipperId)
+                                        NumberUtil.parseStringFromDoubleToLong(shipperId)
                                 )
                                 .setShipperTypeId(
-                                        (int) Double.parseDouble(shipperTypeId)
+                                        NumberUtil.parseStringFromDoubleToLong(shipperTypeId)
                                 )
                                 .setShipperCode(shipperCode)
                                 .setShipperName(shipperName)

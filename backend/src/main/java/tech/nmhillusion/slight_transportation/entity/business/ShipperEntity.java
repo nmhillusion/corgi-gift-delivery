@@ -16,28 +16,28 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class ShipperEntity extends Stringeable {
     @Id
     @Column(name = "shipper_id", nullable = false)
-    private int shipperId;
+    private String shipperId;
     @Column(name = "shipper_type_id", nullable = false)
-    private int shipperTypeId;
+    private String shipperTypeId;
     @Column(name = "shipper_code", nullable = false)
     private String shipperCode;
     @Column(name = "shipper_name", nullable = false)
     private String shipperName;
 
-    public int getShipperId() {
+    public String getShipperId() {
         return shipperId;
     }
 
-    public ShipperEntity setShipperId(int shipperId) {
+    public ShipperEntity setShipperId(String shipperId) {
         this.shipperId = shipperId;
         return this;
     }
 
-    public int getShipperTypeId() {
+    public String getShipperTypeId() {
         return shipperTypeId;
     }
 
-    public ShipperEntity setShipperTypeId(int shipperTypeId) {
+    public ShipperEntity setShipperTypeId(String shipperTypeId) {
         this.shipperTypeId = shipperTypeId;
         return this;
     }

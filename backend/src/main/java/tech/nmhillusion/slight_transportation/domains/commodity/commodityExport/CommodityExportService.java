@@ -3,9 +3,9 @@ package tech.nmhillusion.slight_transportation.domains.commodity.commodityExport
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
-import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityExportEntity;
+import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.util.Map;
 
@@ -52,9 +52,9 @@ public interface CommodityExportService {
         @Override
         public CommodityExportEntity save(CommodityExportEntity commodityExportEntity) {
 
-            if (IdConstant.MIN_ID > commodityExportEntity.getExportId()) {
+            if (IdValidator.isNotSetId(commodityExportEntity.getExportId())) {
                 commodityExportEntity.setExportId(
-                        sequenceService.nextValue(
+                        sequenceService.nextValueInString(
                                 sequenceService.generateSeqNameForClass(
                                         getClass()
                                         , CommodityExportEntity.ID.EXPORT_ID.name()

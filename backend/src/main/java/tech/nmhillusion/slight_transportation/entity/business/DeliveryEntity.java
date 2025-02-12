@@ -18,13 +18,13 @@ import java.time.ZonedDateTime;
 public class DeliveryEntity extends Stringeable {
     @Id
     @Column(name = "delivery_id", nullable = false)
-    private long deliveryId;
+    private String deliveryId;
 
     @Column(name = "recipient_id", nullable = false)
-    private long recipientId;
+    private String recipientId;
 
     @Column(name = "commodity_id", nullable = false)
-    private long commodityId;
+    private String commodityId;
 
     @Column(name = "com_quantity", nullable = false)
     private double comQuantity;
@@ -36,34 +36,34 @@ public class DeliveryEntity extends Stringeable {
     private ZonedDateTime endTime;
 
     @Column(name = "current_attempt_id")
-    private long currentAttemptId;
+    private String currentAttemptId;
 
     @Column(name = "delivery_status_id", nullable = false)
-    private int deliveryStatusId;
+    private String deliveryStatusId;
 
-    public long getDeliveryId() {
+    public String getDeliveryId() {
         return deliveryId;
     }
 
-    public DeliveryEntity setDeliveryId(long deliveryId) {
+    public DeliveryEntity setDeliveryId(String deliveryId) {
         this.deliveryId = deliveryId;
         return this;
     }
 
-    public long getRecipientId() {
+    public String getRecipientId() {
         return recipientId;
     }
 
-    public DeliveryEntity setRecipientId(long recipientId) {
+    public DeliveryEntity setRecipientId(String recipientId) {
         this.recipientId = recipientId;
         return this;
     }
 
-    public long getCommodityId() {
+    public String getCommodityId() {
         return commodityId;
     }
 
-    public DeliveryEntity setCommodityId(long commodityId) {
+    public DeliveryEntity setCommodityId(String commodityId) {
         this.commodityId = commodityId;
         return this;
     }
@@ -95,20 +95,20 @@ public class DeliveryEntity extends Stringeable {
         return this;
     }
 
-    public long getCurrentAttemptId() {
+    public String getCurrentAttemptId() {
         return currentAttemptId;
     }
 
-    public DeliveryEntity setCurrentAttemptId(long currentAttemptId) {
+    public DeliveryEntity setCurrentAttemptId(String currentAttemptId) {
         this.currentAttemptId = currentAttemptId;
         return this;
     }
 
-    public int getDeliveryStatusId() {
+    public String getDeliveryStatusId() {
         return deliveryStatusId;
     }
 
-    public DeliveryEntity setDeliveryStatusId(int deliveryStatusId) {
+    public DeliveryEntity setDeliveryStatusId(String deliveryStatusId) {
         this.deliveryStatusId = deliveryStatusId;
         return this;
     }

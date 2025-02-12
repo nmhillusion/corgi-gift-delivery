@@ -17,6 +17,8 @@ public interface SequenceService {
 
     long nextValue(String seqName);
 
+    String nextValueInString(String seqName);
+
     void modifyCurrentValue(String seqName, long value);
 
     @TransactionalService
@@ -57,6 +59,11 @@ public interface SequenceService {
             modifyCurrentValue(seqName, nextValue);
 
             return nextValue;
+        }
+
+        @Override
+        public String nextValueInString(String seqName) {
+            return String.valueOf(nextValue(seqName));
         }
 
         @Override

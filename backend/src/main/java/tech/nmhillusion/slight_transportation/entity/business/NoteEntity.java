@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 public class NoteEntity extends Stringeable {
     @Id
     @Column(name = "note_id", nullable = false)
-    private long noteId;
+    private String noteId;
 
     @Column(name = "note_content", nullable = false)
     private String noteContent;
@@ -41,11 +41,11 @@ public class NoteEntity extends Stringeable {
     @Column(name = "warehouse_item_id")
     private String warehouseItemId;
 
-    public long getNoteId() {
+    public String getNoteId() {
         return noteId;
     }
 
-    public NoteEntity setNoteId(long noteId) {
+    public NoteEntity setNoteId(String noteId) {
         this.noteId = noteId;
         return this;
     }

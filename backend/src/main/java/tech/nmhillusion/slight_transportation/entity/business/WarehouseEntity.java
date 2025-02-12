@@ -16,7 +16,7 @@ import tech.nmhillusion.n2mix.type.Stringeable;
 public class WarehouseEntity extends Stringeable {
     @Id
     @Column(name = "warehouse_id", nullable = false)
-    private int warehouseId;
+    private String warehouseId;
 
     @Column(name = "warehouse_name", nullable = false)
     private String warehouseName;
@@ -24,11 +24,11 @@ public class WarehouseEntity extends Stringeable {
     @Column(name = "warehouse_address", nullable = true)
     private String warehouseAddress;
 
-    public int getWarehouseId() {
+    public String getWarehouseId() {
         return warehouseId;
     }
 
-    public WarehouseEntity setWarehouseId(int warehouseId) {
+    public WarehouseEntity setWarehouseId(String warehouseId) {
         this.warehouseId = warehouseId;
         return this;
     }

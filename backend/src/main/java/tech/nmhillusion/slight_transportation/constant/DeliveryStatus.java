@@ -6,18 +6,18 @@ package tech.nmhillusion.slight_transportation.constant;
  * created date: 2025-02-01
  */
 public enum DeliveryStatus {
-    CREATED(1),
-    IN_TRANSIT(2),
-    DELIVERED(3),
-    FAILED(4);
+    CREATED("1"),
+    IN_TRANSIT("2"),
+    DELIVERED("3"),
+    FAILED("4");
 
-    private final int dbValue;
+    private final String dbValue;
 
-    DeliveryStatus(int dbValue) {
+    DeliveryStatus(String dbValue) {
         this.dbValue = dbValue;
     }
 
-    public int getDbValue() {
+    public String getDbValue() {
         return dbValue;
     }
 }

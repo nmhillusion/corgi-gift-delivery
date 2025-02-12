@@ -12,9 +12,10 @@ import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 import tech.nmhillusion.n2mix.util.ExceptionUtil;
 import tech.nmhillusion.n2mix.util.StringUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
-import tech.nmhillusion.slight_transportation.constant.IdConstant;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.RecipientEntity;
+import tech.nmhillusion.slight_transportation.util.NumberUtil;
+import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,9 +53,9 @@ public interface RecipientService {
         @Override
         public RecipientEntity sync(RecipientEntity recipientEntity) {
 
-            if (IdConstant.MIN_ID > recipientEntity.getRecipientId()) {
+            if (IdValidator.isNotSetId(recipientEntity.getRecipientId())) {
                 recipientEntity.setRecipientId(
-                        sequenceService.nextValue(
+                        sequenceService.nextValueInString(
                                 sequenceService.generateSeqNameForClass(
                                         getClass()
                                         , RecipientEntity.ID.RECIPIENT_ID.name()
@@ -150,11 +151,11 @@ public interface RecipientService {
                         final String recipientTypeId = cells.get(3).getStringValue();
 
                         return new RecipientEntity()
-                                .setRecipientId((int) Double.parseDouble(recipientId))
+                                .setRecipientId(NumberUtil.parseStringFromDoubleToLong(recipientId))
                                 .setFullName(recipientName)
                                 .setIdCardNumber(idCardNumber)
                                 .setRecipientTypeId(
-                                        (int) Double.parseDouble(recipientTypeId)
+                                        NumberUtil.parseStringFromDoubleToLong(recipientTypeId)
                                 )
                                 ;
                     })

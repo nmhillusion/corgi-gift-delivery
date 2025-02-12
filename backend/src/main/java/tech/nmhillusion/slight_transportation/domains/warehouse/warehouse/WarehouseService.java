@@ -9,6 +9,7 @@ import tech.nmhillusion.n2mix.util.ExceptionUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseEntity;
+import tech.nmhillusion.slight_transportation.util.NumberUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -117,7 +118,7 @@ public interface WarehouseService {
 
                         final WarehouseEntity warehouseEntity = new WarehouseEntity();
                         warehouseEntity.setWarehouseId(
-                                (int) Double.parseDouble(cells.get(0).getStringValue())
+                                NumberUtil.parseStringFromDoubleToLong(cells.get(0).getStringValue())
                         );
                         warehouseEntity.setWarehouseName(cells.get(1).getStringValue());
                         warehouseEntity.setWarehouseAddress(cells.get(2).getStringValue());

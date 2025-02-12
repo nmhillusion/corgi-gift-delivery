@@ -18,29 +18,20 @@ import java.time.ZonedDateTime;
 public class CommodityImportEntity extends Stringeable {
     @Id
     @Column(name = "import_id", nullable = false)
-    private int importId;
+    private String importId;
     @Column(name = "import_name", nullable = false)
     private String importName;
     @Column(name = "import_time")
     private ZonedDateTime importTime;
     @Column(name = "warehouse_id", nullable = false)
-    private int warehouseId;
+    private String warehouseId;
 
-    public int getImportId() {
+    public String getImportId() {
         return importId;
     }
 
-    public CommodityImportEntity setImportId(int importId) {
+    public CommodityImportEntity setImportId(String importId) {
         this.importId = importId;
-        return this;
-    }
-
-    public ZonedDateTime getImportTime() {
-        return importTime;
-    }
-
-    public CommodityImportEntity setImportTime(ZonedDateTime importTime) {
-        this.importTime = importTime;
         return this;
     }
 
@@ -53,11 +44,20 @@ public class CommodityImportEntity extends Stringeable {
         return this;
     }
 
-    public int getWarehouseId() {
+    public ZonedDateTime getImportTime() {
+        return importTime;
+    }
+
+    public CommodityImportEntity setImportTime(ZonedDateTime importTime) {
+        this.importTime = importTime;
+        return this;
+    }
+
+    public String getWarehouseId() {
         return warehouseId;
     }
 
-    public CommodityImportEntity setWarehouseId(int warehouseId) {
+    public CommodityImportEntity setWarehouseId(String warehouseId) {
         this.warehouseId = warehouseId;
         return this;
     }

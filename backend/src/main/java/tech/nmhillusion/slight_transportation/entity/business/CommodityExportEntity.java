@@ -17,7 +17,7 @@ import java.time.ZonedDateTime;
 public class CommodityExportEntity {
     @Id
     @Column(name = "export_id", nullable = false)
-    private long exportId;
+    private String exportId;
 
     @Column(name = "export_name", nullable = false)
     private String exportName;
@@ -26,13 +26,13 @@ public class CommodityExportEntity {
     private ZonedDateTime exportTime;
 
     @Column(name = "warehouse_id", nullable = false)
-    private int warehouseId;
+    private String warehouseId;
 
-    public long getExportId() {
+    public String getExportId() {
         return exportId;
     }
 
-    public CommodityExportEntity setExportId(long exportId) {
+    public CommodityExportEntity setExportId(String exportId) {
         this.exportId = exportId;
         return this;
     }
@@ -55,11 +55,11 @@ public class CommodityExportEntity {
         return this;
     }
 
-    public int getWarehouseId() {
+    public String getWarehouseId() {
         return warehouseId;
     }
 
-    public CommodityExportEntity setWarehouseId(int warehouseId) {
+    public CommodityExportEntity setWarehouseId(String warehouseId) {
         this.warehouseId = warehouseId;
         return this;
     }
