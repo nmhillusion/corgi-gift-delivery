@@ -20,7 +20,7 @@ public interface WarehouseRepository extends JpaRepository<WarehouseEntity, Inte
             where w.warehouseId = :warehouseId
             and w.comId = :commodityId
             """)
-    double sumQuantityOfCommodityOfWarehouse(int warehouseId, long commodityId);
+    double sumQuantityOfCommodityOfWarehouse(String warehouseId, String commodityId);
 
     @Query("""
             select nvl(sum(nvl(w.usedQuantity, 0)), 0)
@@ -28,5 +28,5 @@ public interface WarehouseRepository extends JpaRepository<WarehouseEntity, Inte
             where w.warehouseId = :warehouseId
             and w.comId = :commodityId
             """)
-    double sumUsedQuantityOfCommodityOfWarehouse(int warehouseId, long commodityId);
+    double sumUsedQuantityOfCommodityOfWarehouse(String warehouseId, String commodityId);
 }

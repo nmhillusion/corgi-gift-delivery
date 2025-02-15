@@ -73,3 +73,13 @@
     @include iconStyle(var_.$warnColor);
   }
 }
+
+[disabled-action-button],
+.disabled-action-button {
+  color: gray;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

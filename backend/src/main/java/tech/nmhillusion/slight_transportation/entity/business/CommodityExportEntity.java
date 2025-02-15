@@ -28,6 +28,9 @@ public class CommodityExportEntity {
     @Column(name = "warehouse_id", nullable = false)
     private String warehouseId;
 
+    @Column(name = "delivery_id", nullable = false)
+    private String deliveryId;
+
     public String getExportId() {
         return exportId;
     }
@@ -61,6 +64,15 @@ public class CommodityExportEntity {
 
     public CommodityExportEntity setWarehouseId(String warehouseId) {
         this.warehouseId = warehouseId;
+        return this;
+    }
+
+    public String getDeliveryId() {
+        return deliveryId;
+    }
+
+    public CommodityExportEntity setDeliveryId(String deliveryId) {
+        this.deliveryId = deliveryId;
         return this;
     }
 

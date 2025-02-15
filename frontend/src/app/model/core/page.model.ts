@@ -1,4 +1,4 @@
-import { signal, WritableSignal } from "@angular/core";
+import { WritableSignal } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 
 export interface Page<T> {
@@ -9,6 +9,13 @@ export interface Page<T> {
     totalElements: number;
     totalPages: number;
   };
+}
+
+export function mapPage<T, R>(originalPage: Page<T>, mapper: (item: T) => R) {
+  return {
+    content: originalPage.content.map((it) => mapper(it)),
+    page: originalPage.page,
+  } as Page<R>;
 }
 
 export interface PaginatorHandler {

@@ -3,6 +3,7 @@ package tech.nmhillusion.slight_transportation.domains.warehouse.warehouse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.nmhillusion.slight_transportation.entity.business.CommodityExportEntity;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseEntity;
 
 import java.util.List;
@@ -42,8 +43,14 @@ public class WarehouseController {
     }
 
     @GetMapping(value = "/{warehouseId}/commodity/{commodityId}/remaining-quantity", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Double remainingQuantityOfCommodityOfWarehouse(@PathVariable int warehouseId,
-                                                          @PathVariable long commodityId) {
+    public Double remainingQuantityOfCommodityOfWarehouse(@PathVariable String warehouseId,
+                                                          @PathVariable String commodityId) {
         return service.remainingQuantityOfCommodityOfWarehouse(warehouseId, commodityId);
+    }
+
+    @PostMapping(value = "/{warehouseId}/export/delivery/{deliveryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CommodityExportEntity requestExportForDelivery(@PathVariable String warehouseId,
+                                                          @PathVariable String deliveryId) {
+        return service.requestExportForDelivery(warehouseId, deliveryId);
     }
 }

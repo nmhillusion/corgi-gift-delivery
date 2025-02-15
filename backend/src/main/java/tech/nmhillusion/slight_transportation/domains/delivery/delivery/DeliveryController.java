@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryEntity;
+import tech.nmhillusion.slight_transportation.entity.business.DeliveryPackageEntity;
 
 import java.util.Map;
 
@@ -35,5 +36,15 @@ public class DeliveryController {
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public DeliveryEntity save(@RequestBody DeliveryEntity entity) {
         return service.save(entity);
+    }
+
+    @PostMapping(value = "/{deliveryId}/package", produces = MediaType.APPLICATION_JSON_VALUE)
+    public DeliveryPackageEntity packageDelivery(@PathVariable String deliveryId) {
+        return service.packageDelivery(deliveryId);
+    }
+
+    @GetMapping(value = "/{deliveryId}/collected/{commodityId}")
+    public String getCurrentCollectedComQuantity(@PathVariable String deliveryId, @PathVariable String commodityId) {
+        return service.getCurrentCollectedComQuantity(deliveryId, commodityId);
     }
 }

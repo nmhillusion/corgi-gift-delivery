@@ -94,11 +94,11 @@ export class ListComponent extends BasePage {
     );
   }
 
-  editDelivery(delivery: DeliveryModel) {
+  editDelivery(delivery: DeliveryFEModel) {
     this.openEditDialog(delivery);
   }
 
-  viewDeliveryAttempt(delivery: DeliveryModel) {
+  viewDeliveryAttempt(delivery: DeliveryFEModel) {
     console.log("do viewDeliveryAttempt: ", delivery);
 
     this.$router.navigate([delivery.deliveryId, "delivery-attempt", "list"], {
@@ -106,7 +106,11 @@ export class ListComponent extends BasePage {
     });
   }
 
-  collectPackage(delivery: DeliveryModel) {
-    throw new Error("Method not implemented.");
+  collectPackage(delivery: DeliveryFEModel) {
+    console.log("do collect package for delivery: ", delivery);
+
+    this.$router.navigate([delivery.deliveryId, "delivery-package"], {
+      relativeTo: this.$activatedRoute.parent,
+    });
   }
 }

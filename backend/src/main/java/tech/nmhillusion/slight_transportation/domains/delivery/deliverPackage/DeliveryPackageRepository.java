@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryPackageEntity;
 
+import java.util.List;
+
 /**
  * created by: nmhillusion
  * <p>
@@ -18,4 +20,7 @@ public interface DeliveryPackageRepository extends JpaRepository<DeliveryPackage
 
     @Query("select max(d.packageId) from DeliveryPackageEntity d")
     long getMaxId();
+
+    @Query(" select d from DeliveryPackageEntity d where d.deliveryId = :deliveryId ")
+    List<DeliveryPackageEntity> getPackagesOfDelivery(String deliveryId);
 }

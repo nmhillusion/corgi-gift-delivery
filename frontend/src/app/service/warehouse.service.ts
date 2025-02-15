@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@app/../environments/environment";
+import { CommodityExportModel } from "@app/model/business/commodity-export.model";
 import { WarehouseModel } from "@app/model/business/warehouse.model";
 import { IdType } from "@app/model/core/id.model";
 
@@ -44,7 +45,16 @@ export class WarehouseService {
     commodityId: IdType
   ) {
     return this.$http.get<string>(
-      this.buildApiUrl(`/${warehouseId}/commodity/${commodityId}/remaining-quantity`)
+      this.buildApiUrl(
+        `/${warehouseId}/commodity/${commodityId}/remaining-quantity`
+      )
+    );
+  }
+
+  requestExportForDelivery(warehouseId: IdType, deliveryId: IdType) {
+    return this.$http.post<CommodityExportModel>(
+      this.buildApiUrl(`/${warehouseId}/export/delivery/${deliveryId}`),
+      {}
     );
   }
 }

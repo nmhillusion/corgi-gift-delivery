@@ -231,6 +231,7 @@ create table if not exists t_cx_commodity_export (
   export_id int primary key,
   export_name nvarchar(200),
   warehouse_id int not null,
+  delivery_id numeric not null,
   export_time timestamp with time zone
 );
 
@@ -238,6 +239,12 @@ alter table t_cx_commodity_export
 add constraint if not exists fk_cx_commodity_export__warehouse_id
 foreign key (warehouse_id)
 references t_cx_warehouse (warehouse_id);
+
+alter table t_cx_commodity_export
+add constraint if not exists fk_cx_commodity_export__delivery_id
+foreign key (delivery_id)
+references t_cx_delivery (delivery_id);
+
 
 create table if not exists t_cx_warehouse_export_item (
   item_id numeric primary key,

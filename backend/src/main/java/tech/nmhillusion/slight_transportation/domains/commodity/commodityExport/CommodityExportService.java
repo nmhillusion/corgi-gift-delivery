@@ -8,6 +8,7 @@ import tech.nmhillusion.slight_transportation.entity.business.CommodityExportEnt
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * created by: nmhillusion
@@ -22,6 +23,8 @@ public interface CommodityExportService {
     void deleteById(long exportId);
 
     CommodityExportEntity save(CommodityExportEntity commodityExportEntity);
+
+    Optional<CommodityExportEntity> getFirstExportOf(String warehouseId, String deliveryId);
 
     @TransactionalService
     class Impl implements CommodityExportService {
@@ -64,6 +67,13 @@ public interface CommodityExportService {
             }
 
             return repository.save(commodityExportEntity);
+        }
+
+        @Override
+        public Optional<CommodityExportEntity> getFirstExportOf(String warehouseId, String deliveryId) {
+            return repository.getExportsOfWarehouseAndDelivery(warehouseId, deliveryId)
+                    .stream()
+                    .findFirst();
         }
     }
 }

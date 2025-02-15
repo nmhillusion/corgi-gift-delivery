@@ -7,13 +7,18 @@ import tech.nmhillusion.n2mix.helper.office.excel.reader.model.RowData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 import tech.nmhillusion.n2mix.util.ExceptionUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
+import tech.nmhillusion.slight_transportation.domains.commodity.commodityExport.CommodityExportService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
+import tech.nmhillusion.slight_transportation.entity.business.CommodityExportEntity;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseEntity;
 import tech.nmhillusion.slight_transportation.util.NumberUtil;
 
+import java.text.MessageFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 
@@ -31,15 +36,19 @@ public interface WarehouseService {
 
     List<WarehouseEntity> importExcelFile(MultipartFile excelFile);
 
-    double remainingQuantityOfCommodityOfWarehouse(int warehouseId, long commodityId);
+    double remainingQuantityOfCommodityOfWarehouse(String warehouseId, String commodityId);
+
+    CommodityExportEntity requestExportForDelivery(String warehouseId, String deliveryId);
 
     @TransactionalService
     class Impl implements WarehouseService {
         private final WarehouseRepository repository;
+        private final CommodityExportService exportService;
         private final SequenceService sequenceService;
 
-        public Impl(WarehouseRepository repository, SequenceService sequenceService) {
+        public Impl(WarehouseRepository repository, CommodityExportService exportService, SequenceService sequenceService) {
             this.repository = repository;
+            this.exportService = exportService;
             this.sequenceService = sequenceService;
         }
 
@@ -132,10 +141,35 @@ public interface WarehouseService {
         }
 
         @Override
-        public double remainingQuantityOfCommodityOfWarehouse(int warehouseId, long commodityId) {
+        public double remainingQuantityOfCommodityOfWarehouse(String warehouseId, String commodityId) {
             return repository.sumQuantityOfCommodityOfWarehouse(warehouseId, commodityId)
                     - repository.sumUsedQuantityOfCommodityOfWarehouse(warehouseId, commodityId)
                     ;
+        }
+
+        @Override
+        public CommodityExportEntity requestExportForDelivery(String warehouseId, String deliveryId) {
+            final Optional<CommodityExportEntity> firstExport = exportService.getFirstExportOf(warehouseId, deliveryId);
+
+            if (firstExport.isPresent()) {
+                return firstExport.get();
+            }
+
+            final CommodityExportEntity comExport = new CommodityExportEntity()
+                    .setWarehouseId(warehouseId)
+                    .setDeliveryId(deliveryId)
+                    .setExportTime(ZonedDateTime.now())
+                    .setExportName(
+                            MessageFormat.format(
+                                    "Export of warehouse {0} for delivery {1}"
+                                    , warehouseId
+                                    , deliveryId
+                            )
+                    );
+
+            return exportService.save(
+                    comExport
+            );
         }
     }
 }

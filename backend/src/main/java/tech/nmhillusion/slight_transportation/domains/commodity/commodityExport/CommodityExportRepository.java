@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityExportEntity;
 
+import java.util.List;
+
 /**
  * created by: nmhillusion
  * <p>
@@ -19,4 +21,6 @@ public interface CommodityExportRepository extends JpaRepository<CommodityExport
     @Query("select c from CommodityExportEntity c where c.warehouseId = :warehouseId")
     Page<CommodityExportEntity> search(String warehouseId, PageRequest pageRequest);
 
+    @Query(" select c from CommodityExportEntity c where c.warehouseId = :warehouseId and c.deliveryId = :deliveryId ")
+    List<CommodityExportEntity> getExportsOfWarehouseAndDelivery(String warehouseId, String deliveryId);
 }

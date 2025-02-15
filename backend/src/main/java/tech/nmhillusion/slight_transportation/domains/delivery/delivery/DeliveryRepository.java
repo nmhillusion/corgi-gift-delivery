@@ -19,4 +19,6 @@ public interface DeliveryRepository extends JpaRepository<DeliveryEntity, Long> 
     @Query(" select max(d.deliveryId) from DeliveryEntity d ")
     long getMaxId();
 
+    @Query(" select nvl(sum(pi.quantity), 0) from DeliveryPackageItemEntity pi where pi.packageId = :packageId and pi.comId = :commodityId ")
+    double getCurrentCollectedComQuantity(String packageId, String commodityId);
 }

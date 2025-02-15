@@ -64,24 +64,29 @@ export class EditComponent extends BasePage {
 
     console.log("do save form...", this.formGroup.value);
 
+    const customAttrs: DeliveryModel = {
+      commodityId: this.formGroup.value.commodityId!,
+      recipientId: this.formGroup.value.recipientId!,
+      comQuantity: this.formGroup.value.comQuantity || 0,
+    };
+
+    const finalEntity = Object.assign<DeliveryModel, DeliveryModel>(
+      this.dialogData.delivery,
+      customAttrs
+    );
+
     this.registerSubscription(
-      this.$deliveryService
-        .save({
-          commodityId: this.formGroup.value.commodityId!,
-          recipientId: this.formGroup.value.recipientId!,
-          comQuantity: this.formGroup.value.comQuantity || 0,
-        })
-        .subscribe({
-          next: (result) => {
-            this.$dialogRef.close(result);
-          },
-          error: (error) => {
-            this.logMessage$.set({
-              logType: "error",
-              message: "Error: " + error,
-            });
-          },
-        })
+      this.$deliveryService.save(finalEntity).subscribe({
+        next: (result) => {
+          this.$dialogRef.close(result);
+        },
+        error: (error) => {
+          this.logMessage$.set({
+            logType: "error",
+            message: "Error: " + error,
+          });
+        },
+      })
     );
   }
 }

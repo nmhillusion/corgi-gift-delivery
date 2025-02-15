@@ -19,6 +19,13 @@ const routes: Routes = [
         (m) => m.DeliveryAttemptModule
       ),
   },
+  {
+    path: ":deliveryId/delivery-package",
+    loadComponent: () =>
+      import("./delivery-package/delivery-package.component").then(
+        (m) => m.DeliveryPackageComponent
+      ),
+  },
 ];
 
 @NgModule({

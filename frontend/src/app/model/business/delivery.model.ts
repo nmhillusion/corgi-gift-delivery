@@ -1,6 +1,6 @@
 import { WritableSignal } from "@angular/core";
 import { CommodityModel } from "@app/model/business/commodity.model";
-import { RecipientModel } from "@app/model/business/recipient.model";
+import { RecipientFEModel } from "@app/model/business/recipient.model";
 import { IdType } from "@app/model/core/id.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { DeliveryAttemptModel } from "./delivery-attempt.model";
@@ -18,10 +18,9 @@ export interface DeliveryModel {
 }
 
 export interface DeliveryFEModel extends DeliveryModel {
-  recipient$: WritableSignal<Nullable<RecipientModel>>;
+  recipient$: WritableSignal<Nullable<RecipientFEModel>>;
   commodity$: WritableSignal<Nullable<CommodityModel>>;
   currentAttempt$: WritableSignal<Nullable<DeliveryAttemptModel>>;
   deliveryStatus$: WritableSignal<Nullable<DeliveryStatusModel>>;
+  finishedCollectCommodity$: WritableSignal<boolean>;
 }
-
-

@@ -7,4 +7,5 @@ export const PAGE = {
     pageSize: 10,
     length: 0,
   } as PageEvent,
+  MAX_PAGE_SIZE: 1000,
 };

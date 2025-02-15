@@ -9,6 +9,7 @@ import tech.nmhillusion.slight_transportation.entity.business.DeliveryPackageEnt
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * created by: nmhillusion
@@ -24,6 +25,8 @@ public interface DeliveryPackageService {
     void deleteById(long packageId);
 
     DeliveryPackageEntity findById(long packageId);
+
+    Optional<DeliveryPackageEntity> getFirstPackageOfDelivery(String deliveryId);
 
     @TransactionalService
     class Impl implements DeliveryPackageService {
@@ -71,6 +74,13 @@ public interface DeliveryPackageService {
         @Override
         public DeliveryPackageEntity findById(long packageId) {
             return repository.findById(packageId).orElse(null);
+        }
+
+        @Override
+        public Optional<DeliveryPackageEntity> getFirstPackageOfDelivery(String deliveryId) {
+            return repository.getPackagesOfDelivery(deliveryId)
+                    .stream()
+                    .findFirst();
         }
     }
 }

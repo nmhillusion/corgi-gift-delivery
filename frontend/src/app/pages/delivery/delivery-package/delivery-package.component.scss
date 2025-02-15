@@ -1,0 +1,18 @@
+.delivery-info {
+  padding: 0.5em;
+  margin: 0.5em;
+  border: solid 1px #ddd;
+  display: grid;
+  grid-template-columns: auto auto;
+  width: fit-content;
+  gap: 1em;
+
+  .label {
+    font-weight: 700;
+  }
+
+  .missing-quantity {
+    background-color: #faa;
+    padding: 0 0.5em;
+  }
+}

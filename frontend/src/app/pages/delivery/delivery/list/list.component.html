@@ -64,13 +64,26 @@
             <mat-icon>edit</mat-icon>
           </button>
 
-          <button mat-icon-button (click)="viewDeliveryAttempt(el)">
-            <mat-icon>visibility</mat-icon>
+          <button mat-icon-button (click)="collectPackage(el)">
+            <mat-icon>precision_manufacturing</mat-icon>
           </button>
 
-          <button mat-icon-button (click)="collectPackage(el)">
+          @if (!el.finishedCollectCommodity$()) {
+          <span
+            class="disabled-action-button"
+            [matTooltip]="
+              !el.finishedCollectCommodity$()
+                ? 'Please collect enough commodity'
+                : null
+            "
+          >
+            <mat-icon>local_shipping</mat-icon>
+          </span>
+          } @else {
+          <button mat-icon-button (click)="viewDeliveryAttempt(el)">
             <mat-icon>local_shipping</mat-icon>
           </button>
+          }
         </td>
       </ng-container>
 

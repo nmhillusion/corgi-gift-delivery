@@ -9,6 +9,7 @@ import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryPackageItemEntity;
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
+import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
@@ -40,7 +41,7 @@ public interface DeliveryPackageItemService {
 
         @Override
         public Page<DeliveryPackageItemEntity> search(Map<String, ?> dto, PageRequest pageRequest) {
-            final long packageId = Long.parseLong(StringUtil.trimWithNull(dto.get("packageItemId")));
+            final long packageId = Long.parseLong(StringUtil.trimWithNull(dto.get("packageId")));
             return repository.search(packageId, pageRequest);
         }
 
@@ -68,7 +69,11 @@ public interface DeliveryPackageItemService {
 
         @Override
         public DeliveryPackageItemEntity save(DeliveryPackageItemEntity entity) {
-            entity.setItemId(generateId(entity));
+            if (IdValidator.isNotSetId(entity.getItemId())) {
+                entity
+                        .setItemId(generateId(entity))
+                        .setCreateTime(ZonedDateTime.now());
+            }
 
             LogHelper.getLogger(this).info("entity: {}", entity);
 
