@@ -5,12 +5,15 @@ import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.constant.DeliveryStatus;
 import tech.nmhillusion.slight_transportation.domains.delivery.delivery.DeliveryService;
+import tech.nmhillusion.slight_transportation.domains.delivery.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEntity;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryEntity;
+import tech.nmhillusion.slight_transportation.entity.business.DeliveryStatusEntity;
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,15 +33,19 @@ public interface DeliveryAttemptService {
 
     DeliveryAttemptEntity process(String attemptId, ProcessAttemptDto processAttemptDto);
 
+    List<DeliveryStatusEntity> getAvailableStatusForProcess(String attemptId);
+
     @TransactionalService
     class Impl implements DeliveryAttemptService {
         private final DeliveryAttemptRepository repository;
         private final DeliveryService deliveryService;
+        private final DeliveryStatusService deliveryStatusService;
         private final SequenceService sequenceService;
 
-        public Impl(DeliveryAttemptRepository repository, DeliveryService deliveryService, SequenceService sequenceService) {
+        public Impl(DeliveryAttemptRepository repository, DeliveryService deliveryService, DeliveryStatusService deliveryStatusService, SequenceService sequenceService) {
             this.repository = repository;
             this.deliveryService = deliveryService;
+            this.deliveryStatusService = deliveryStatusService;
             this.sequenceService = sequenceService;
         }
 
@@ -100,7 +107,9 @@ public interface DeliveryAttemptService {
                     deliveryAttemptEntity.setEndTime(processAttemptDto.getActionDate());
                     break;
                 case DeliveryStatus.DELIVERED:
-                    deliveryEntity.setCurrentAttemptId(attemptId)
+                    deliveryEntity
+                            .setCurrentAttemptId(attemptId)
+                            .setDeliveryStatusId(DeliveryStatus.DELIVERED.getDbValue())
                             .setEndTime(processAttemptDto.getActionDate());
                     deliveryAttemptEntity.setEndTime(processAttemptDto.getActionDate());
                     break;
@@ -112,6 +121,27 @@ public interface DeliveryAttemptService {
             deliveryService.save(deliveryEntity);
             return save(deliveryAttemptEntity);
         }
-    }
 
+        @Override
+        public List<DeliveryStatusEntity> getAvailableStatusForProcess(String attemptId) {
+            final DeliveryAttemptEntity entity_ = findById(attemptId);
+            final DeliveryStatus deliveryStatus = DeliveryStatus.fromDbValue(entity_.getDeliveryStatusId());
+
+            final List<DeliveryStatus> availableStatus = switch (deliveryStatus) {
+                case CREATED -> List.of(
+                        DeliveryStatus.IN_TRANSIT
+                );
+                case IN_TRANSIT -> List.of(
+                        DeliveryStatus.DELIVERED,
+                        DeliveryStatus.FAILED
+                );
+                case null, default -> List.of();
+            };
+
+            return availableStatus
+                    .stream()
+                    .map(sts -> deliveryStatusService.findById(sts.getDbValue()))
+                    .toList();
+        }
+    }
 }

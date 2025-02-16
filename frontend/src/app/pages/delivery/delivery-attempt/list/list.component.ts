@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
@@ -11,6 +11,9 @@ import { DeliveryAttemptService } from "@app/service/delivery-attempt.service";
 import { EditComponent } from "../edit/edit.component";
 import { SIZE } from "@app/layout/size.constant";
 import { ProcessComponent } from "../process/process.component";
+import { Nullable } from "@app/model/core/nullable.model";
+import { DeliveryService } from "@app/service/delivery.service";
+import { DeliveryModel } from "@app/model/business/delivery.model";
 
 @Component({
   standalone: true,
@@ -20,6 +23,7 @@ import { ProcessComponent } from "../process/process.component";
 })
 export class ListComponent extends BasePage {
   deliveryId: IdType = "";
+  delivery$ = signal<Nullable<DeliveryModel>>(null);
 
   tableDatasource = new MatTableDataSource<DeliveryAttemptFEModel>();
   paginator = this.generatePaginator();
@@ -36,7 +40,10 @@ export class ListComponent extends BasePage {
   ];
   /// methods
 
-  constructor(private $deliveryAttemptService: DeliveryAttemptService) {
+  constructor(
+    private $deliveryAttemptService: DeliveryAttemptService,
+    private $deliveryService: DeliveryService
+  ) {
     super("Delivery Attempt List");
   }
 
@@ -44,6 +51,12 @@ export class ListComponent extends BasePage {
     this.deliveryId = this.paramUtils.getParamOrThrow(
       this.$activatedRoute,
       "deliveryId"
+    );
+
+    this.registerSubscription(
+      this.$deliveryService.findById(this.deliveryId).subscribe((delivery) => {
+        this.delivery$.set(delivery);
+      })
     );
 
     this.search(PAGE.DEFAULT_PAGE_EVENT);

@@ -1,5 +1,7 @@
 package tech.nmhillusion.slight_transportation.domains.delivery.deliveryAttempt;
 
+import jakarta.validation.constraints.NotNull;
+import org.springframework.validation.annotation.Validated;
 import tech.nmhillusion.n2mix.type.Stringeable;
 
 import java.time.ZonedDateTime;
@@ -9,8 +11,11 @@ import java.time.ZonedDateTime;
  * <p>
  * created date: 2025-02-16
  */
+@Validated
 public class ProcessAttemptDto extends Stringeable {
+    @NotNull
     private String deliveryStatusId;
+    @NotNull
     private ZonedDateTime actionDate;
 
     public String getDeliveryStatusId() {

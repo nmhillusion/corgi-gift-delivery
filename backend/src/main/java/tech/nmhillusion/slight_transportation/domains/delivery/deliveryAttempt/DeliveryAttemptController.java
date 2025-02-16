@@ -1,10 +1,14 @@
 package tech.nmhillusion.slight_transportation.domains.delivery.deliveryAttempt;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEntity;
+import tech.nmhillusion.slight_transportation.entity.business.DeliveryStatusEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +50,13 @@ public class DeliveryAttemptController {
     }
 
     @PostMapping(value = "/{attemptId}/process", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public DeliveryAttemptEntity process(@PathVariable String attemptId, @RequestBody ProcessAttemptDto processAttemptDto) {
+    public DeliveryAttemptEntity process(@PathVariable @NotBlank String attemptId,
+                                         @RequestBody @Valid ProcessAttemptDto processAttemptDto) {
         return deliveryAttemptService.process(attemptId, processAttemptDto);
+    }
+
+    @GetMapping(value = "/{attemptId}/available-status-for-process", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<DeliveryStatusEntity> getAvailableStatusForProcess(@PathVariable @NotBlank String attemptId) {
+        return deliveryAttemptService.getAvailableStatusForProcess(attemptId);
     }
 }

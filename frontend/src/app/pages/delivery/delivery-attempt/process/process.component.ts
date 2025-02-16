@@ -1,4 +1,5 @@
-import { Component, inject, signal } from "@angular/core";
+import { DialogRef } from "@angular/cdk/dialog";
+import { Component, computed, inject, signal } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AppCommonModule } from "@app/core/app-common.module";
@@ -30,7 +31,7 @@ export class ProcessComponent extends BasePage {
 
   delivery$ = signal<Nullable<DeliveryFEModel>>(null);
 
-  deliveryStatusList$ = signal<DeliveryStatusModel[]>([]);
+  filteredDeliveryStatusList$ = signal<DeliveryStatusModel[]>([]);
 
   formGroup = new FormGroup({
     deliveryStatusId: new FormControl<IdType>("", [Validators.required]),
@@ -41,7 +42,7 @@ export class ProcessComponent extends BasePage {
   constructor(
     private $deliveryService: DeliveryService,
     private $deliveryAttemptService: DeliveryAttemptService,
-    private $deliveryStatusService: DeliveryStatusService
+    private $dialogRef: DialogRef<DeliveryAttemptModel>
   ) {
     super();
   }
@@ -63,15 +64,44 @@ export class ProcessComponent extends BasePage {
             this.$deliveryService.convertToFEModel(delivery, this)
           );
         }),
-      this.$deliveryStatusService
-        .getDeliveryStatusList()
-        .subscribe((deliveryStatusList) => {
-          this.deliveryStatusList$.set(deliveryStatusList);
+      this.$deliveryAttemptService
+        .getAvailableStatusForProcess(this.dialogData.deliveryId)
+        .subscribe((statusList) => {
+          this.filteredDeliveryStatusList$.set(statusList);
         })
     );
   }
 
   save() {
     console.log("do save form...", this.formGroup.value);
+
+    this.formUtils.revalidateForm(this.formGroup);
+
+    if (!this.formGroup.valid) {
+      this.logMessage$.set({
+        message: "Form is not valid",
+        logType: "error",
+      });
+      throw new Error("Form is not valid");
+    }
+
+    this.registerSubscription(
+      this.$deliveryAttemptService
+        .process(this.dialogData.deliveryId!, {
+          deliveryStatusId: this.formGroup.controls.deliveryStatusId.value!,
+          actionDate: this.formGroup.controls.actionDate.value!,
+        })
+        .subscribe({
+          next: (res) => {
+            this.$dialogRef.close(res);
+          },
+          error: (err) => {
+            this.logMessage$.set({
+              message: "Error when process attempt, please check. " + err,
+              logType: "error",
+            });
+          },
+        })
+    );
   }
 }

@@ -1,6 +1,14 @@
 <main-layout [basePage]="this">
   <div class="header-action-box">
-    <button mat-button mat-stroked-button color="primary" (click)="addAttempt()">Add attempt</button>
+    <button
+      mat-button
+      mat-stroked-button
+      color="primary"
+      (click)="addAttempt()"
+      *ngIf="!delivery$()?.endTime"
+    >
+      Add attempt
+    </button>
   </div>
 
   <div class="data-list">
@@ -52,7 +60,12 @@
             <mat-icon>edit</mat-icon>
           </button>
 
-          <button mat-icon-button color="primary" (click)="processAttempt(el)">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="processAttempt(el)"
+            [disabled]="!el.ableToProcess$()"
+          >
             <mat-icon>account_tree</mat-icon>
           </button>
         </td>

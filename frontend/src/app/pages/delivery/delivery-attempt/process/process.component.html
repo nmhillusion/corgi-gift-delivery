@@ -5,7 +5,7 @@
     <mat-form-field class="dialog-block">
       <mat-label>Delivery status</mat-label>
       <mat-select formControlName="deliveryStatusId">
-        @for (deliveryStatus of deliveryStatusList$(); track
+        @for (deliveryStatus of filteredDeliveryStatusList$(); track
         deliveryStatus.statusId) {
         <mat-option [value]="deliveryStatus.statusId">
           {{ deliveryStatus.statusName }}

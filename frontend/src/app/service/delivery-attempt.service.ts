@@ -11,6 +11,7 @@ import { BasePage } from "@app/pages/base.page";
 import { DeliveryTypeService } from "./delivery-type.service";
 import { ShipperService } from "./shipper.service";
 import { DeliveryStatusService } from "./delivery-status.service";
+import { DeliveryStatusModel } from "@app/model/business/delivery-status.model";
 
 @Injectable({ providedIn: "root" })
 export class DeliveryAttemptService {
@@ -61,6 +62,8 @@ export class DeliveryAttemptService {
     deliveryAttemptFE.deliveryType$ = signal(null);
     deliveryAttemptFE.shipper$ = signal(null);
     deliveryAttemptFE.deliveryStatus$ = signal(null);
+    deliveryAttemptFE.ableToProcess$ = signal(false);
+
     const shipperService = basePage.$injector.get(ShipperService);
 
     basePage.registerSubscription(
@@ -82,7 +85,12 @@ export class DeliveryAttemptService {
         .findById(deliveryAttemptModel.deliveryStatusId || 0)
         .subscribe((deliveryStatus) => {
           deliveryAttemptFE.deliveryStatus$.set(deliveryStatus);
-        })
+        }),
+      this.getAvailableStatusForProcess(
+        deliveryAttemptModel.attemptId!
+      ).subscribe((list_) => {
+        deliveryAttemptFE.ableToProcess$.set(list_.length > 0);
+      })
     );
 
     return deliveryAttemptFE;
@@ -92,12 +100,18 @@ export class DeliveryAttemptService {
     attemptId: IdType,
     processDto: {
       deliveryStatusId: IdType;
-      actionTime: Date;
+      actionDate: Date;
     }
   ) {
     return this.$http.post<DeliveryAttemptModel>(
       this.buildApiUrl(`${attemptId}/process`),
       processDto
+    );
+  }
+
+  getAvailableStatusForProcess(attemptId: IdType) {
+    return this.$http.get<DeliveryStatusModel[]>(
+      this.buildApiUrl(`${attemptId}/available-status-for-process`)
     );
   }
 }
