@@ -21,14 +21,16 @@
         <td mat-cell *matCellDef="let el">{{ el.importId }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="warehouseId">
-        <th mat-header-cell *matHeaderCellDef>Warehouse ID</th>
-        <td mat-cell *matCellDef="let el">{{ el.warehouseId }}</td>
+      <ng-container matColumnDef="warehouse">
+        <th mat-header-cell *matHeaderCellDef>Warehouse</th>
+        <td mat-cell *matCellDef="let el">
+          {{ el.warehouse$()?.warehouseName }}
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="comId">
-        <th mat-header-cell *matHeaderCellDef>Com ID</th>
-        <td mat-cell *matCellDef="let el">{{ el.comId }}</td>
+      <ng-container matColumnDef="commodity">
+        <th mat-header-cell *matHeaderCellDef>Commodity</th>
+        <td mat-cell *matCellDef="let el">{{ el.commodity$()?.comName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="quantity">
@@ -42,7 +44,6 @@
           {{ el.createTime | date : CONSTATNTS.FORMAT.DATETIME_FORMAT }}
         </td>
       </ng-container>
-
 
       <ng-container matColumnDef="action" stickyEnd>
         <th mat-header-cell *matHeaderCellDef></th>

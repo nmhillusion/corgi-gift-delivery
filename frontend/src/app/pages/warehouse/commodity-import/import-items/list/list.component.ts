@@ -5,9 +5,12 @@ import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { PAGE } from "@app/layout/page.constant";
 import { SIZE } from "@app/layout/size.constant";
-import { WarehouseItemModel } from "@app/model/business/warehouse-item.model";
+import {
+  WarehouseItemFEModel,
+  WarehouseItemModel,
+} from "@app/model/business/warehouse-item.model";
 import { Nullable } from "@app/model/core/nullable.model";
-import { PaginatorHandler } from "@app/model/core/page.model";
+import { mapPage, PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { CommodityImportService } from "@app/service/commodity-import.service";
 import { WarehouseItemService } from "@app/service/warehouse-item.service";
@@ -22,15 +25,15 @@ export class ListComponent extends BasePage {
   private commodityImportId: string = "";
   commodityImport$ = signal<Nullable<WarehouseItemModel>>(null);
 
-  tableDatasource = new MatTableDataSource<WarehouseItemModel>();
+  tableDatasource = new MatTableDataSource<WarehouseItemFEModel>();
 
   paginator = this.generatePaginator();
 
   displayedColumns = [
     "itemId",
     "importId",
-    "warehouseId",
-    "comId",
+    "warehouse",
+    "commodity",
     "quantity",
     "createTime",
   ];
@@ -69,11 +72,13 @@ export class ListComponent extends BasePage {
             name: "",
           }
         )
-        .subscribe((result) => {
-          console.log("result of search items in import: ", result);
+        .subscribe((resultPage) => {
+          console.log("result of search items in import: ", resultPage);
 
-          this.handlePageDataUpdate<WarehouseItemModel>(
-            result,
+          this.handlePageDataUpdate<WarehouseItemFEModel>(
+            mapPage(resultPage, (it) =>
+              this.$warehouseItemService.convertToWarehouseItemFE(it, this)
+            ),
             this.paginator,
             this.tableDatasource
           );

@@ -10,10 +10,10 @@ import { CommodityService } from "@app/pages/commodity/commodity-mgmt/commodity.
 import { CommodityImportService } from "./commodity-import.service";
 import { BasePage } from "@app/pages/base.page";
 import { IdType } from "@app/model/core/id.model";
+import { WarehouseService } from "./warehouse.service";
 
 @Injectable({ providedIn: "root" })
 export class WarehouseItemService {
-  
   constructor(private $http: HttpClient) {}
 
   buildApiUrl(path: string): string {
@@ -52,11 +52,13 @@ export class WarehouseItemService {
       ...warehouseItem,
       commodity$: signal(null),
       commodityImport$: signal(null),
+      warehouse$: signal(null),
     };
 
     (function (
       commodityService: CommodityService,
-      commodityImportService: CommodityImportService
+      commodityImportService: CommodityImportService,
+      warehouseService: WarehouseService
     ) {
       if (warehouseItem.comId) {
         basePage.registerSubscription(
@@ -81,9 +83,22 @@ export class WarehouseItemService {
             })
         );
       }
+
+      if (warehouseItem.warehouseId) {
+        basePage.registerSubscription(
+          warehouseService
+            .findById(warehouseItem.warehouseId)
+            .subscribe((warehouse) => {
+              if (warehouse) {
+                warehouseItemFE.warehouse$?.set(warehouse);
+              }
+            })
+        );
+      }
     })(
       basePage.$injector.get(CommodityService),
-      basePage.$injector.get(CommodityImportService)
+      basePage.$injector.get(CommodityImportService),
+      basePage.$injector.get(WarehouseService)
     );
 
     return warehouseItemFE;

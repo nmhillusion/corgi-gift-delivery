@@ -71,7 +71,7 @@ export class EditComponent extends BasePage {
     };
 
     const finalEntity = Object.assign<DeliveryModel, DeliveryModel>(
-      this.dialogData.delivery,
+      this.dialogData.delivery || {},
       customAttrs
     );
 
