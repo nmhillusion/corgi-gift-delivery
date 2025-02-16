@@ -1,0 +1,40 @@
+<div class="dialog-container">
+  <h2>Process delivery attempt</h2>
+
+  <form [formGroup]="formGroup">
+    <mat-form-field class="dialog-block">
+      <mat-label>Delivery status</mat-label>
+      <mat-select formControlName="deliveryStatusId">
+        @for (deliveryStatus of deliveryStatusList$(); track
+        deliveryStatus.statusId) {
+        <mat-option [value]="deliveryStatus.statusId">
+          {{ deliveryStatus.statusName }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Action date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="actionDate" />
+      <mat-hint>{{ CONSTATNTS.FORMAT.DATE_FORMAT }}</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div app-hr></div>
+
+    @if (logMessage$()) {
+    <app-inline-log-message [logMessage]="logMessage$" />
+    }
+
+    <div class="action-box">
+      <button mat-button mat-stroked-button color="primary" (click)="save()">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

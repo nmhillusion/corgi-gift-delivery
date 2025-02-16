@@ -95,7 +95,8 @@ create table if not exists t_cx_delivery_type (
 
 create table if not exists t_cx_delivery_status (
   status_id int primary key,
-  status_name nvarchar(100)
+  status_name nvarchar(100),
+  status_order numeric
 );
 
 

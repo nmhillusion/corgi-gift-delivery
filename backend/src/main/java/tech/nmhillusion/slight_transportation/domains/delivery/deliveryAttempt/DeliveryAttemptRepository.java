@@ -11,8 +11,8 @@ import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEnt
  * <p>
  * created date: 2025-02-03
  */
-public interface DeliveryAttemptRepository extends JpaRepository<DeliveryAttemptEntity, Long> {
+public interface DeliveryAttemptRepository extends JpaRepository<DeliveryAttemptEntity, String> {
 
     @Query(" select d from DeliveryAttemptEntity d where d.deliveryId = :deliveryId ")
-    Page<DeliveryAttemptEntity> search(long deliveryId, PageRequest pageRequest);
+    Page<DeliveryAttemptEntity> search(String deliveryId, PageRequest pageRequest);
 }

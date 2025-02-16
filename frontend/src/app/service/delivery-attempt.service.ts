@@ -16,7 +16,7 @@ import { DeliveryStatusService } from "./delivery-status.service";
 export class DeliveryAttemptService {
   constructor(private $http: HttpClient) {}
 
-  buildApiUrl(path: string) {
+  private buildApiUrl(path: string) {
     return `${environment.LINK.API_BASE_URL}/api/delivery-attempt/${path}`;
   }
 
@@ -86,5 +86,18 @@ export class DeliveryAttemptService {
     );
 
     return deliveryAttemptFE;
+  }
+
+  process(
+    attemptId: IdType,
+    processDto: {
+      deliveryStatusId: IdType;
+      actionTime: Date;
+    }
+  ) {
+    return this.$http.post<DeliveryAttemptModel>(
+      this.buildApiUrl(`${attemptId}/process`),
+      processDto
+    );
   }
 }

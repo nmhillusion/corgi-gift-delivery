@@ -1,5 +1,6 @@
 package tech.nmhillusion.slight_transportation.domains.delivery.deliveryStatus;
 
+import org.springframework.data.domain.Sort;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryStatusEntity;
 
@@ -26,7 +27,7 @@ public interface DeliveryStatusService {
 
         @Override
         public List<DeliveryStatusEntity> findAll() {
-            return deliveryStatusRepository.findAll();
+            return deliveryStatusRepository.findAll(Sort.by("statusOrder"));
         }
 
         @Override

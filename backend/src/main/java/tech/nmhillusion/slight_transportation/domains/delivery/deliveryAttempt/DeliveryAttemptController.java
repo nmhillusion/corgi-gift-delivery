@@ -23,7 +23,7 @@ public class DeliveryAttemptController {
     }
 
     @PostMapping(value = "/{deliveryId}/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<DeliveryAttemptEntity> search(@PathVariable long deliveryId,
+    public Page<DeliveryAttemptEntity> search(@PathVariable String deliveryId,
                                               @RequestBody Map<String, ?> dto,
                                               @RequestParam int pageIndex,
                                               @RequestParam int pageSize) {
@@ -31,7 +31,7 @@ public class DeliveryAttemptController {
     }
 
     @GetMapping(value = "/{attemptId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public DeliveryAttemptEntity findById(@PathVariable long attemptId) {
+    public DeliveryAttemptEntity findById(@PathVariable String attemptId) {
         return deliveryAttemptService.findById(attemptId);
     }
 
@@ -41,7 +41,12 @@ public class DeliveryAttemptController {
     }
 
     @DeleteMapping(value = "/{attemptId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteById(@PathVariable long attemptId) {
+    public void deleteById(@PathVariable String attemptId) {
         deliveryAttemptService.deleteById(attemptId);
+    }
+
+    @PostMapping(value = "/{attemptId}/process", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public DeliveryAttemptEntity process(@PathVariable String attemptId, @RequestBody ProcessAttemptDto processAttemptDto) {
+        return deliveryAttemptService.process(attemptId, processAttemptDto);
     }
 }

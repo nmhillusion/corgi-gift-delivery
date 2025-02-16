@@ -20,4 +20,13 @@ public enum DeliveryStatus {
     public String getDbValue() {
         return dbValue;
     }
+
+    public static DeliveryStatus fromDbValue(String dbValue) {
+        for (DeliveryStatus deliveryStatus : DeliveryStatus.values()) {
+            if (deliveryStatus.dbValue.equals(dbValue)) {
+                return deliveryStatus;
+            }
+        }
+        return null;
+    }
 }

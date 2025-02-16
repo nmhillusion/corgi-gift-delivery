@@ -10,6 +10,7 @@ import { BasePage } from "@app/pages/base.page";
 import { DeliveryAttemptService } from "@app/service/delivery-attempt.service";
 import { EditComponent } from "../edit/edit.component";
 import { SIZE } from "@app/layout/size.constant";
+import { ProcessComponent } from "../process/process.component";
 
 @Component({
   standalone: true,
@@ -97,5 +98,22 @@ export class ListComponent extends BasePage {
 
   addAttempt() {
     this.openEditDialog();
+  }
+
+  processAttempt(attempt: DeliveryAttemptFEModel) {
+    const dialogRef = this.$dialog.open<ProcessComponent>(ProcessComponent, {
+      data: {
+        deliveryId: this.deliveryId,
+        deliveryAttempt: attempt,
+      },
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
+    });
+
+    this.registerSubscription(
+      dialogRef.afterClosed().subscribe(() => {
+        this.search(PAGE.DEFAULT_PAGE_EVENT);
+      })
+    );
   }
 }
