@@ -1,10 +1,12 @@
 package tech.nmhillusion.slight_transportation.domains.note;
 
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import tech.nmhillusion.slight_transportation.entity.business.NoteEntity;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * created by: nmhillusion
@@ -36,29 +38,10 @@ public class NoteController {
         service.deleteById(noteId);
     }
 
-
-    @GetMapping(value = "/recipient/{recipientId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<NoteEntity> findAllByRecipientId(@PathVariable String recipientId) {
-        return service.findAllByRecipientId(recipientId);
-    }
-
-    @GetMapping(value = "/delivery/{deliveryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<NoteEntity> findAllByDeliveryId(@PathVariable String deliveryId) {
-        return service.findAllByDeliveryId(deliveryId);
-    }
-
-    @GetMapping(value = "/deliveryAttempt/{deliveryAttemptId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<NoteEntity> findAllByDeliveryAttemptId(@PathVariable String deliveryAttemptId) {
-        return service.findAllByDeliveryAttemptId(deliveryAttemptId);
-    }
-
-    @GetMapping(value = "/import/{importId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<NoteEntity> findAllByImportId(@PathVariable String importId) {
-        return service.findAllByImportId(importId);
-    }
-
-    @GetMapping(value = "/warehouseItem/{warehouseItemId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<NoteEntity> findAllByWarehouseItemId(@PathVariable String warehouseItemId) {
-        return service.findAllByWarehouseItemId(warehouseItemId);
+    @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<NoteEntity> search(@RequestBody @Valid Map<String, ?> searchDto,
+                                   @RequestParam(defaultValue = "0") int pageIndex,
+                                   @RequestParam(defaultValue = "10") int pageSize) {
+        return service.search(searchDto, pageIndex, pageSize);
     }
 }

@@ -1,11 +1,10 @@
 package tech.nmhillusion.slight_transportation.domains.note;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import tech.nmhillusion.slight_transportation.entity.business.NoteEntity;
-
-import java.lang.constant.ConstantDesc;
-import java.util.List;
 
 /**
  * created by: nmhillusion
@@ -13,19 +12,22 @@ import java.util.List;
  * created date: 2025-02-18
  */
 public interface NoteRepository extends JpaRepository<NoteEntity, String> {
-    @Query(" select n from NoteEntity n where n.recipientId = :recipientId ")
-    List<NoteEntity> findAllByRecipientId(String recipientId);
 
-    @Query(" select n from NoteEntity n where n.deliveryId = :deliveryId ")
-    List<NoteEntity> findAllByDeliveryId(String deliveryId);
-
-    @Query(" select n from NoteEntity n where n.deliveryAttemptId = :deliveryAttemptId ")
-    List<NoteEntity> findAllByDeliveryAttemptId(String deliveryAttemptId);
-
-    @Query(" select n from NoteEntity n where n.importId = :importId ")
-    List<NoteEntity> findAllByImportId(ConstantDesc importId);
-
-    @Query(" select n from NoteEntity n where n.warehouseItemId = :warehouseItemId ")
-    List<NoteEntity> findAllByWarehouseItemId(String warehouseItemId);
-
+    @Query(value = """
+            select n
+            from NoteEntity n
+            where 1 = 1
+            and (:recipientId is null or n.recipientId = :recipientId)
+            and (:deliveryId is null or n.deliveryId = :deliveryId)
+            and (:deliveryAttemptId is null or n.deliveryAttemptId = :deliveryAttemptId)
+            and (:importId is null or n.importId = :importId)
+            and (:warehouseItemId is null or n.warehouseItemId = :warehouseItemId)
+            order by n.noteTime desc
+            """)
+    Page<NoteEntity> search(String recipientId,
+                            String deliveryId,
+                            String deliveryAttemptId,
+                            String importId,
+                            String warehouseItemId,
+                            PageRequest pageRequest);
 }

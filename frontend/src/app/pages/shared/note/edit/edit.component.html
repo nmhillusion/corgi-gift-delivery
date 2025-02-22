@@ -1,0 +1,20 @@
+<div class="dialog-container">
+  <h2>Edit Note</h2>
+
+  <form class="note-form" [formGroup]="formGroup">
+    <mat-form-field>
+      <textarea matInput formControlName="noteContent"></textarea>
+      @if (formGroup.controls.noteContent.errors) {
+      <mat-error>
+        {{ formUtils.extractError(formGroup.controls.noteContent) }}
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <div class="action-box">
+      <button mat-button mat-stroked-button color="primary" (click)="save()">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

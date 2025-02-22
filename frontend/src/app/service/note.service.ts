@@ -2,7 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { IdType } from "@app/model/core/id.model";
 import { environment } from "@app/../environments/environment";
-import { NoteModel } from "@app/model/business/note.model";
+import { NoteModel, NoteOwnerDto } from "@app/model/business/note.model";
+import { Page } from "@app/model/core/page.model";
 
 @Injectable({ providedIn: "root" })
 export class NoteService {
@@ -24,34 +25,12 @@ export class NoteService {
     return this.$http.get<NoteModel>(this.buildApiUrl(id));
   }
 
-  findByRecipientId(recipientId: IdType) {
-    return this.$http.get<NoteModel[]>(
-      this.buildApiUrl(`findByRecipientId/${recipientId}`)
-    );
+  search(dto: NoteOwnerDto, pageIndex: number, pageSize: number) {
+    return this.$http.post<Page<NoteModel>>(this.buildApiUrl("search"), dto, {
+      params: {
+        pageIndex,
+        pageSize,
+      },
+    });
   }
-
-  findByDeliveryId(deliveryId: IdType) {
-    return this.$http.get<NoteModel[]>(
-      this.buildApiUrl(`findByDeliveryId/${deliveryId}`)
-    );
-  }
-
-  findByDeliveryAttemptId(deliveryAttemptId: IdType) {
-    return this.$http.get<NoteModel[]>(
-      this.buildApiUrl(`findByDeliveryAttemptId/${deliveryAttemptId}`)
-    );
-  }
-
-  findByImportId(importId: IdType) {
-    return this.$http.get<NoteModel[]>(
-      this.buildApiUrl(`findByImportId/${importId}`)
-    );
-  }
-
-  findByWarehouseItemId(warehouseItemId: IdType) {
-    return this.$http.get<NoteModel[]>(
-      this.buildApiUrl(`findByWarehouseItemId/${warehouseItemId}`)
-    );
-  }
-  
 }

@@ -3,12 +3,14 @@ import { Component, inject, signal } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AppCommonModule } from "@app/core/app-common.module";
+import { NoteOwnerDto } from "@app/model/business/note.model";
 import { RecipientTypeModel } from "@app/model/business/recipient-type.model";
 import { RecipientModel } from "@app/model/business/recipient.model";
 import { IdType } from "@app/model/core/id.model";
 import { LogModel } from "@app/model/core/log.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
+import { AppNoteComponent } from "@app/pages/shared/note/note.component";
 import { RecipientTypeService } from "@app/service/recipient-type.service";
 import { RecipientService } from "@app/service/recipient.service";
 import { catchError } from "rxjs";
@@ -16,7 +18,7 @@ import { catchError } from "rxjs";
 @Component({
   templateUrl: "./edit.component.html",
   styleUrls: ["./edit.component.scss"],
-  imports: [AppCommonModule],
+  imports: [AppCommonModule, AppNoteComponent],
 })
 export class EditComponent extends BasePage {
   data?: { recipient: RecipientModel } = inject(MAT_DIALOG_DATA);
@@ -32,6 +34,10 @@ export class EditComponent extends BasePage {
   });
 
   recipientTypeList$ = signal<RecipientTypeModel[]>([]);
+
+  noteOwnerDto: NoteOwnerDto = {
+    recipientId: this.data?.recipient.idCardNumber,
+  };
 
   /// Methods
 

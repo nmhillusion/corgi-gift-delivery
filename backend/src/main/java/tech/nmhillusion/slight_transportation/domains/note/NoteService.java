@@ -1,12 +1,16 @@
 package tech.nmhillusion.slight_transportation.domains.note;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.NoteEntity;
+import tech.nmhillusion.slight_transportation.helper.CollectionHelper;
+import tech.nmhillusion.slight_transportation.util.NumberUtil;
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Map;
 
 /**
  * created by: nmhillusion
@@ -21,15 +25,7 @@ public interface NoteService {
 
     void deleteById(String noteId);
 
-    List<NoteEntity> findAllByRecipientId(String recipientId);
-
-    List<NoteEntity> findAllByDeliveryId(String deliveryId);
-
-    List<NoteEntity> findAllByDeliveryAttemptId(String deliveryAttemptId);
-
-    List<NoteEntity> findAllByImportId(String importId);
-
-    List<NoteEntity> findAllByWarehouseItemId(String warehouseItemId);
+    Page<NoteEntity> search(Map<?, ?> searchDto, int pageIndex, int pageSize);
 
     @TransactionalService
     class Impl implements NoteService {
@@ -57,6 +53,22 @@ public interface NoteService {
                                 ZonedDateTime.now()
                         );
             }
+            noteEntity
+                    .setDeliveryAttemptId(
+                            NumberUtil.parseStringFromDoubleToLong(noteEntity.getDeliveryAttemptId())
+                    )
+                    .setDeliveryId(
+                            NumberUtil.parseStringFromDoubleToLong(noteEntity.getDeliveryId())
+                    )
+                    .setImportId(
+                            NumberUtil.parseStringFromDoubleToLong(noteEntity.getImportId())
+                    )
+                    .setRecipientId(
+                            NumberUtil.parseStringFromDoubleToLong(noteEntity.getRecipientId())
+                    )
+                    .setWarehouseItemId(
+                            NumberUtil.parseStringFromDoubleToLong(noteEntity.getWarehouseItemId())
+                    );
 
             return repository.save(noteEntity);
         }
@@ -72,28 +84,38 @@ public interface NoteService {
         }
 
         @Override
-        public List<NoteEntity> findAllByRecipientId(String recipientId) {
-            return repository.findAllByRecipientId(recipientId);
-        }
+        public Page<NoteEntity> search(Map<?, ?> searchDto, int pageIndex, int pageSize) {
+            final String recipientId = NumberUtil.parseStringFromDoubleToLong(
+                    CollectionHelper.getStringOrNullIfAbsent(
+                            searchDto,
+                            "recipientId"
+                    )
+            );
 
-        @Override
-        public List<NoteEntity> findAllByDeliveryId(String deliveryId) {
-            return repository.findAllByDeliveryId(deliveryId);
-        }
+            final String deliveryId = CollectionHelper.getStringOrNullIfAbsent(
+                    searchDto,
+                    "deliveryId"
+            );
 
-        @Override
-        public List<NoteEntity> findAllByDeliveryAttemptId(String deliveryAttemptId) {
-            return repository.findAllByDeliveryAttemptId(deliveryAttemptId);
-        }
+            final String deliveryAttemptId = CollectionHelper.getStringOrNullIfAbsent(
+                    searchDto,
+                    "deliveryAttemptId"
+            );
 
-        @Override
-        public List<NoteEntity> findAllByImportId(String importId) {
-            return repository.findAllByImportId(importId);
-        }
+            final String importId = CollectionHelper.getStringOrNullIfAbsent(
+                    searchDto,
+                    "importId"
+            );
 
-        @Override
-        public List<NoteEntity> findAllByWarehouseItemId(String warehouseItemId) {
-            return repository.findAllByWarehouseItemId(warehouseItemId);
+            final String warehouseItemId = CollectionHelper.getStringOrNullIfAbsent(
+                    searchDto,
+                    "warehouseItemId"
+            );
+
+            return repository.search(
+                    recipientId, deliveryId, deliveryAttemptId, importId, warehouseItemId,
+                    PageRequest.of(pageIndex, pageSize)
+            );
         }
     }
 

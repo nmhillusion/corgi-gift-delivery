@@ -10,3 +10,11 @@ export interface NoteModel {
   importId?: IdType;
   warehouseItemId?: IdType;
 }
+
+export interface NoteOwnerDto {
+  recipientId?: IdType;
+  deliveryId?: IdType;
+  deliveryAttemptId?: IdType;
+  importId?: IdType;
+  warehouseItemId?: IdType;
+}

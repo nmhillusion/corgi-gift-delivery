@@ -1,5 +1,7 @@
 package tech.nmhillusion.slight_transportation.util;
 
+import tech.nmhillusion.n2mix.validator.StringValidator;
+
 /**
  * created by: nmhillusion
  * <p>
@@ -8,9 +10,12 @@ package tech.nmhillusion.slight_transportation.util;
 public abstract class NumberUtil {
 
     public static String parseStringFromDoubleToLong(String doubleString) {
+        if (StringValidator.isBlank(doubleString)) {
+            return null;
+        }
+
         return String.valueOf(
                 (long) Double.parseDouble(doubleString)
         );
     }
-
 }
