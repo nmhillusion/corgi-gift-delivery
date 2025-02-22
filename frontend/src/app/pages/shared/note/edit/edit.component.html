@@ -2,7 +2,7 @@
   <h2>Edit Note</h2>
 
   <form class="note-form" [formGroup]="formGroup">
-    <mat-form-field>
+    <mat-form-field class="dialog-block">
       <textarea matInput formControlName="noteContent"></textarea>
       @if (formGroup.controls.noteContent.errors) {
       <mat-error>

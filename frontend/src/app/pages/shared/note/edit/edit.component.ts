@@ -30,6 +30,10 @@ export class EditComponent extends BasePage {
     super();
   }
 
+  protected override __ngOnInit__() {
+    this.formGroup.patchValue(this.dialogData.noteModel);
+  }
+
   save() {
     const entity = this.dialogData.noteModel;
 
