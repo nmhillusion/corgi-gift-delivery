@@ -5,7 +5,6 @@ import { AppCommonModule } from "@app/core/app-common.module";
 import { PAGE } from "@app/layout/page.constant";
 import { SIZE } from "@app/layout/size.constant";
 import { NoteModel, NoteOwnerDto } from "@app/model/business/note.model";
-import { PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { NoteService } from "@app/service/note.service";
 import { BehaviorSubject } from "rxjs";
@@ -20,18 +19,10 @@ import { EditComponent } from "./edit/edit.component";
 })
 export class AppNoteComponent extends BasePage {
   noteTableDataSource$ = new MatTableDataSource<NoteModel>();
-  paginator = {
-    pageIndex$: signal(0),
-    pageSize$: signal(10),
-    length$: signal(0),
-    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
-    onPageChange: (evt) => {
-      this.search(evt);
-    },
-  } as PaginatorHandler;
+  paginator = this.generatePaginator();
 
   @Input({
-    required: false,
+    required: true,
   })
   noteOwnerDto!: BehaviorSubject<NoteOwnerDto>;
 
