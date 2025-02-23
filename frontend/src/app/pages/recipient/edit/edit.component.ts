@@ -1,9 +1,8 @@
 import { DialogRef } from "@angular/cdk/dialog";
 import { Component, inject, signal } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AppCommonModule } from "@app/core/app-common.module";
-import { NoteOwnerDto } from "@app/model/business/note.model";
 import { RecipientTypeModel } from "@app/model/business/recipient-type.model";
 import { RecipientModel } from "@app/model/business/recipient.model";
 import { IdType } from "@app/model/core/id.model";
@@ -34,10 +33,6 @@ export class EditComponent extends BasePage {
   });
 
   recipientTypeList$ = signal<RecipientTypeModel[]>([]);
-
-  noteOwnerDto: NoteOwnerDto = {
-    recipientId: this.data?.recipient.idCardNumber,
-  };
 
   /// Methods
 

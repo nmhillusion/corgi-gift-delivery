@@ -49,9 +49,7 @@ public interface NoteService {
                                         )
                                 )
                         )
-                        .setNoteTime(
-                                ZonedDateTime.now()
-                        );
+                ;
             }
             noteEntity
                     .setDeliveryAttemptId(
@@ -68,6 +66,10 @@ public interface NoteService {
                     )
                     .setWarehouseItemId(
                             NumberUtil.parseStringFromDoubleToLong(noteEntity.getWarehouseItemId())
+                    )
+
+                    .setNoteTime(
+                            ZonedDateTime.now()
                     );
 
             return repository.save(noteEntity);
@@ -111,6 +113,14 @@ public interface NoteService {
                     searchDto,
                     "warehouseItemId"
             );
+
+            if (recipientId == null
+                    && deliveryId == null
+                    && deliveryAttemptId == null
+                    && importId == null
+                    && warehouseItemId == null) {
+                throw new IllegalArgumentException("At least one of the following must be specified: recipientId, deliveryId, deliveryAttemptId, importId, warehouseItemId");
+            }
 
             return repository.search(
                     recipientId, deliveryId, deliveryAttemptId, importId, warehouseItemId,

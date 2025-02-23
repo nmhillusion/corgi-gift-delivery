@@ -1,0 +1,27 @@
+<div class="dialog-container">
+  <h2>View recipient</h2>
+  <div class="recipient-info">
+    <div class="label">Recipient ID</div>
+    <div class="value">
+      {{ recipient$()?.recipientId }}
+    </div>
+
+    <div class="label">Recipient name</div>
+    <div class="value">
+      {{ recipient$()?.fullName }}
+    </div>
+
+    <div class="label">ID card number</div>
+    <div class="value">
+      {{ recipient$()?.idCardNumber }}
+    </div>
+
+    <div class="label">Recipient type</div>
+    <div class="value">
+      {{ recipient$()?.recipientType$()?.typeName }}
+    </div>
+  </div>
+
+  <mat-divider />
+  <app-note [noteOwnerDto]="noteOwner$"></app-note>
+</div>
