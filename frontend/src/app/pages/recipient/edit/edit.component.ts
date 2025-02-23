@@ -35,10 +35,6 @@ export class EditComponent extends BasePage {
 
   recipientTypeList$ = signal<RecipientTypeModel[]>([]);
 
-  noteOwnerDto: NoteOwnerDto = {
-    recipientId: this.data?.recipient.idCardNumber,
-  };
-
   /// Methods
 
   constructor(

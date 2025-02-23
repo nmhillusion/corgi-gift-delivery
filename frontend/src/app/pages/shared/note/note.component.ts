@@ -8,6 +8,7 @@ import { BasePage } from "@app/pages/base.page";
 import { NoteService } from "@app/service/note.service";
 import { EditComponent } from "./edit/edit.component";
 import { SIZE } from "@app/layout/size.constant";
+import { BehaviorSubject, Subject } from "rxjs";
 
 @Component({
   standalone: true,
@@ -23,7 +24,7 @@ export class AppNoteComponent extends BasePage {
   @Input({
     required: true,
   })
-  noteOwnerDto!: NoteOwnerDto;
+  noteOwnerDto!: BehaviorSubject<NoteOwnerDto>;
 
   noteList$ = new MatTableDataSource<NoteModel>();
 
@@ -40,13 +41,19 @@ export class AppNoteComponent extends BasePage {
   }
 
   protected override __ngOnInit__() {
-    this.search(PAGE.DEFAULT_PAGE_EVENT);
+    this.registerSubscription(
+      this.noteOwnerDto.subscribe((noteOwner) => {
+        if (noteOwner) {
+          this.search(PAGE.DEFAULT_PAGE_EVENT);
+        }
+      })
+    );
   }
 
   override search(pageEvt: PageEvent): void {
     this.registerSubscription(
       this.$noteService
-        .search(this.noteOwnerDto, pageEvt.pageIndex, pageEvt.pageSize)
+        .search(this.noteOwnerDto.getValue(), pageEvt.pageIndex, pageEvt.pageSize)
         .subscribe((resultPage) => {
           console.log("Search Note: ", { resultPage });
 
@@ -92,7 +99,7 @@ export class AppNoteComponent extends BasePage {
   }
 
   addNote() {
-    const defaultForm: NoteOwnerDto = this.noteOwnerDto;
+    const defaultForm: NoteOwnerDto = this.noteOwnerDto.getValue();
 
     this.openEditDialog(defaultForm);
   }
