@@ -1,14 +1,17 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit, signal } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { environment } from "@app/../environments/environment";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { PAGE } from "@app/layout/page.constant";
-import { NoteModel, NoteOwnerDto } from "@app/model/business/note.model";
-import { BasePage } from "@app/pages/base.page";
-import { NoteService } from "@app/service/note.service";
-import { EditComponent } from "./edit/edit.component";
 import { SIZE } from "@app/layout/size.constant";
-import { BehaviorSubject, Subject } from "rxjs";
+import { NoteModel, NoteOwnerDto } from "@app/model/business/note.model";
+import { Page, PaginatorHandler } from "@app/model/core/page.model";
+import { NoteService } from "@app/service/note.service";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { EditComponent } from "./edit/edit.component";
+import { BasePage } from "@app/pages/base.page";
 
 @Component({
   standalone: true,
@@ -19,10 +22,18 @@ import { BehaviorSubject, Subject } from "rxjs";
 })
 export class AppNoteComponent extends BasePage {
   noteTableDataSource$ = new MatTableDataSource<NoteModel>();
-  paginator = this.generatePaginator();
+  paginator = {
+    pageIndex$: signal(0),
+    pageSize$: signal(10),
+    length$: signal(0),
+    pageSizeOptions$: signal(PAGE.SIZE_OPTIONS),
+    onPageChange: (evt) => {
+      this.search(evt);
+    },
+  } as PaginatorHandler;
 
   @Input({
-    required: true,
+    required: false,
   })
   noteOwnerDto!: BehaviorSubject<NoteOwnerDto>;
 
@@ -35,9 +46,29 @@ export class AppNoteComponent extends BasePage {
     "action",
   ];
 
+  noteOwnerInfo$ = signal<string>("");
+
   /// methods
   constructor(private $noteService: NoteService) {
     super();
+  }
+
+  private calcNoteInfo(noteOwner: NoteOwnerDto) {
+    let ownerInfo = "";
+
+    if (noteOwner.deliveryAttemptId) {
+      ownerInfo = `Delivery Attempt #${noteOwner.deliveryAttemptId}`;
+    } else if (noteOwner.deliveryId) {
+      ownerInfo = `Delivery #${noteOwner.deliveryId}`;
+    } else if (noteOwner.importId) {
+      ownerInfo = `Import #${noteOwner.importId}`;
+    } else if (noteOwner.recipientId) {
+      ownerInfo = `Recipient #${noteOwner.recipientId}`;
+    } else if (noteOwner.warehouseItemId) {
+      ownerInfo = `Warehouse Item #${noteOwner.warehouseItemId}`;
+    }
+
+    return ownerInfo;
   }
 
   protected override __ngOnInit__() {
@@ -45,6 +76,8 @@ export class AppNoteComponent extends BasePage {
       this.noteOwnerDto.subscribe((noteOwner) => {
         if (noteOwner) {
           this.search(PAGE.DEFAULT_PAGE_EVENT);
+
+          this.noteOwnerInfo$.set(this.calcNoteInfo(noteOwner));
         }
       })
     );
@@ -53,7 +86,11 @@ export class AppNoteComponent extends BasePage {
   override search(pageEvt: PageEvent): void {
     this.registerSubscription(
       this.$noteService
-        .search(this.noteOwnerDto.getValue(), pageEvt.pageIndex, pageEvt.pageSize)
+        .search(
+          this.noteOwnerDto.getValue(),
+          pageEvt.pageIndex,
+          pageEvt.pageSize
+        )
         .subscribe((resultPage) => {
           console.log("Search Note: ", { resultPage });
 

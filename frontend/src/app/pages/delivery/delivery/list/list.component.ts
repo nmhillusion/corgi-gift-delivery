@@ -12,6 +12,9 @@ import {
 import { BasePage } from "@app/pages/base.page";
 import { DeliveryService } from "@app/service/delivery.service";
 import { EditComponent } from "../edit/edit.component";
+import { BehaviorSubject } from "rxjs";
+import { NoteOwnerDto } from "@app/model/business/note.model";
+import { AppNoteComponent } from "@app/pages/shared/note/note.component";
 
 @Component({
   standalone: true,
@@ -19,6 +22,7 @@ import { EditComponent } from "../edit/edit.component";
     MainLayoutComponent,
     AppCommonModule,
     ///
+    AppNoteComponent,
   ],
   templateUrl: "./list.component.html",
   styleUrl: "./list.component.scss",
@@ -26,6 +30,10 @@ import { EditComponent } from "../edit/edit.component";
 export class ListComponent extends BasePage {
   tableDatasource = new MatTableDataSource<DeliveryFEModel>();
   paginator = this.generatePaginator();
+
+  noteOwner$ = new BehaviorSubject<NoteOwnerDto>({
+    deliveryId: 0,
+  });
 
   displayedColumns = [
     "deliveryId",
@@ -111,6 +119,12 @@ export class ListComponent extends BasePage {
 
     this.$router.navigate([delivery.deliveryId, "delivery-package"], {
       relativeTo: this.$activatedRoute.parent,
+    });
+  }
+
+  noteDelivery(delivery: DeliveryFEModel) {
+    this.noteOwner$.next({
+      deliveryId: delivery.deliveryId,
     });
   }
 }

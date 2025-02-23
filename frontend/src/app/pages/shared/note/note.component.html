@@ -1,5 +1,5 @@
 <div class="widget-container">
-  <div class="panel-name">Note</div>
+  <div class="panel-name">Note - {{ noteOwnerInfo$() }}</div>
 
   <div class="header-action-box">
     <button mat-button mat-stroked-button color="accent" (click)="addNote()">
@@ -22,7 +22,7 @@
       <ng-container matColumnDef="noteTime">
         <th mat-header-cell *matHeaderCellDef>Note Time</th>
         <td mat-cell *matCellDef="let el">
-          {{ el.noteTime | date : CONSTATNTS.FORMAT.DATETIME_FORMAT }}
+          {{ el.noteTime | date : CONSTANTS.FORMAT.DATETIME_FORMAT }}
         </td>
       </ng-container>
 

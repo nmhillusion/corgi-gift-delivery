@@ -9,7 +9,6 @@ import { IdType } from "@app/model/core/id.model";
 import { LogModel } from "@app/model/core/log.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
-import { AppNoteComponent } from "@app/pages/shared/note/note.component";
 import { RecipientTypeService } from "@app/service/recipient-type.service";
 import { RecipientService } from "@app/service/recipient.service";
 import { catchError } from "rxjs";
@@ -17,7 +16,7 @@ import { catchError } from "rxjs";
 @Component({
   templateUrl: "./edit.component.html",
   styleUrls: ["./edit.component.scss"],
-  imports: [AppCommonModule, AppNoteComponent],
+  imports: [AppCommonModule],
 })
 export class EditComponent extends BasePage {
   data?: { recipient: RecipientModel } = inject(MAT_DIALOG_DATA);

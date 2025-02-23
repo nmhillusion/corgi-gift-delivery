@@ -15,7 +15,8 @@ import { RecipientTypeService } from "@app/service/recipient-type.service";
 import { RecipientService } from "@app/service/recipient.service";
 import { EditComponent } from "../edit/edit.component";
 import { ImportComponent } from "./import/import.component";
-import { RecipientViewComponent } from "../view/view.component";
+import { BehaviorSubject } from "rxjs";
+import { NoteOwnerDto } from "@app/model/business/note.model";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -133,16 +134,7 @@ export class ListComponent extends BasePage {
     );
   }
 
-  viewRecipient(recipient: RecipientModel) {
-    const ref = this.$dialog.open<RecipientViewComponent>(
-      RecipientViewComponent,
-      {
-        width: SIZE.DIALOG.width,
-        maxHeight: SIZE.DIALOG.height,
-        data: {
-          recipient,
-        },
-      }
-    );
+  noteRecipient(recipient: RecipientModel) {
+    // TODO: open note dialog
   }
 }
