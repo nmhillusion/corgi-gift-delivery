@@ -19,9 +19,7 @@ import { FormUtils } from "@app/util/form.util";
 import { ParamUtils } from "@app/util/param.util";
 import { AlertDialog } from "@app/widget/dialog/alert-dialog/alert.dialog";
 import { ConfirmDialog } from "@app/widget/dialog/confirm-dialog/confirm.dialog";
-import { BehaviorSubject, Subscription } from "rxjs";
-import { NoteOwnerDto } from "@app/model/business/note.model";
-import { SIZE } from "@app/layout/size.constant";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "",

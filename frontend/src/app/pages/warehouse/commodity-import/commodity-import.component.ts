@@ -8,7 +8,6 @@ import { SIZE } from "@app/layout/size.constant";
 import { CommodityImportModel } from "@app/model/business/commodity-import.model";
 import { WarehouseModel } from "@app/model/business/warehouse.model";
 import { Nullable } from "@app/model/core/nullable.model";
-import { PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { CommodityImportService } from "@app/service/commodity-import.service";
 import { WarehouseService } from "@app/service/warehouse.service";

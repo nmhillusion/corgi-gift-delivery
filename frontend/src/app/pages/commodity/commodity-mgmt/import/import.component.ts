@@ -6,8 +6,8 @@ import { LogModel } from "@app/model/core/log.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BehaviorSubject } from "rxjs";
 import { AppCommonModule } from "@app/core/app-common.module";
-import { AppInputFileComponent } from "../../../../widget/component/input-file/input-file.component";
-import { AppInlineLogMessage } from "../../../../widget/component/inline-log-message/inline-log-message.component";
+import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
+import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/inline-log-message.component";
 
 @Component({
   templateUrl: "./import.component.html",

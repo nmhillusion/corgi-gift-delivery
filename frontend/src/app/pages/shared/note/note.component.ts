@@ -1,17 +1,15 @@
-import { Component, Input, OnDestroy, OnInit, signal } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
+import { Component, Input, signal } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { environment } from "@app/../environments/environment";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { PAGE } from "@app/layout/page.constant";
 import { SIZE } from "@app/layout/size.constant";
 import { NoteModel, NoteOwnerDto } from "@app/model/business/note.model";
-import { Page, PaginatorHandler } from "@app/model/core/page.model";
-import { NoteService } from "@app/service/note.service";
-import { BehaviorSubject, Subscription } from "rxjs";
-import { EditComponent } from "./edit/edit.component";
+import { PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
+import { NoteService } from "@app/service/note.service";
+import { BehaviorSubject } from "rxjs";
+import { EditComponent } from "./edit/edit.component";
 
 @Component({
   standalone: true,

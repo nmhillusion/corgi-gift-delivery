@@ -8,7 +8,6 @@ import { SIZE } from "@app/layout/size.constant";
 import { CommodityExportModel } from "@app/model/business/commodity-export.model";
 import { WarehouseExportItemModel } from "@app/model/business/warehouse-export-item.model";
 import { Nullable } from "@app/model/core/nullable.model";
-import { PaginatorHandler } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { CommodityExportService } from "@app/service/commodity-export.service";
 import { WarehouseExportItemService } from "@app/service/warehouse-export-item.service";

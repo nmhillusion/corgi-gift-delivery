@@ -10,7 +10,7 @@ import {
   WarehouseItemModel,
 } from "@app/model/business/warehouse-item.model";
 import { Nullable } from "@app/model/core/nullable.model";
-import { mapPage, PaginatorHandler } from "@app/model/core/page.model";
+import { mapPage } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { CommodityImportService } from "@app/service/commodity-import.service";
 import { WarehouseItemService } from "@app/service/warehouse-item.service";

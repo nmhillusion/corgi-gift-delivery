@@ -7,7 +7,7 @@ import { BasePage } from "@app/pages/base.page";
 import { RecipientService } from "@app/service/recipient.service";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
-import { AppInlineLogMessage } from "../../../../widget/component/inline-log-message/inline-log-message.component";
+import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/inline-log-message.component";
 
 @Component({
   standalone: true,
