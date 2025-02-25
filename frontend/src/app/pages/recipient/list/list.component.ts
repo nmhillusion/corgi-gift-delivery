@@ -4,14 +4,17 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { SIZE } from "@app/layout/size.constant";
+import { NoteOwnerDto } from "@app/model/business/note.model";
 import {
   RecipientFEModel,
   RecipientModel,
 } from "@app/model/business/recipient.model";
 import { Page } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
+import { NoteDialog } from "@app/pages/shared/note/note-dialog/note-dialog.component";
 import { RecipientTypeService } from "@app/service/recipient-type.service";
 import { RecipientService } from "@app/service/recipient.service";
+import { BehaviorSubject } from "rxjs";
 import { EditComponent } from "../edit/edit.component";
 import { ImportComponent } from "./import/import.component";
 
@@ -132,6 +135,11 @@ export class ListComponent extends BasePage {
   }
 
   noteRecipient(recipient: RecipientModel) {
-    // TODO: open note dialog
+    this.showNoteDialog(
+      new BehaviorSubject<NoteOwnerDto>({
+        recipientId: recipient.recipientId,
+      }),
+      NoteDialog
+    );
   }
 }
