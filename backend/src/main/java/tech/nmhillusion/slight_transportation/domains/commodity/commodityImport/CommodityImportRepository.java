@@ -16,8 +16,13 @@ public interface CommodityImportRepository extends JpaRepository<CommodityImport
     @Query("select max(t.importId) from CommodityImportEntity t")
     long getMaxId();
 
-    @Query("select c from CommodityImportEntity c where :importName is null or c.importName like %:importName%")
-    Page<CommodityImportEntity> search(String importName, PageRequest pageRequest);
+    @Query("""
+            select c from CommodityImportEntity c
+             where 1 = 1
+               and (:importName is null or c.importName like %:importName%)
+               and (:warehouseId is null or c.warehouseId = :warehouseId)
+            """)
+    Page<CommodityImportEntity> search(String warehouseId, String importName, PageRequest pageRequest);
 
 
 }

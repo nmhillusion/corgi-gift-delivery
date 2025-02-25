@@ -37,8 +37,10 @@ public interface CommodityImportService {
 
         @Override
         public Page<CommodityImportEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
+            final String warehouseId = StringUtil.trimWithNull(dto.get("warehouseId"));
             final String importName = StringUtil.trimWithNull(dto.get("importName"));
-            return repository.search(importName, PageRequest.of(pageIndex, pageSize));
+
+            return repository.search(warehouseId, importName, PageRequest.of(pageIndex, pageSize));
         }
 
         @Override

@@ -60,7 +60,14 @@ export class CommodityImportComponent extends BasePage {
   override search(pageEvt: PageEvent) {
     this.registerSubscription(
       this.$commodityImportService
-        .search("", pageEvt.pageIndex, pageEvt.pageSize)
+        .search(
+          {
+            importName: "",
+            warehouseId: this.warehouseId,
+          },
+          pageEvt.pageIndex,
+          pageEvt.pageSize
+        )
         .subscribe((result) => {
           this.handlePageDataUpdate<CommodityImportModel>(
             result,
