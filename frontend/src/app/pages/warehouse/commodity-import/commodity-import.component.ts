@@ -12,6 +12,9 @@ import { BasePage } from "@app/pages/base.page";
 import { CommodityImportService } from "@app/service/commodity-import.service";
 import { WarehouseService } from "@app/service/warehouse.service";
 import { EditDialog } from "./edit/edit.component";
+import { NoteDialog } from "@app/pages/shared/note/note-dialog/note-dialog.component";
+import { NoteOwnerDto } from "@app/model/business/note.model";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
   templateUrl: "./commodity-import.component.html",
@@ -104,5 +107,14 @@ export class CommodityImportComponent extends BasePage {
     this.$router.navigate([commodityImport.importId, "items"], {
       relativeTo: this.$activatedRoute,
     });
+  }
+
+  noteImport(mImport: CommodityImportModel) {
+    this.showNoteDialog<NoteDialog>(
+      new BehaviorSubject<NoteOwnerDto>({
+        importId: mImport.importId,
+      }),
+      NoteDialog
+    );
   }
 }

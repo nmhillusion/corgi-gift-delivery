@@ -14,6 +14,9 @@ import { ProcessComponent } from "../process/process.component";
 import { Nullable } from "@app/model/core/nullable.model";
 import { DeliveryService } from "@app/service/delivery.service";
 import { DeliveryModel } from "@app/model/business/delivery.model";
+import { NoteDialog } from "@app/pages/shared/note/note-dialog/note-dialog.component";
+import { BehaviorSubject } from "rxjs";
+import { NoteOwnerDto } from "@app/model/business/note.model";
 
 @Component({
   standalone: true,
@@ -127,6 +130,15 @@ export class ListComponent extends BasePage {
       dialogRef.afterClosed().subscribe(() => {
         this.search(PAGE.DEFAULT_PAGE_EVENT);
       })
+    );
+  }
+
+  noteAttempt(attempt: DeliveryAttemptFEModel) {
+    this.showNoteDialog<NoteDialog>(
+      new BehaviorSubject<NoteOwnerDto>({
+        deliveryAttemptId: attempt.attemptId,
+      }),
+      NoteDialog
     );
   }
 }

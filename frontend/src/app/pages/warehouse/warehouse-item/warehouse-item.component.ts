@@ -4,12 +4,13 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { PAGE } from "@app/layout/page.constant";
-import {
-  WarehouseItemFEModel
-} from "@app/model/business/warehouse-item.model";
+import { NoteOwnerDto } from "@app/model/business/note.model";
+import { WarehouseItemFEModel } from "@app/model/business/warehouse-item.model";
 import { Page } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
+import { NoteDialog } from "@app/pages/shared/note/note-dialog/note-dialog.component";
 import { WarehouseItemService } from "@app/service/warehouse-item.service";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
   templateUrl: "./warehouse-item.component.html",
@@ -30,6 +31,8 @@ export class WarehouseItemComponent extends BasePage {
     "usedQuantity",
     "createTime",
     "updateTime",
+    ///
+    "action"
   ];
 
   /// methods
@@ -75,6 +78,15 @@ export class WarehouseItemComponent extends BasePage {
             this.tableDatasource
           );
         })
+    );
+  }
+
+  noteItem(item: WarehouseItemFEModel) {
+    this.showNoteDialog<NoteDialog>(
+      new BehaviorSubject<NoteOwnerDto>({
+        warehouseItemId: item.itemId,
+      }),
+      NoteDialog
     );
   }
 }

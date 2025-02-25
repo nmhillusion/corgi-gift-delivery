@@ -9,31 +9,22 @@ import {
   DeliveryFEModel,
   DeliveryModel,
 } from "@app/model/business/delivery.model";
+import { NoteOwnerDto } from "@app/model/business/note.model";
 import { BasePage } from "@app/pages/base.page";
 import { DeliveryService } from "@app/service/delivery.service";
-import { EditComponent } from "../edit/edit.component";
 import { BehaviorSubject } from "rxjs";
-import { NoteOwnerDto } from "@app/model/business/note.model";
-import { AppNoteComponent } from "@app/pages/shared/note/note.component";
+import { EditComponent } from "../edit/edit.component";
+import { NoteDialog } from "@app/pages/shared/note/note-dialog/note-dialog.component";
 
 @Component({
   standalone: true,
-  imports: [
-    MainLayoutComponent,
-    AppCommonModule,
-    ///
-    AppNoteComponent,
-  ],
+  imports: [MainLayoutComponent, AppCommonModule],
   templateUrl: "./list.component.html",
   styleUrl: "./list.component.scss",
 })
 export class ListComponent extends BasePage {
   tableDatasource = new MatTableDataSource<DeliveryFEModel>();
   paginator = this.generatePaginator();
-
-  noteOwner$ = new BehaviorSubject<NoteOwnerDto>({
-    deliveryId: 0,
-  });
 
   displayedColumns = [
     "deliveryId",
@@ -123,8 +114,11 @@ export class ListComponent extends BasePage {
   }
 
   noteDelivery(delivery: DeliveryFEModel) {
-    this.noteOwner$.next({
-      deliveryId: delivery.deliveryId,
-    });
+    this.showNoteDialog<NoteDialog>(
+      new BehaviorSubject<NoteOwnerDto>({
+        deliveryId: delivery.deliveryId,
+      }),
+      NoteDialog
+    );
   }
 }
