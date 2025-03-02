@@ -7,6 +7,7 @@ export interface DeliveryPackageItemModel {
   itemId?: IdType;
   packageId?: IdType;
   warehouseId?: IdType;
+  warehouseItemId?: IdType;
   exportId?: IdType;
   comId?: IdType;
   quantity?: IdType;

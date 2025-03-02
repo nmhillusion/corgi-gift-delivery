@@ -27,6 +27,9 @@ public class DeliveryPackageItemEntity {
     @Column(name = "warehouse_id", nullable = false)
     private String warehouseId;
 
+    @Column(name = "warehouse_item_id")
+    private String warehouseItemId;
+
     @Column(name = "export_id", nullable = false)
     private String exportId;
 
@@ -99,6 +102,15 @@ public class DeliveryPackageItemEntity {
 
     public DeliveryPackageItemEntity setCreateTime(ZonedDateTime createTime) {
         this.createTime = createTime;
+        return this;
+    }
+
+    public String getWarehouseItemId() {
+        return warehouseItemId;
+    }
+
+    public DeliveryPackageItemEntity setWarehouseItemId(String warehouseItemId) {
+        this.warehouseItemId = warehouseItemId;
         return this;
     }
 

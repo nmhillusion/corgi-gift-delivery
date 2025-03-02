@@ -10,6 +10,7 @@ import tech.nmhillusion.slight_transportation.domains.delivery.deliverPackage.pa
 import tech.nmhillusion.slight_transportation.domains.delivery.delivery.DeliveryService;
 import tech.nmhillusion.slight_transportation.domains.delivery.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
+import tech.nmhillusion.slight_transportation.domains.warehouse.warehouseItem.WarehouseItemService;
 import tech.nmhillusion.slight_transportation.entity.business.*;
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
@@ -44,14 +45,16 @@ public interface DeliveryAttemptService {
         private final DeliveryStatusService deliveryStatusService;
         private final DeliveryPackageService packageService;
         private final DeliveryPackageItemService packageItemService;
+        private final WarehouseItemService warehouseItemService;
         private final SequenceService sequenceService;
 
-        public Impl(DeliveryAttemptRepository repository, DeliveryService deliveryService, DeliveryStatusService deliveryStatusService, DeliveryPackageService packageService, DeliveryPackageItemService packageItemService, SequenceService sequenceService) {
+        public Impl(DeliveryAttemptRepository repository, DeliveryService deliveryService, DeliveryStatusService deliveryStatusService, DeliveryPackageService packageService, DeliveryPackageItemService packageItemService, WarehouseItemService warehouseItemService, SequenceService sequenceService) {
             this.repository = repository;
             this.deliveryService = deliveryService;
             this.deliveryStatusService = deliveryStatusService;
             this.packageService = packageService;
             this.packageItemService = packageItemService;
+            this.warehouseItemService = warehouseItemService;
             this.sequenceService = sequenceService;
         }
 
@@ -145,7 +148,9 @@ public interface DeliveryAttemptService {
             final List<DeliveryPackageItemEntity> allItemsOfPackage = packageItemService.getAllItemsOfPackage(deliveryPackageEntity.getPackageId());
 
             for (DeliveryPackageItemEntity packageItem : allItemsOfPackage) {
-                /// TODO: 2025-03-02 Update status of warehouse item as useded
+                final WarehouseItemEntity warehouseItem = warehouseItemService.findById(packageItem.getWarehouseItemId());
+                warehouseItem.setUsedQuantity(warehouseItem.getUsedQuantity() + packageItem.getQuantity());
+                warehouseItemService.sync(warehouseItem);
             }
         }
 

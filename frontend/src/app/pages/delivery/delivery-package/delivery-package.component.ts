@@ -229,6 +229,7 @@ export class DeliveryPackageComponent extends BasePage {
             comId: delivery.commodityId,
             packageId: this.packageId,
             warehouseId,
+            warehouseItemId: this.formGroup.controls.warehouseItemId.value!,
             quantity: Number(this.formGroup.controls.quantity.value),
           };
 
