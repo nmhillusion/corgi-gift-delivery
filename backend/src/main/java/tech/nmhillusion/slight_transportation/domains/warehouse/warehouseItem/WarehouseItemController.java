@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseItemEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,17 +29,29 @@ public class WarehouseItemController {
     }
 
     @DeleteMapping(value = "/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteById(@PathVariable long itemId) {
+    public void deleteById(@PathVariable String itemId) {
         service.deleteById(itemId);
     }
 
+    @GetMapping(value = "/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WarehouseItemEntity findById(@PathVariable String itemId) {
+        return service.findById(itemId);
+    }
+
+
     @PostMapping(value = "/search-in-warehouse/{warehouseId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<WarehouseItemEntity> searchItemsInWarehouse(@PathVariable int warehouseId, @RequestBody Map<String, ?> dto, @RequestParam int pageIndex, @RequestParam int pageSize) {
+    public Page<WarehouseItemEntity> searchItemsInWarehouse(@PathVariable String warehouseId, @RequestBody Map<String, ?> dto, @RequestParam int pageIndex, @RequestParam int pageSize) {
         return service.searchItemsInWarehouse(warehouseId, dto, pageIndex, pageSize);
     }
 
     @PostMapping(value = "/search-in-import/{importId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<WarehouseItemEntity> searchItemsInImport(@PathVariable int importId, @RequestBody Map<String, ?> dto, @RequestParam int pageIndex, @RequestParam int pageSize) {
+    public Page<WarehouseItemEntity> searchItemsInImport(@PathVariable String importId, @RequestBody Map<String, ?> dto, @RequestParam int pageIndex, @RequestParam int pageSize) {
         return service.searchItemsInImport(importId, dto, pageIndex, pageSize);
+    }
+
+    @GetMapping(value = "/available-items-in-warehouse/{warehouseId}/{commodityId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<WarehouseItemEntity> getAvailableItemsInWarehouse(@PathVariable String warehouseId,
+                                                                  @PathVariable String commodityId) {
+        return service.getAvailableItemsInWarehouse(warehouseId, commodityId);
     }
 }

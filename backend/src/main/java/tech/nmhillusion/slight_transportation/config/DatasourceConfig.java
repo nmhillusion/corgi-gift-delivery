@@ -101,8 +101,9 @@ public class DatasourceConfig {
         em.setPackagesToScan(Application.class.getPackage().getName()); // Replace with your package
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         // Add Hibernate properties as needed
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("showSql", "true");
         em.setJpaProperties(properties);
         return em;
     }

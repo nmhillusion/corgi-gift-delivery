@@ -6,16 +6,18 @@ import { AppCommonModule } from "@app/core/app-common.module";
 import { PAGE } from "@app/layout/page.constant";
 import { DeliveryPackageItemModel } from "@app/model/business/delivery-package-item.model";
 import { DeliveryFEModel } from "@app/model/business/delivery.model";
+import { WarehouseItemFEModel } from "@app/model/business/warehouse-item.model";
 import { WarehouseModel } from "@app/model/business/warehouse.model";
 import { IdType } from "@app/model/core/id.model";
 import { Nullable } from "@app/model/core/nullable.model";
+import { mapPage } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { DeliveryPackageItemService } from "@app/service/delivery-package-item.service";
 import { DeliveryService } from "@app/service/delivery.service";
 import { WarehouseExportItemService } from "@app/service/warehouse-export-item.service";
 import { WarehouseService } from "@app/service/warehouse.service";
-import { MainLayoutComponent } from "../../../layout/main-layout/main-layout.component";
-import { mapPage } from "@app/model/core/page.model";
+import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { WarehouseItemService } from "@app/service/warehouse-item.service";
 
 @Component({
   standalone: true,
@@ -28,6 +30,7 @@ export class DeliveryPackageComponent extends BasePage {
   delivery$ = signal<Nullable<DeliveryFEModel>>(null);
 
   warehouseList$ = signal<WarehouseModel[]>([]);
+  warehouseItemList$ = signal<WarehouseItemFEModel[]>([]);
 
   deliveryPackageItemDatasource$ =
     new MatTableDataSource<DeliveryPackageItemModel>();
@@ -43,6 +46,9 @@ export class DeliveryPackageComponent extends BasePage {
 
   formGroup = new FormGroup({
     warehouseId: new FormControl<Nullable<IdType>>(null, [Validators.required]),
+    warehouseItemId: new FormControl<Nullable<IdType>>(null, [
+      Validators.required,
+    ]),
     quantity: new FormControl<number>(0, [
       Validators.required,
       Validators.min(0.1),
@@ -60,7 +66,7 @@ export class DeliveryPackageComponent extends BasePage {
   /// methods
   constructor(
     private $warehouseService: WarehouseService,
-    private $warehouseExportService: WarehouseExportItemService,
+    private $warehouseItemService: WarehouseItemService,
     private $deliveryService: DeliveryService,
     private $deliveryPackageItemService: DeliveryPackageItemService
   ) {
@@ -109,28 +115,43 @@ export class DeliveryPackageComponent extends BasePage {
 
         if (nextWhId && comId) {
           this.registerSubscription(
-            this.$warehouseService
-              .remainingQuantityOfCommodityOfWarehouse(nextWhId, comId)
-              .subscribe((remainQuantityRaw) => {
-                const remainQuantity = Number(remainQuantityRaw);
-
-                if (Number.isNaN(remainQuantity)) {
-                  throw new Error(
-                    "remainQuantity is not a number: " + remainQuantityRaw
-                  );
-                }
-
-                this.formGroup.controls.quantity.setValidators([
-                  Validators.required,
-                  Validators.min(0.1),
-                  Validators.max(remainQuantity),
-                ]);
-
-                this.formGroup.controls.quantity.updateValueAndValidity();
+            this.$warehouseItemService
+              .getAvailableItemsInWarehouse(
+                nextWhId,
+                this.delivery$()?.commodityId || ""
+              )
+              .subscribe((items) => {
+                this.warehouseItemList$.set(
+                  items.map((it) =>
+                    this.$warehouseItemService.convertToWarehouseItemFE(
+                      it,
+                      this
+                    )
+                  )
+                );
               })
           );
         }
-      })
+      }),
+
+      this.formGroup.controls.warehouseItemId.valueChanges.subscribe(
+        (itemId) => {
+          if (itemId) {
+            this.registerSubscription(
+              this.$warehouseItemService
+                .findById(itemId)
+                .subscribe((itemEl) => {
+                  this.formGroup.controls.quantity.setValidators([
+                    Validators.required,
+                    Validators.min(0.1),
+                    Validators.max(itemEl.quantity - itemEl.usedQuantity),
+                  ]);
+                  this.formGroup.controls.quantity.updateValueAndValidity();
+                })
+            );
+          }
+        }
+      )
     );
   }
 
@@ -224,7 +245,7 @@ export class DeliveryPackageComponent extends BasePage {
 
   goBack() {
     console.log("go back");
-    
+
     this.$router.navigate([""], {
       relativeTo: this.$activatedRoute.parent,
     });

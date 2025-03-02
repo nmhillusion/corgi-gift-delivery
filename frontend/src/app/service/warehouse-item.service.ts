@@ -1,16 +1,16 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, Injector, signal } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { environment } from "@app/../environments/environment";
 import {
   WarehouseItemFEModel,
   WarehouseItemModel,
 } from "@app/model/business/warehouse-item.model";
 import { Page } from "@app/model/core/page.model";
+import { BasePage } from "@app/pages/base.page";
 import { CommodityService } from "@app/pages/commodity/commodity-mgmt/commodity.service";
 import { CommodityImportService } from "./commodity-import.service";
-import { BasePage } from "@app/pages/base.page";
-import { IdType } from "@app/model/core/id.model";
 import { WarehouseService } from "./warehouse.service";
+import { IdType } from "@app/model/core/id.model";
 
 @Injectable({ providedIn: "root" })
 export class WarehouseItemService {
@@ -20,12 +20,12 @@ export class WarehouseItemService {
     return `${environment.LINK.API_BASE_URL}/api/warehouse-item${path}`;
   }
 
-  findById(itemId: number) {
+  findById(itemId: IdType) {
     return this.$http.get<WarehouseItemModel>(this.buildApiUrl(`/${itemId}`));
   }
 
   searchItemsInWarehouse(
-    warehouseId: number | string,
+    warehouseId: IdType,
     pageIndex: number,
     pageSize: number,
     searchDto: {
@@ -128,6 +128,14 @@ export class WarehouseItemService {
     return this.$http.post<WarehouseItemModel>(
       this.buildApiUrl("/sync"),
       warehouseItem
+    );
+  }
+
+  getAvailableItemsInWarehouse(warehouseId: IdType, commodityId: IdType) {
+    return this.$http.get<WarehouseItemModel[]>(
+      this.buildApiUrl(
+        `/available-items-in-warehouse/${warehouseId}/${commodityId}`
+      )
     );
   }
 }

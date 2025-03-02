@@ -106,7 +106,19 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field *ngIf="formGroup.controls.warehouseId.value">
+      <mat-label>Import</mat-label>
+      <mat-select formControlName="warehouseItemId">
+        @for (item of warehouseItemList$(); track item.itemId) {
+        <mat-option [value]="item.itemId"
+          >{{ item.commodityImport$()?.importName }} -
+          Qty: {{ item.quantity - item.usedQuantity }}</mat-option
+        >
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="formGroup.controls.warehouseItemId.value">
       <mat-label>Quantity</mat-label>
       <input matInput type="number" formControlName="quantity" />
       <mat-error *ngIf="formGroup.controls.quantity.errors">

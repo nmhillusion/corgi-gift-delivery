@@ -15,6 +15,7 @@ import { BasePage } from "@app/pages/base.page";
 import { CommodityImportService } from "@app/service/commodity-import.service";
 import { WarehouseItemService } from "@app/service/warehouse-item.service";
 import { EditDialog } from "../edit/edit.component";
+import { CommodityImportModel } from "@app/model/business/commodity-import.model";
 
 @Component({
   templateUrl: "./list.component.html",
@@ -23,7 +24,7 @@ import { EditDialog } from "../edit/edit.component";
 })
 export class ListComponent extends BasePage {
   private commodityImportId: string = "";
-  commodityImport$ = signal<Nullable<WarehouseItemModel>>(null);
+  commodityImport$ = signal<Nullable<CommodityImportModel>>(null);
 
   tableDatasource = new MatTableDataSource<WarehouseItemFEModel>();
 

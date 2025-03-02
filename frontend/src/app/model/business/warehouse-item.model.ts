@@ -10,14 +10,14 @@ export interface WarehouseItemModel {
   importId?: IdType;
   warehouseId?: IdType;
   comId?: IdType;
-  quantity?: number;
-  usedQuantity?: number;
+  quantity: number;
+  usedQuantity: number;
   createTime?: Date;
   updateTime?: Date;
 }
 
 export interface WarehouseItemFEModel extends WarehouseItemModel {
-  commodityImport$?: WritableSignal<Nullable<CommodityImportModel>>;
-  commodity$?: WritableSignal<Nullable<CommodityModel>>;
-  warehouse$?: WritableSignal<Nullable<WarehouseModel>>;
+  commodityImport$: WritableSignal<Nullable<CommodityImportModel>>;
+  commodity$: WritableSignal<Nullable<CommodityModel>>;
+  warehouse$: WritableSignal<Nullable<WarehouseModel>>;
 }

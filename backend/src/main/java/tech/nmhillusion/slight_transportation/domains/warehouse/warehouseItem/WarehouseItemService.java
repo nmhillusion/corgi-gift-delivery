@@ -10,6 +10,7 @@ import tech.nmhillusion.slight_transportation.entity.business.WarehouseItemEntit
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,13 +19,17 @@ import java.util.Map;
  * created date: 2024-12-15
  */
 public interface WarehouseItemService {
-    Page<WarehouseItemEntity> searchItemsInWarehouse(int warehouseId, Map<String, ?> dto, int pageIndex, int pageSize);
+    Page<WarehouseItemEntity> searchItemsInWarehouse(String warehouseId, Map<String, ?> dto, int pageIndex, int pageSize);
 
-    Page<WarehouseItemEntity> searchItemsInImport(int importId, Map<String, ?> dto, int pageIndex, int pageSize);
+    Page<WarehouseItemEntity> searchItemsInImport(String importId, Map<String, ?> dto, int pageIndex, int pageSize);
 
     WarehouseItemEntity sync(WarehouseItemEntity dto);
 
-    void deleteById(long itemId);
+    void deleteById(String itemId);
+
+    List<WarehouseItemEntity> getAvailableItemsInWarehouse(String warehouseId, String commodityId);
+
+    WarehouseItemEntity findById(String itemId);
 
     @TransactionalService
     class Impl implements WarehouseItemService {
@@ -37,7 +42,7 @@ public interface WarehouseItemService {
         }
 
         @Override
-        public Page<WarehouseItemEntity> searchItemsInWarehouse(int warehouseId, Map<String, ?> dto, int pageIndex, int pageSize) {
+        public Page<WarehouseItemEntity> searchItemsInWarehouse(String warehouseId, Map<String, ?> dto, int pageIndex, int pageSize) {
             final ZonedDateTime createTimeFrom = dto.containsKey("createTimeFrom") ? ZonedDateTime.parse(
                     StringUtil.trimWithNull(dto.get("createTimeFrom"))
             ) : null;
@@ -54,7 +59,7 @@ public interface WarehouseItemService {
         }
 
         @Override
-        public Page<WarehouseItemEntity> searchItemsInImport(int importId, Map<String, ?> dto, int pageIndex, int pageSize) {
+        public Page<WarehouseItemEntity> searchItemsInImport(String importId, Map<String, ?> dto, int pageIndex, int pageSize) {
             final ZonedDateTime createTimeFrom = dto.containsKey("createTimeFrom") ? ZonedDateTime.parse(
                     StringUtil.trimWithNull(dto.get("createTimeFrom"))
             ) : null;
@@ -92,8 +97,18 @@ public interface WarehouseItemService {
         }
 
         @Override
-        public void deleteById(long itemId) {
+        public void deleteById(String itemId) {
             repository.deleteById(itemId);
+        }
+
+        @Override
+        public List<WarehouseItemEntity> getAvailableItemsInWarehouse(String warehouseId, String commodityId) {
+            return repository.getAvailableItemsInWarehouse(warehouseId, commodityId);
+        }
+
+        @Override
+        public WarehouseItemEntity findById(String itemId) {
+            return repository.findById(itemId).orElse(null);
         }
     }
 }

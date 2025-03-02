@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import tech.nmhillusion.slight_transportation.entity.business.WarehouseItemEntity;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * created by: nmhillusion
  * <p>
  * created date: 2024-12-15
  */
-public interface WarehouseItemRepository extends JpaRepository<WarehouseItemEntity, Long> {
+public interface WarehouseItemRepository extends JpaRepository<WarehouseItemEntity, String> {
 
     @Query("""
             select w
@@ -22,7 +23,7 @@ public interface WarehouseItemRepository extends JpaRepository<WarehouseItemEnti
                 and (:from is null or w.createTime >= :from)
                 and (:to is null or w.createTime <= :to)
             """)
-    Page<WarehouseItemEntity> searchItemsInWarehouse(int warehouseId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
+    Page<WarehouseItemEntity> searchItemsInWarehouse(String warehouseId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
 
     @Query("""
                 select w
@@ -31,8 +32,11 @@ public interface WarehouseItemRepository extends JpaRepository<WarehouseItemEnti
                 and (:from is null or w.createTime >= :from)
                 and (:to is null or w.createTime <= :to)
             """)
-    Page<WarehouseItemEntity> searchItemsInImport(int importId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
+    Page<WarehouseItemEntity> searchItemsInImport(String importId, ZonedDateTime from, ZonedDateTime to, PageRequest pageRequest);
 
     @Query("select max(w.itemId) from WarehouseItemEntity w")
     long getMaxId();
+
+    @Query(" select w from WarehouseItemEntity w where w.warehouseId = :warehouseId and w.comId = :commodityId and w.usedQuantity < w.quantity ")
+    List<WarehouseItemEntity> getAvailableItemsInWarehouse(String warehouseId, String commodityId);
 }
