@@ -64,7 +64,9 @@ export class ProcessComponent extends BasePage {
           );
         }),
       this.$deliveryAttemptService
-        .getAvailableStatusForProcess(this.dialogData.deliveryId)
+        .getAvailableStatusForProcess(
+          this.dialogData.deliveryAttempt.attemptId || "-1"
+        )
         .subscribe((statusList) => {
           this.filteredDeliveryStatusList$.set(statusList);
         })
@@ -86,7 +88,7 @@ export class ProcessComponent extends BasePage {
 
     this.registerSubscription(
       this.$deliveryAttemptService
-        .process(this.dialogData.deliveryId!, {
+        .process(this.dialogData.deliveryAttempt.attemptId!, {
           deliveryStatusId: this.formGroup.controls.deliveryStatusId.value!,
           actionDate: this.formGroup.controls.actionDate.value!,
         })

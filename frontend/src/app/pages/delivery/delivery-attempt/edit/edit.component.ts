@@ -14,6 +14,7 @@ import { DeliveryAttemptService } from "@app/service/delivery-attempt.service";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
 import { ShipperService } from "@app/service/shipper.service";
 import { AppInlineLogMessage } from "@app/widget/component/inline-log-message/inline-log-message.component";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
   standalone: true,
@@ -36,6 +37,8 @@ export class EditComponent extends BasePage {
 
   deliveryTypeList$: WritableSignal<DeliveryTypeModel[]> = signal([]);
 
+  currentDeliveryTypeId$ = new BehaviorSubject<Nullable<IdType>>(null);
+
   /// methods
   constructor(
     private $deliveryAttemptService: DeliveryAttemptService,
@@ -50,7 +53,12 @@ export class EditComponent extends BasePage {
     this.registerSubscription(
       this.$deliveryTypeService.findAll().subscribe((deliveryTypeList) => {
         this.deliveryTypeList$.set(deliveryTypeList);
-      })
+      }),
+      this.formGroup.controls.deliveryTypeId.valueChanges.subscribe(
+        (newDeliveryTypeId) => {
+          this.currentDeliveryTypeId$.next(newDeliveryTypeId);
+        }
+      )
     );
 
     this.formGroup.patchValue(this.dialogData.deliveryAttempt);

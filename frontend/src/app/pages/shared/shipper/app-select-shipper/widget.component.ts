@@ -1,4 +1,10 @@
-import { Component, forwardRef, Input, signal } from "@angular/core";
+import {
+  Component,
+  forwardRef,
+  Input,
+  signal,
+  WritableSignal,
+} from "@angular/core";
 import {
   ControlValueAccessor,
   FormControl,
@@ -32,6 +38,9 @@ export class AppSelectShipperWidget
 {
   @Input({ required: true })
   formControl = new FormControl<Nullable<IdType>>("", [Validators.required]);
+
+  @Input()
+  deliveryTypeIdRx?: BehaviorSubject<Nullable<IdType>>;
 
   list$ = new BehaviorSubject<ShipperModel[]>([]);
 
@@ -69,11 +78,24 @@ export class AppSelectShipperWidget
   }
 
   protected override __ngOnInit__() {
+    if (this.deliveryTypeIdRx) {
+      this.registerSubscription(
+        this.deliveryTypeIdRx.subscribe((deliveryTypeId) => {
+          this.reloadOptionList(deliveryTypeId);
+        })
+      );
+    }
+
+    this.triggerUpdateFormControlValue();
+  }
+
+  private reloadOptionList(deliveryTypeId: Nullable<IdType>) {
     this.registerSubscription(
       this.$shipperService
         .search(
           {
             name: "",
+            deliveryTypeId: deliveryTypeId || "-1",
           },
           0,
           20
@@ -100,8 +122,6 @@ export class AppSelectShipperWidget
           );
         })
     );
-
-    this.triggerUpdateFormControlValue();
   }
 
   displayFn(shipperId: IdType): string {

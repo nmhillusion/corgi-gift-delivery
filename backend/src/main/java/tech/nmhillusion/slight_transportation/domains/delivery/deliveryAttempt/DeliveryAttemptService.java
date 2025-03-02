@@ -105,7 +105,9 @@ public interface DeliveryAttemptService {
 
             switch (DeliveryStatus.fromDbValue(processAttemptDto.getDeliveryStatusId())) {
                 case DeliveryStatus.IN_TRANSIT:
-                    deliveryEntity.setCurrentAttemptId(attemptId);
+                    deliveryEntity.setCurrentAttemptId(attemptId)
+                            .setDeliveryStatusId(DeliveryStatus.IN_TRANSIT.getDbValue())
+                    ;
                     deliveryAttemptEntity.setStartTime(processAttemptDto.getActionDate());
                     break;
                 case DeliveryStatus.FAILED:
@@ -134,7 +136,7 @@ public interface DeliveryAttemptService {
             deliveryAttemptEntity.setEndTime(processAttemptDto.getActionDate());
 
             final Optional<DeliveryPackageEntity> packageOpt = packageService.getFirstPackageOfDelivery(deliveryEntity.getDeliveryId());
-            if (packageOpt.isEmpty()){
+            if (packageOpt.isEmpty()) {
                 throw new NotFoundException("Cannot find package of delivery");
             }
 
