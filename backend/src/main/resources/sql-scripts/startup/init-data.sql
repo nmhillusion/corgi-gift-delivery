@@ -27,14 +27,14 @@ values (4, 'Giao hàng thất bại', 4);
 
 ---------
 
-insert into t_cx_shipper_type (type_id, type_name)
-values (1, 'Agent');
+insert into t_cx_shipper_type (type_id, type_name, delivery_type_id)
+values (1, 'Agent', 1);
 
-insert into t_cx_shipper_type (type_id, type_name)
-values (2, 'CA');
+insert into t_cx_shipper_type (type_id, type_name, delivery_type_id)
+values (2, 'CA', 2);
 
-insert into t_cx_shipper_type (type_id, type_name)
-values (3, 'Bưu điện');
+insert into t_cx_shipper_type (type_id, type_name, delivery_type_id)
+values (3, 'Bưu điện', 3);
 
 ---------
 

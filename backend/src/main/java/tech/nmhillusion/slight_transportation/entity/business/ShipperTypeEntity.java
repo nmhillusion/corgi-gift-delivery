@@ -21,6 +21,10 @@ public class ShipperTypeEntity extends Stringeable {
     @Column(name = "type_name", nullable = false, unique = true)
     private String typeName;
 
+    @Column(name = "delivery_type_id", nullable = false)
+    private String deliveryTypeId;
+
+
     public String getTypeId() {
         return typeId;
     }
@@ -36,6 +40,15 @@ public class ShipperTypeEntity extends Stringeable {
 
     public ShipperTypeEntity setTypeName(String typeName) {
         this.typeName = typeName;
+        return this;
+    }
+
+    public String getDeliveryTypeId() {
+        return deliveryTypeId;
+    }
+
+    public ShipperTypeEntity setDeliveryTypeId(String deliveryTypeId) {
+        this.deliveryTypeId = deliveryTypeId;
         return this;
     }
 }

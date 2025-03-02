@@ -15,6 +15,7 @@ import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.RecipientEntity;
 import tech.nmhillusion.slight_transportation.entity.business.ShipperEntity;
+import tech.nmhillusion.slight_transportation.helper.CollectionHelper;
 import tech.nmhillusion.slight_transportation.util.NumberUtil;
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
@@ -80,8 +81,10 @@ public interface ShipperService {
 
         @Override
         public Page<ShipperEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
+            final String deliveryTypeId = CollectionHelper.getStringOrNullIfAbsent(dto, "deliveryTypeId");
             final String name = StringUtil.trimWithNull(dto.get("name")).toLowerCase();
             return repository.search(
+                    deliveryTypeId,
                     name,
                     PageRequest.of(pageIndex, pageSize)
             );

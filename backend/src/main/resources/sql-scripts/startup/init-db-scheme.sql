@@ -115,8 +115,15 @@ create table if not exists t_cx_delivery (
 
 create table if not exists t_cx_shipper_type (
   type_id int primary key,
-  type_name nvarchar(100)
+  type_name nvarchar(100),
+  delivery_type_id int not null
 );
+
+alter table t_cx_shipper_type
+add constraint if not exists fk_cx_shipper_type__delivery_type_id
+foreign key (delivery_type_id)
+references t_cx_delivery_type (type_id);
+
 
 create table if not exists t_cx_shipper (
   shipper_id int primary key,

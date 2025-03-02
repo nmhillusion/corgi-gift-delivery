@@ -27,7 +27,7 @@ export class ShipperService {
     return this.$http.get<ShipperModel>(this.buildApiUrl(shipperId));
   }
 
-  search(dto: { name?: string }, pageIndex: number, pageSize: number) {
+  search(dto: { name?: string, deliveryTypeId?: IdType }, pageIndex: number, pageSize: number) {
     return this.$http.post<Page<ShipperModel>>(
       this.buildApiUrl(`search`),
       dto,
