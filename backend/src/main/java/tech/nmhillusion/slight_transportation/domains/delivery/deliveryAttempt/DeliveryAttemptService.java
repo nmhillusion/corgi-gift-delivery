@@ -2,19 +2,21 @@ package tech.nmhillusion.slight_transportation.domains.delivery.deliveryAttempt;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.constant.DeliveryStatus;
+import tech.nmhillusion.slight_transportation.domains.delivery.deliverPackage.DeliveryPackageService;
+import tech.nmhillusion.slight_transportation.domains.delivery.deliverPackage.packageItem.DeliveryPackageItemService;
 import tech.nmhillusion.slight_transportation.domains.delivery.delivery.DeliveryService;
 import tech.nmhillusion.slight_transportation.domains.delivery.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
-import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEntity;
-import tech.nmhillusion.slight_transportation.entity.business.DeliveryEntity;
-import tech.nmhillusion.slight_transportation.entity.business.DeliveryStatusEntity;
+import tech.nmhillusion.slight_transportation.entity.business.*;
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * created by: nmhillusion
@@ -31,7 +33,7 @@ public interface DeliveryAttemptService {
 
     Page<DeliveryAttemptEntity> search(String deliveryId, Map<String, ?> dto, int pageIndex, int pageSize);
 
-    DeliveryAttemptEntity process(String attemptId, ProcessAttemptDto processAttemptDto);
+    DeliveryAttemptEntity process(String attemptId, ProcessAttemptDto processAttemptDto) throws NotFoundException;
 
     List<DeliveryStatusEntity> getAvailableStatusForProcess(String attemptId);
 
@@ -40,12 +42,16 @@ public interface DeliveryAttemptService {
         private final DeliveryAttemptRepository repository;
         private final DeliveryService deliveryService;
         private final DeliveryStatusService deliveryStatusService;
+        private final DeliveryPackageService packageService;
+        private final DeliveryPackageItemService packageItemService;
         private final SequenceService sequenceService;
 
-        public Impl(DeliveryAttemptRepository repository, DeliveryService deliveryService, DeliveryStatusService deliveryStatusService, SequenceService sequenceService) {
+        public Impl(DeliveryAttemptRepository repository, DeliveryService deliveryService, DeliveryStatusService deliveryStatusService, DeliveryPackageService packageService, DeliveryPackageItemService packageItemService, SequenceService sequenceService) {
             this.repository = repository;
             this.deliveryService = deliveryService;
             this.deliveryStatusService = deliveryStatusService;
+            this.packageService = packageService;
+            this.packageItemService = packageItemService;
             this.sequenceService = sequenceService;
         }
 
@@ -91,7 +97,7 @@ public interface DeliveryAttemptService {
         }
 
         @Override
-        public DeliveryAttemptEntity process(String attemptId, ProcessAttemptDto processAttemptDto) {
+        public DeliveryAttemptEntity process(String attemptId, ProcessAttemptDto processAttemptDto) throws NotFoundException {
             final DeliveryAttemptEntity deliveryAttemptEntity = findById(attemptId);
             deliveryAttemptEntity.setDeliveryStatusId(processAttemptDto.getDeliveryStatusId());
 
@@ -107,11 +113,7 @@ public interface DeliveryAttemptService {
                     deliveryAttemptEntity.setEndTime(processAttemptDto.getActionDate());
                     break;
                 case DeliveryStatus.DELIVERED:
-                    deliveryEntity
-                            .setCurrentAttemptId(attemptId)
-                            .setDeliveryStatusId(DeliveryStatus.DELIVERED.getDbValue())
-                            .setEndTime(processAttemptDto.getActionDate());
-                    deliveryAttemptEntity.setEndTime(processAttemptDto.getActionDate());
+                    processDeliveredAttempt(deliveryAttemptEntity, deliveryEntity, processAttemptDto);
                     break;
                 case null:
                 default:
@@ -120,6 +122,29 @@ public interface DeliveryAttemptService {
 
             deliveryService.save(deliveryEntity);
             return save(deliveryAttemptEntity);
+        }
+
+        private void processDeliveredAttempt(DeliveryAttemptEntity deliveryAttemptEntity,
+                                             DeliveryEntity deliveryEntity,
+                                             ProcessAttemptDto processAttemptDto) throws NotFoundException {
+            deliveryEntity
+                    .setCurrentAttemptId(deliveryAttemptEntity.getAttemptId())
+                    .setDeliveryStatusId(DeliveryStatus.DELIVERED.getDbValue())
+                    .setEndTime(processAttemptDto.getActionDate());
+            deliveryAttemptEntity.setEndTime(processAttemptDto.getActionDate());
+
+            final Optional<DeliveryPackageEntity> packageOpt = packageService.getFirstPackageOfDelivery(deliveryEntity.getDeliveryId());
+            if (packageOpt.isEmpty()){
+                throw new NotFoundException("Cannot find package of delivery");
+            }
+
+            final DeliveryPackageEntity deliveryPackageEntity = packageOpt.get();
+
+            final List<DeliveryPackageItemEntity> allItemsOfPackage = packageItemService.getAllItemsOfPackage(deliveryPackageEntity.getPackageId());
+
+            for (DeliveryPackageItemEntity packageItem : allItemsOfPackage) {
+                /// TODO: 2025-03-02 Update status of warehouse item as useded
+            }
         }
 
         @Override

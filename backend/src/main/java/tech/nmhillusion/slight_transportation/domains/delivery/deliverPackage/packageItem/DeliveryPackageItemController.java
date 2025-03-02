@@ -25,9 +25,9 @@ public class DeliveryPackageItemController {
 
     @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<DeliveryPackageItemEntity> search(@RequestBody Map<String, ?> dto,
-                                                  @RequestParam int pageIndex,
-                                                  @RequestParam int pageSize) {
-        return service.search(dto, PageRequest.of(pageIndex, pageSize));
+                                                  @RequestParam(defaultValue = "0") int pageIndex,
+                                                  @RequestParam(defaultValue = "10") int pageSize) {
+        return service.search(dto, pageIndex, pageSize);
     }
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,12 +36,12 @@ public class DeliveryPackageItemController {
     }
 
     @DeleteMapping("/delete/{packageItemId}")
-    public void deleteById(@PathVariable long packageItemId) {
+    public void deleteById(@PathVariable String packageItemId) {
         service.deleteById(packageItemId);
     }
 
     @GetMapping("/{packageItemId}")
-    public DeliveryPackageItemEntity findById(@PathVariable long packageItemId) {
+    public DeliveryPackageItemEntity findById(@PathVariable String packageItemId) {
         return service.findById(packageItemId);
     }
 }

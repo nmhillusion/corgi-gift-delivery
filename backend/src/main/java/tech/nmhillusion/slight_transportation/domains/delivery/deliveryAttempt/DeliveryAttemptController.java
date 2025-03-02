@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryAttemptEntity;
 import tech.nmhillusion.slight_transportation.entity.business.DeliveryStatusEntity;
 
@@ -51,7 +52,7 @@ public class DeliveryAttemptController {
 
     @PostMapping(value = "/{attemptId}/process", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public DeliveryAttemptEntity process(@PathVariable @NotBlank String attemptId,
-                                         @RequestBody @Valid ProcessAttemptDto processAttemptDto) {
+                                         @RequestBody @Valid ProcessAttemptDto processAttemptDto) throws NotFoundException {
         return deliveryAttemptService.process(attemptId, processAttemptDto);
     }
 

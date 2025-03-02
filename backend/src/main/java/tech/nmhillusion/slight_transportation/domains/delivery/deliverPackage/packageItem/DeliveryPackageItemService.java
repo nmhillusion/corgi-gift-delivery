@@ -10,6 +10,7 @@ import tech.nmhillusion.slight_transportation.entity.business.DeliveryPackageIte
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,14 +20,15 @@ import java.util.Map;
  */
 public interface DeliveryPackageItemService {
 
-    Page<DeliveryPackageItemEntity> search(Map<String, ?> dto, PageRequest pageRequest);
+    Page<DeliveryPackageItemEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
 
-    void deleteById(long packageItemId);
+    void deleteById(String packageItemId);
 
-    DeliveryPackageItemEntity findById(long packageItemId);
+    DeliveryPackageItemEntity findById(String packageItemId);
 
     DeliveryPackageItemEntity save(DeliveryPackageItemEntity entity);
 
+    List<DeliveryPackageItemEntity> getAllItemsOfPackage(String packageId);
 
     @TransactionalService
     class Impl implements DeliveryPackageItemService {
@@ -40,18 +42,18 @@ public interface DeliveryPackageItemService {
         }
 
         @Override
-        public Page<DeliveryPackageItemEntity> search(Map<String, ?> dto, PageRequest pageRequest) {
-            final long packageId = Long.parseLong(StringUtil.trimWithNull(dto.get("packageId")));
-            return repository.search(packageId, pageRequest);
+        public Page<DeliveryPackageItemEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
+            final String packageId = StringUtil.trimWithNull(dto.get("packageId"));
+            return repository.search(packageId, PageRequest.of(pageIndex, pageSize));
         }
 
         @Override
-        public void deleteById(long packageItemId) {
+        public void deleteById(String packageItemId) {
             repository.deleteById(packageItemId);
         }
 
         @Override
-        public DeliveryPackageItemEntity findById(long packageItemId) {
+        public DeliveryPackageItemEntity findById(String packageItemId) {
             return repository.findById(packageItemId).orElse(null);
         }
 
@@ -78,6 +80,11 @@ public interface DeliveryPackageItemService {
             LogHelper.getLogger(this).info("entity: {}", entity);
 
             return repository.save(entity);
+        }
+
+        @Override
+        public List<DeliveryPackageItemEntity> getAllItemsOfPackage(String packageId) {
+            return repository.getAllItemsOfPackage(packageId);
         }
     }
 
