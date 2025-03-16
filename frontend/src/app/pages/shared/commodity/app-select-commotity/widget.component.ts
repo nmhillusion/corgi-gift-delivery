@@ -6,12 +6,14 @@ import {
   Validators,
 } from "@angular/forms";
 import { AppCommonModule } from "@app/core/app-common.module";
+import { SIZE } from "@app/layout/size.constant";
 import { CommodityModel } from "@app/model/business/commodity.model";
 import { IdType } from "@app/model/core/id.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
 import { CommodityService } from "@app/pages/commodity/commodity-mgmt/commodity.service";
-import { BehaviorSubject, map, Observable, startWith } from "rxjs";
+import { SelectCommodityDialog } from "@app/pages/commodity/select-commodity--dialog/select-commodity--dialog.component";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
   standalone: true,
@@ -34,13 +36,11 @@ export class AppSelectCommodityWidget
   @Input({ required: true })
   formControl = new FormControl<Nullable<IdType>>("", [Validators.required]);
 
-  list$ = new BehaviorSubject<CommodityModel[]>([]);
-
-  filteredOptions$?: Observable<CommodityModel[]>;
-
   disableState$ = signal<boolean>(false);
 
   initedValueState$ = new BehaviorSubject<Nullable<IdType>>(null);
+
+  $$selectedCom$ = signal<Nullable<CommodityModel>>(null);
 
   /// methods
   constructor(private $commodityService: CommodityService) {
@@ -63,39 +63,42 @@ export class AppSelectCommodityWidget
     this.disableState$.set(isDisabled);
   }
 
-  private triggerUpdateFormControlValue() {
-    if (0 < this.list$?.getValue().length) {
-      this.formControl.setValue(this.initedValueState$.getValue());
-    }
-  }
-
   protected override __ngOnInit__() {
     this.registerSubscription(
-      this.$commodityService.findAll().subscribe((commodityList) => {
-        this.list$.next(commodityList);
-
-        this.triggerUpdateFormControlValue();
-
-        this.filteredOptions$ = this.formControl.valueChanges.pipe(
-          startWith(""),
-          map((value) =>
-            this.list$
-              .getValue()
-              .filter(
-                (com) =>
-                  !value ||
-                  ("string" === typeof value &&
-                    com.comName?.toLowerCase().includes(value.toLowerCase()))
-              )
-          )
-        );
+      this.initedValueState$.subscribe((newVal) => {
+        if (newVal) {
+          this.registerSubscription(
+            this.$commodityService.findById(newVal).subscribe((commodity) => {
+              this.$$selectedCom$.set(commodity);
+            })
+          );
+        }
       })
     );
-    this.triggerUpdateFormControlValue();
   }
 
-  displayFn(comId: IdType): string {
-    const com_ = this.list$?.getValue().find((com) => com.comId == comId);
-    return com_ ? `${com_.comName} (${com_.comId})` : "";
+  openSelectCommodityDialog() {
+    const dialogRef = this.$dialog.open<
+      SelectCommodityDialog,
+      {
+        commodity: Nullable<CommodityModel>;
+      },
+      Nullable<CommodityModel>
+    >(SelectCommodityDialog, {
+      data: {
+        commodity: this.$$selectedCom$(),
+      },
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
+    });
+
+    this.registerSubscription(
+      dialogRef.afterClosed().subscribe((commodity) => {
+        if (commodity) {
+          this.$$selectedCom$.set(commodity);
+          this.formControl.setValue(commodity.comId);
+        }
+      })
+    );
   }
 }

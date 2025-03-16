@@ -1,24 +1,7 @@
 <mat-form-field [ngClass]="{ disabled: disableState$() }">
   <mat-label>Commodity</mat-label>
-  <input
-    type="text"
-    placeholder="Pick a commodity"
-    [formControl]="formControl"
-    matInput
-    [matAutocomplete]="auto"
-  />
-  <mat-autocomplete
-    #auto="matAutocomplete"
-    [requireSelection]="true"
-    [displayWith]="displayFn.bind(this)"
-  >
-    @for (option of filteredOptions$ | async; track option.comId) {
-    <mat-option [value]="option.comId"
-      >{{ option.comName }} ({{ option.comId }})
-    </mat-option>
-    }
-  </mat-autocomplete>
-  <mat-error>
-    {{ formUtils.extractError(formControl) }}
-  </mat-error>
+  <input type="text" [value]="$$selectedCom$()?.comName" disabled matInput />
+  <button mat-icon-button matIconSuffix (click)="openSelectCommodityDialog()">
+    <mat-icon>edit</mat-icon>
+  </button>
 </mat-form-field>
