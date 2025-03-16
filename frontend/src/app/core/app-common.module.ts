@@ -14,6 +14,9 @@ import { MatTableModule } from "@angular/material/table";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const commonModules = [
   CommonModule,
@@ -24,6 +27,7 @@ const commonModules = [
   MatInputModule,
   MatButtonModule,
   MatDividerModule,
+  MatDialogModule,
   MatFormFieldModule,
   MatIconModule,
   MatOptionModule,
@@ -34,6 +38,8 @@ const commonModules = [
   MatMomentDateModule,
   MatTooltipModule,
   MatAutocompleteModule,
+  MatRadioModule,
+  MatCheckboxModule,
 ];
 
 @NgModule({

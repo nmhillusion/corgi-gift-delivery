@@ -10,6 +10,8 @@ import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
 import { CommodityTypeService } from "@app/service/commodity-type.service";
 import { CommodityService } from "../commodity.service";
+import { SelectCommodityTypeDialog } from "../../select-commodity-type--dialog/select-commodity-type--dialog.component";
+import { SIZE } from "@app/layout/size.constant";
 
 @Component({
   selector: "app-edit",
@@ -27,10 +29,9 @@ export class EditComponent extends BasePage {
 
   formGroup: FormGroup = new FormGroup({
     comName: new FormControl("", [Validators.required]),
-    comTypeId: new FormControl("", [Validators.required]),
   });
 
-  selectedCommodityType$ = signal<CommodityTypeModel | null>(null);
+  selectedCommodityType$ = signal<Nullable<CommodityTypeModel>>(null);
 
   /// METHODS
 
@@ -56,8 +57,34 @@ export class EditComponent extends BasePage {
     }
   }
 
+  openDialogSelectCommodityType() {
+    const dialogRef = this.$dialog.open<
+      SelectCommodityTypeDialog,
+      {
+        commodityType: Nullable<CommodityTypeModel>;
+      },
+      Nullable<CommodityTypeModel>
+    >(SelectCommodityTypeDialog, {
+      data: {
+        commodityType: this.selectedCommodityType$(),
+      },
+      width: SIZE.DIALOG.width,
+      maxHeight: SIZE.DIALOG.height,
+    });
+
+    this.registerSubscription(
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log("Has selected on ", result);
+
+        if (result) {
+          this.selectedCommodityType$.set(result);
+        }
+      })
+    );
+  }
+
   cancel() {
-    this.$dialogRef.close()
+    this.$dialogRef.close();
   }
 
   save() {
@@ -74,7 +101,7 @@ export class EditComponent extends BasePage {
     }
 
     this.data.commodity.comName = this.formGroup.value.comName;
-    this.data.commodity.comTypeId = this.formGroup.value.comTypeId;
+    this.data.commodity.comTypeId = this.selectedCommodityType$()?.typeId;
 
     this.registerSubscription(
       this.$commodityService.sync(this.data.commodity).subscribe((result) => {
