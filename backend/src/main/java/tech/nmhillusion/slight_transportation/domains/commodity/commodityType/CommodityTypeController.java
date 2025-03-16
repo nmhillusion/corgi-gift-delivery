@@ -1,5 +1,6 @@
 package tech.nmhillusion.slight_transportation.domains.commodity.commodityType;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,9 +25,16 @@ public class CommodityTypeController {
         this.commodityTypeService = commodityTypeService;
     }
 
-    @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CommodityTypeEntity> findAll() {
-        return commodityTypeService.findAll();
+    @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<CommodityTypeEntity> search(@RequestBody Map<String, ?> dto,
+                                            @RequestParam int pageIndex,
+                                            @RequestParam int pageSize) {
+        return commodityTypeService.search(dto, pageIndex, pageSize);
+    }
+
+    @GetMapping(value = "/{commodityTypeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CommodityTypeEntity findById(@PathVariable String commodityTypeId) {
+        return commodityTypeService.findById(commodityTypeId);
     }
 
     @PostMapping(value = "/sync", produces = MediaType.APPLICATION_JSON_VALUE)

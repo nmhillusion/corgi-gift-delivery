@@ -30,7 +30,7 @@ export class EditComponent extends BasePage {
     comTypeId: new FormControl("", [Validators.required]),
   });
 
-  commodityTypeList$: WritableSignal<CommodityTypeModel[]> = signal([]);
+  selectedCommodityType$ = signal<CommodityTypeModel | null>(null);
 
   /// METHODS
 
@@ -45,13 +45,19 @@ export class EditComponent extends BasePage {
   protected override __ngOnInit__() {
     this.formGroup.patchValue(this.data.commodity);
 
-    this.registerSubscription(
-      this.$commodityTypeService.findAll().subscribe((result) => {
-        console.log("commodityTypeList: ", result);
+    if (this.data.commodity && this.data.commodity.comTypeId) {
+      this.registerSubscription(
+        this.$commodityTypeService
+          .findById(this.data.commodity.comTypeId)
+          .subscribe((result) => {
+            this.selectedCommodityType$.set(result);
+          })
+      );
+    }
+  }
 
-        this.commodityTypeList$.set(result);
-      })
-    );
+  cancel() {
+    this.$dialogRef.close()
   }
 
   save() {

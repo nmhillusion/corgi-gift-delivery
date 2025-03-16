@@ -9,6 +9,9 @@ import { BlobUtil } from "@app/util/blob.util";
 import { BehaviorSubject } from "rxjs";
 import { EditComponent } from "./edit/edit.component";
 import { ImportComponent } from "./import/import.component";
+import { MatTableDataSource } from "@angular/material/table";
+import { PageEvent } from "@angular/material/paginator";
+import { PAGE } from "@app/layout/page.constant";
 
 @Component({
   standalone: true,
@@ -18,9 +21,13 @@ import { ImportComponent } from "./import/import.component";
 })
 export class CommodityTypeMgmtComponent extends BasePage {
   /// FIELDS
-  commodityTypeList$: WritableSignal<CommodityTypeModel[]> = signal([]);
+  commodityTypeDataSource = new MatTableDataSource<CommodityTypeModel>([]);
 
   importFile$ = new BehaviorSubject<File[]>([]);
+
+  displayedColumns = ["typeId", "typeName"];
+
+  paginator = this.generatePaginator();
 
   /// METHODS
   constructor(private $commodityTypeService: CommodityTypeService) {
@@ -28,7 +35,7 @@ export class CommodityTypeMgmtComponent extends BasePage {
   }
 
   override __ngOnInit__() {
-    this.initLoadData();
+    this.search(PAGE.DEFAULT_PAGE_EVENT);
 
     this.registerSubscription(
       this.importFile$.subscribe((evt) => {
@@ -37,13 +44,25 @@ export class CommodityTypeMgmtComponent extends BasePage {
     );
   }
 
-  private initLoadData() {
+  override search(pageEvt: PageEvent): void {
     this.registerSubscription(
-      this.$commodityTypeService.findAll().subscribe((list) => {
-        console.log({ list });
+      this.$commodityTypeService
+        .search(
+          {
+            keyword: "",
+          },
+          pageEvt.pageIndex,
+          pageEvt.pageSize
+        )
+        .subscribe((pageResult) => {
+          console.log({ pageResult });
 
-        this.commodityTypeList$.set(list);
-      })
+          this.handlePageDataUpdate(
+            pageResult,
+            this.paginator,
+            this.commodityTypeDataSource
+          );
+        })
     );
   }
 
@@ -70,7 +89,7 @@ export class CommodityTypeMgmtComponent extends BasePage {
 
     this.registerSubscription(
       ref.afterClosed().subscribe((result) => {
-        this.initLoadData();
+        this.search(PAGE.DEFAULT_PAGE_EVENT);
       })
     );
   }
@@ -83,7 +102,7 @@ export class CommodityTypeMgmtComponent extends BasePage {
 
     this.registerSubscription(
       dialogRef.afterClosed().subscribe((_) => {
-        this.initLoadData();
+        this.search(PAGE.DEFAULT_PAGE_EVENT);
       })
     );
   }

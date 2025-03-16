@@ -15,13 +15,25 @@
   <mat-divider></mat-divider>
 
   <div class="commodity-type-list">
-    @for (commodityType of commodityTypeList$(); track commodityType.typeId) {
-    <div class="commodity-type-item">
-      <span>{{ commodityType.typeName }}</span>
-      <button mat-icon-button (click)="editCommodityType(commodityType)">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-    }
+    <table mat-table [dataSource]="commodityTypeDataSource" class="app-table">
+      <ng-container matColumnDef="typeId">
+        <th mat-header-cell *matHeaderCellDef>Type ID</th>
+        <td mat-cell *matCellDef="let el">{{ el.typeId }}</td>
+      </ng-container>
+      <ng-container matColumnDef="typeName">
+        <th mat-header-cell *matHeaderCellDef>Type Name</th>
+        <td mat-cell *matCellDef="let el">{{ el.typeName }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [length]="paginator.length$()"
+      [pageSize]="paginator.pageSize$()"
+      [pageSizeOptions]="paginator.pageSizeOptions$()"
+      (page)="paginator.onPageChange($event)"
+    ></mat-paginator>
   </div>
 </main-layout>

@@ -1,6 +1,7 @@
 package tech.nmhillusion.slight_transportation.domains.commodity.commodityType;
 
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.n2mix.exception.AppRuntimeException;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
@@ -16,6 +17,7 @@ import tech.nmhillusion.n2mix.validator.StringValidator;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityTypeEntity;
+import tech.nmhillusion.slight_transportation.helper.CollectionHelper;
 import tech.nmhillusion.slight_transportation.util.NumberUtil;
 
 import java.util.ArrayList;
@@ -31,13 +33,15 @@ import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
  * created date: 2024-11-23
  */
 public interface CommodityTypeService {
-    List<CommodityTypeEntity> findAll();
-
     CommodityTypeEntity sync(Map<String, ?> dto);
 
     List<CommodityTypeEntity> importExcel(MultipartFile excelFile);
 
     byte[] exportExcel();
+
+    Page<CommodityTypeEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
+
+    CommodityTypeEntity findById(String commodityTypeId);
 
     @TransactionalService
     class Impl implements CommodityTypeService {
@@ -50,9 +54,12 @@ public interface CommodityTypeService {
         }
 
         @Override
-        public List<CommodityTypeEntity> findAll() {
-            return repository.findAll(
-                    Sort.by(Sort.Order.asc("typeId"))
+        public Page<CommodityTypeEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
+            final String keyword = CollectionHelper.getStringOrNullIfAbsent(dto, "keyword");
+
+            return repository.search(
+                    keyword,
+                    PageRequest.of(pageIndex, pageSize)
             );
         }
 
@@ -151,6 +158,10 @@ public interface CommodityTypeService {
             }
         }
 
+        private List<CommodityTypeEntity> findAll() {
+            return repository.findAll();
+        }
+
         @Override
         public byte[] exportExcel() {
             try {
@@ -185,6 +196,11 @@ public interface CommodityTypeService {
                     sequenceService.generateSeqNameForClass(getClass(), CommodityTypeEntity.ID.TYPE_ID.name())
                     , currentMaxId
             );
+        }
+
+        @Override
+        public CommodityTypeEntity findById(String commodityTypeId) {
+            return repository.findById(commodityTypeId).orElse(null);
         }
     }
 }

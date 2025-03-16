@@ -9,13 +9,12 @@
 
     <mat-form-field class="dialog-block">
       <mat-label>Commodity type</mat-label>
-      <mat-select formControlName="comTypeId">
-        @for (commodityType of commodityTypeList$(); track commodityType.typeId) {
-        <mat-option [value]="commodityType.typeId">
-          {{ commodityType.typeName }}
-        </mat-option>
-        }
-      </mat-select>
+      <input
+        matInput
+        placeholder="Commodity type"
+        [value]="selectedCommodityType$()?.typeName"
+        disabled
+      />
     </mat-form-field>
 
     @if (logMessage$()) {
@@ -25,9 +24,7 @@
     }
 
     <div class="action-box">
-      <button mat-stroked-button color="primary" (click)="save()">
-        Save
-      </button>
+      <button mat-stroked-button color="primary" (click)="save()">Save</button>
     </div>
   </form>
 </div>
