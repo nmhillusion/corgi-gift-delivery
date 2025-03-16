@@ -1,5 +1,7 @@
 package tech.nmhillusion.slight_transportation.domains.commodity.commodity;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.n2mix.exception.AppRuntimeException;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.ExcelReader;
@@ -10,14 +12,12 @@ import tech.nmhillusion.n2mix.util.ExceptionUtil;
 import tech.nmhillusion.slight_transportation.annotation.TransactionalService;
 import tech.nmhillusion.slight_transportation.domains.sequence.SequenceService;
 import tech.nmhillusion.slight_transportation.entity.business.CommodityEntity;
+import tech.nmhillusion.slight_transportation.helper.CollectionHelper;
 import tech.nmhillusion.slight_transportation.util.NumberUtil;
 import tech.nmhillusion.slight_transportation.validator.IdValidator;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 
@@ -28,13 +28,13 @@ import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
  */
 public interface CommodityService {
 
-    List<CommodityEntity> findAll();
-
     CommodityEntity sync(CommodityEntity commodityEntity);
 
     List<CommodityEntity> importExcelFile(MultipartFile excelFile);
 
     CommodityEntity findById(long commodityId);
+
+    Page<CommodityEntity> search(Map<String, ?> dto, int pageIndex, int pageSize);
 
     @TransactionalService
     class Impl implements CommodityService {
@@ -47,8 +47,13 @@ public interface CommodityService {
         }
 
         @Override
-        public List<CommodityEntity> findAll() {
-            return repository.findAll();
+        public Page<CommodityEntity> search(Map<String, ?> dto, int pageIndex, int pageSize) {
+            final String keyword = CollectionHelper.getStringOrNullIfAbsent(dto, "keyword");
+
+            return repository.search(
+                    keyword,
+                    PageRequest.of(pageIndex, pageSize)
+            );
         }
 
         @Override

@@ -1,7 +1,14 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { environment } from "@app/../environments/environment";
-import { CommodityModel } from "@app/model/business/commodity.model";
+import {
+  CommodityFEModel,
+  CommodityModel,
+} from "@app/model/business/commodity.model";
+import { IdType } from "@app/model/core/id.model";
+import { Page } from "@app/model/core/page.model";
+import { BasePage } from "@app/pages/base.page";
+import { CommodityTypeService } from "@app/service/commodity-type.service";
 
 @Injectable({ providedIn: "root" })
 export class CommodityService {
@@ -11,9 +18,16 @@ export class CommodityService {
     return `${environment.LINK.API_BASE_URL}/api/commodity${path}`;
   }
 
-  findAll() {
-    return this.$httpClient.get<CommodityModel[]>(
-      this.buildApiUrl("/find-all")
+  search(dto: { keyword: string }, pageIndex: number, pageSize: number) {
+    return this.$httpClient.post<Page<CommodityModel>>(
+      this.buildApiUrl("/search"),
+      dto,
+      {
+        params: {
+          pageIndex,
+          pageSize,
+        },
+      }
     );
   }
 
@@ -31,7 +45,24 @@ export class CommodityService {
     );
   }
 
-  findById(comId: number | string) {
+  findById(comId: IdType) {
     return this.$httpClient.get<CommodityModel>(this.buildApiUrl(`/${comId}`));
+  }
+
+  convertToFe(comEntity: CommodityModel, basePage: BasePage) {
+    const comFe = comEntity as CommodityFEModel;
+
+    comFe.comType$ = signal(null);
+
+    basePage.registerSubscription(
+      basePage.$injector
+        .get(CommodityTypeService)
+        .findById(comEntity.comTypeId || 0)
+        .subscribe((comType) => {
+          comFe.comType$.set(comType);
+        })
+    );
+
+    return comFe;
   }
 }

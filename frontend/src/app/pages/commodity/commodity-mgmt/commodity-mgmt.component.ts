@@ -1,12 +1,18 @@
-import { Component, signal } from "@angular/core";
-import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
-import { BasePage } from "@app/pages/base.page";
+import { Component } from "@angular/core";
+import { PageEvent } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
+import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { PAGE } from "@app/layout/page.constant";
+import { SIZE } from "@app/layout/size.constant";
+import {
+  CommodityFEModel,
+  CommodityModel,
+} from "@app/model/business/commodity.model";
+import { BasePage } from "@app/pages/base.page";
 import { CommodityService } from "./commodity.service";
-import { CommodityModel } from "@app/model/business/commodity.model";
 import { EditComponent } from "./edit/edit.component";
 import { ImportComponent } from "./import/import.component";
-import { SIZE } from "@app/layout/size.constant";
 
 @Component({
   standalone: true,
@@ -15,7 +21,17 @@ import { SIZE } from "@app/layout/size.constant";
   imports: [MainLayoutComponent, AppCommonModule],
 })
 export class CommodityMgmtComponent extends BasePage {
-  commodityList$ = signal<CommodityModel[]>([]);
+  $$tableDataSource = new MatTableDataSource<CommodityFEModel>();
+
+  paginator = this.generatePaginator();
+
+  displayedColumns = [
+    "comId",
+    "comName",
+    "comType",
+    ///
+    "action",
+  ];
 
   /// METHODS
 
@@ -24,16 +40,33 @@ export class CommodityMgmtComponent extends BasePage {
   }
 
   override __ngOnInit__() {
-    this.initLoadData();
+    this.search(PAGE.DEFAULT_PAGE_EVENT);
   }
 
-  private initLoadData() {
+  override search(pageEvt: PageEvent): void {
     this.registerSubscription(
-      this.$commodityService.findAll().subscribe((list) => {
-        console.log({ list });
+      this.$commodityService
+        .search(
+          {
+            keyword: "",
+          },
+          pageEvt.pageIndex,
+          pageEvt.pageSize
+        )
+        .subscribe((pageResult) => {
+          console.log({ pageResult });
 
-        this.commodityList$.set(list);
-      })
+          this.handlePageDataUpdate<CommodityFEModel>(
+            {
+              content: pageResult.content.map((it) =>
+                this.$commodityService.convertToFe(it, this)
+              ),
+              page: pageResult.page,
+            },
+            this.paginator,
+            this.$$tableDataSource
+          );
+        })
     );
   }
 
@@ -60,7 +93,7 @@ export class CommodityMgmtComponent extends BasePage {
 
     this.registerSubscription(
       ref.afterClosed().subscribe((result) => {
-        this.initLoadData();
+        this.search(PAGE.DEFAULT_PAGE_EVENT);
       })
     );
   }
@@ -73,7 +106,7 @@ export class CommodityMgmtComponent extends BasePage {
 
     this.registerSubscription(
       ref.afterClosed().subscribe((result) => {
-        this.initLoadData();
+        this.search(PAGE.DEFAULT_PAGE_EVENT);
       })
     );
   }
