@@ -25,7 +25,7 @@ export class CommodityTypeMgmtComponent extends BasePage {
 
   importFile$ = new BehaviorSubject<File[]>([]);
 
-  displayedColumns = ["typeId", "typeName"];
+  displayedColumns = ["typeId", "typeName", "action"];
 
   paginator = this.generatePaginator();
 
