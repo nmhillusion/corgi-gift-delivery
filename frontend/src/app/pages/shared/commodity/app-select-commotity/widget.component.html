@@ -1,7 +1,0 @@
-<mat-form-field [ngClass]="{ disabled: disableState$() }">
-  <mat-label>Commodity</mat-label>
-  <input type="text" [value]="$$selectedCom$()?.comName" disabled matInput />
-  <button mat-icon-button matIconSuffix (click)="openSelectCommodityDialog()">
-    <mat-icon>edit</mat-icon>
-  </button>
-</mat-form-field>
