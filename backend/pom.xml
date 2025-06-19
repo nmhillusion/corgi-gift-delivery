@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>tech.nmhillusion</groupId>
-    <artifactId>slight_transportation</artifactId>
+    <artifactId>corgi_gift_delivery</artifactId>
     <version>0.0.1</version>
-    <name>Slight Transportation</name>
-    <description>Slight Transportation App</description>
+    <name>Corgi Gift Delivery</name>
+    <description>Corgi Gift Delivery App</description>
     <url/>
     <licenses>
         <license/>
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>com.github.nmhillusion</groupId>
             <artifactId>n2mix-java</artifactId>
-            <version>2024.9.3</version>
+            <version>2025.5.12</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
