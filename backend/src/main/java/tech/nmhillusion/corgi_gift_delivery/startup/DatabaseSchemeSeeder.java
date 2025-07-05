@@ -29,6 +29,9 @@ public class DatabaseSchemeSeeder extends StartupSeeder {
         getLogger(this).info("init database scheme");
         startupRepo.initDatabaseSchema();
 
+        getLogger(this).info("delete old data");
+        startupRepo.deleteOldData();
+
         getLogger(this).info("init data for app");
         startupRepo.initData();
     }

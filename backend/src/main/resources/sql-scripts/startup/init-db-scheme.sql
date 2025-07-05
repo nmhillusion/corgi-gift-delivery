@@ -15,3 +15,42 @@ create table if not exists t_cx_delivery_status (
   status_name nvarchar(100),
   status_order numeric
 );
+
+create table if not exists t_cx_delivery (
+  delivery_id number primary key,
+  event_id varchar(200),
+  delivery_period_year number,
+  delivery_period_month number,
+  territory nvarchar(200),
+  region nvarchar(200),
+  organ_id varchar(20),
+  received_organ nvarchar(200),
+  amd_name nvarchar(200),
+  customer_level nvarchar(100),
+  customer_id number,
+  customer_name nvarchar(500),
+  id_card_number varchar(100),
+  phone_number varchar(30),
+  address nvarchar(1000),
+  gift_name nvarchar(300)
+);
+
+create table if not exists t_cx_deliver_attempt (
+  attempt_id number primary key,
+  delivery_id number,
+  delivery_type_id number,
+  delivery_status_id number,
+  note text
+);
+
+create table if not exists t_cx_delivery_return (
+  return_id number primary key,
+  delivery_id number,
+  attempt_id number,
+  return_status_id number,
+  note text
+);
+
+
+
+

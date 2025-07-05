@@ -8,5 +8,7 @@ package tech.nmhillusion.corgi_gift_delivery.repository;
 public interface StartupRepository {
     void initDatabaseSchema() throws Throwable;
 
+    void deleteOldData() throws Throwable;
+
     void initData() throws Throwable;
 }

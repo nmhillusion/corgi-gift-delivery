@@ -1,12 +1,12 @@
 package tech.nmhillusion.corgi_gift_delivery.repositoryImpl;
 
 import org.springframework.stereotype.Repository;
-import tech.nmhillusion.n2mix.helper.database.query.DatabaseExecutor;
-import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
-import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.corgi_gift_delivery.helper.UnixPathHelper;
 import tech.nmhillusion.corgi_gift_delivery.provider.SqlScriptProvider;
 import tech.nmhillusion.corgi_gift_delivery.repository.StartupRepository;
+import tech.nmhillusion.n2mix.helper.database.query.DatabaseExecutor;
+import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -23,6 +23,7 @@ public class StartupRepositoryImpl implements StartupRepository {
     private static final String FILENAME__INIT_DB_SCHEMA = "init-db-scheme.sql";
     private static final String FILENAME__INIT_DATA = "init-data.sql";
     private static final String FILENAME__CHECK_EXISTED_DATA = "check-existed-data.sql";
+    private static final String FILENAME__DELETE_OLD_DATA = "delete_old_data.sql";
 
     private final DatabaseExecutor dbExecutor;
     private final SqlScriptProvider sqlScriptProvider;
@@ -88,6 +89,19 @@ public class StartupRepositoryImpl implements StartupRepository {
                 final int affectedRows = preparedStatement.executeUpdate();
 
                 getLogger(this).info("inserted on rows: {}", affectedRows);
+            });
+        });
+    }
+
+    @Override
+    public void deleteOldData() throws Throwable {
+        final String deleteDataSql = getStartupSql(FILENAME__DELETE_OLD_DATA);
+
+        dbExecutor.doWork(conn -> {
+            conn.doPreparedStatement(deleteDataSql, preparedStatement -> {
+                final int affectedRows = preparedStatement.executeUpdate();
+
+                getLogger(this).info("deleted on rows: {}", affectedRows);
             });
         });
     }
