@@ -7,14 +7,21 @@ create table if not exists t_cx_sequence (
 
 create table if not exists t_cx_delivery_type (
   type_id int primary key,
-  type_name nvarchar(100)
+  type_name nvarchar(100) not null
 );
 
 create table if not exists t_cx_delivery_status (
   status_id int primary key,
-  status_name nvarchar(100),
+  status_name nvarchar(100) not null,
   status_order numeric
 );
+
+create table if not exists t_cx_delivery_return_status (
+  status_id int primary key,
+  status_name nvarchar(100) not null
+)
+
+---------
 
 create table if not exists t_cx_delivery (
   delivery_id number primary key,
@@ -32,8 +39,13 @@ create table if not exists t_cx_delivery (
   id_card_number varchar(100),
   phone_number varchar(30),
   address nvarchar(1000),
-  gift_name nvarchar(300)
+  gift_name nvarchar(300),
+  note text
 );
+
+alter table t_cx_delivery
+add constraint if not exists uniq_cx_delivery__event_id__customer_id
+unique (event_id, customer_id);
 
 create table if not exists t_cx_deliver_attempt (
   attempt_id number primary key,
@@ -43,14 +55,33 @@ create table if not exists t_cx_deliver_attempt (
   note text
 );
 
+alter table t_cx_deliver_attempt
+add constraint if not exists fk_cx_deliver_attempt__delivery_id
+foreign key (delivery_id) references t_cx_delivery(delivery_id);
+
+alter table t_cx_deliver_attempt
+add constraint if not exists fk_cx_deliver_attempt__delivery_type_id
+foreign key (delivery_type_id) references t_cx_delivery_type(type_id);
+
+alter table t_cx_deliver_attempt
+add constraint if not exists fk_cx_deliver_attempt__delivery_status_id
+foreign key (delivery_status_id) references t_cx_delivery_status(status_id);
+
+
 create table if not exists t_cx_delivery_return (
   return_id number primary key,
   delivery_id number,
-  attempt_id number,
   return_status_id number,
   note text
 );
 
+alter table t_cx_delivery_return
+add constraint if not exists fk_cx_delivery_return__delivery_id
+foreign key (delivery_id) references t_cx_delivery(delivery_id);
+
+alter table t_cx_delivery_return
+add constraint if not exists fk_cx_delivery_return__return_status_id
+foreign key (return_status_id) references t_cx_delivery_return_status(status_id);
 
 
 

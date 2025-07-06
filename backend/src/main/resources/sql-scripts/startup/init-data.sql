@@ -26,3 +26,12 @@ insert into t_cx_delivery_status ( status_id , status_name, status_order)
 values (4, 'Giao hàng thất bại', 4);
 
 ---------
+
+insert into t_cx_delivery_return_status (status_id, status_name)
+values (1, 'Đang yêu cầu trả hàng');
+
+insert into t_cx_delivery_return_status (status_id, status_name)
+values (2, 'NCC đã nhận trả hàng');
+
+insert into t_cx_delivery_return_status (status_id, status_name)
+values (3, 'NCC đã đổi hàng');
