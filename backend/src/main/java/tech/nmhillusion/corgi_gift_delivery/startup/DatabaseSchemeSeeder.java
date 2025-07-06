@@ -2,7 +2,7 @@ package tech.nmhillusion.corgi_gift_delivery.startup;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import tech.nmhillusion.corgi_gift_delivery.repository.StartupRepository;
+import tech.nmhillusion.corgi_gift_delivery.repository.business.StartupRepository;
 
 import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 

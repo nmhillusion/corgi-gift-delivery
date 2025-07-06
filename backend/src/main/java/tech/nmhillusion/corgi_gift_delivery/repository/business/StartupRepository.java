@@ -1,4 +1,4 @@
-package tech.nmhillusion.corgi_gift_delivery.repository;
+package tech.nmhillusion.corgi_gift_delivery.repository.business;
 
 /**
  * created by: nmhillusion

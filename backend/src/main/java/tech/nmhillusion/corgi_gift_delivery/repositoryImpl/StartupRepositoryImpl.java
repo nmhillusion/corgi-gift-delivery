@@ -3,7 +3,7 @@ package tech.nmhillusion.corgi_gift_delivery.repositoryImpl;
 import org.springframework.stereotype.Repository;
 import tech.nmhillusion.corgi_gift_delivery.helper.UnixPathHelper;
 import tech.nmhillusion.corgi_gift_delivery.provider.SqlScriptProvider;
-import tech.nmhillusion.corgi_gift_delivery.repository.StartupRepository;
+import tech.nmhillusion.corgi_gift_delivery.repository.business.StartupRepository;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseExecutor;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;

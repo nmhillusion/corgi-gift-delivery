@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "t_cx_delivery")
-public class DeliveryEntity {
+public class DeliveryEntity extends BaseBusinessEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
@@ -203,5 +203,15 @@ public class DeliveryEntity {
     public DeliveryEntity setGiftName(String giftName) {
         this.giftName = giftName;
         return this;
+    }
+
+    @Override
+    public Long getId() {
+        return getDeliveryId();
+    }
+
+    @Override
+    public BaseBusinessEntity<Long> setId(Long id) {
+        return setDeliveryId(id);
     }
 }
