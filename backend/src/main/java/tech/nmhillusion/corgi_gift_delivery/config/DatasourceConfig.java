@@ -17,10 +17,16 @@ import tech.nmhillusion.n2mix.exception.InvalidArgument;
 import tech.nmhillusion.n2mix.helper.database.config.DataSourceProperties;
 import tech.nmhillusion.n2mix.helper.database.config.DatabaseConfigHelper;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
+import tech.nmhillusion.n2mix.helper.storage.FileHelper;
+import tech.nmhillusion.n2mix.util.StringUtil;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 
@@ -31,6 +37,7 @@ import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
  */
 @Configuration
 public class DatasourceConfig {
+    private static final Pattern H2_DB_JDBC_URL_PATTERN = Pattern.compile("^jdbc:h2:file:(.+?)$", Pattern.CASE_INSENSITIVE);
 
     private final DataSourceProperties dataSourceProperties;
 
@@ -42,6 +49,33 @@ public class DatasourceConfig {
                             String dbPassword,
                             @Value("${database.driverClassName}")
                             String dbDriverClassName) {
+        deleteExistedH2Db(dbJdbcUrl);
+
+        dataSourceProperties = initDatasourceProperties(dbJdbcUrl, dbUsername, dbPassword, dbDriverClassName);
+    }
+
+    private void deleteExistedH2Db(String dbJdbcUrl) {
+        getLogger(this).info("delete existed h2 db of jdbc url: {}", dbJdbcUrl);
+        if (dbJdbcUrl.contains("h2")) {
+            final Matcher matcher = H2_DB_JDBC_URL_PATTERN.matcher(StringUtil.trimWithNull(dbJdbcUrl));
+            if (matcher.find()) {
+                final String dbFilePathText = matcher.group(1);
+                final Path dbFilePath = Path.of(dbFilePathText);
+                final Path dbFolderPath = dbFilePath.getParent();
+
+                getLogger(this).info("delete existed h2 db, db folder path = {}", dbFolderPath);
+
+                if (Files.exists(dbFolderPath)) {
+                    FileHelper.recursiveDeleteFolder(
+                            dbFolderPath.toFile()
+                    );
+                }
+            }
+        }
+    }
+
+    private DataSourceProperties initDatasourceProperties(String dbJdbcUrl, String dbUsername, String dbPassword, String dbDriverClassName) {
+        final DataSourceProperties dataSourceProperties;
         final CommonConfigDataSourceValue.DataSourceConfig dataSourceConfig = new CommonConfigDataSourceValue
                 .DataSourceConfig()
                 .setDriverClass(dbDriverClassName)
@@ -54,6 +88,7 @@ public class DatasourceConfig {
                 , dbUsername
                 , dbPassword
         );
+        return dataSourceProperties;
     }
 
     @Bean("mainDatasource")
