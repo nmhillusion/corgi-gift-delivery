@@ -16,6 +16,12 @@ spring:
   jackson:
     time-zone: GMT+07:00
 
+database:
+  jdbcUrl: jdbc:h2:file:./dbdata/slitran
+  username: sa
+  password:
+  driverClassName: org.h2.Driver
+
 logging:
   file:
     name: logs/sli-tran.log

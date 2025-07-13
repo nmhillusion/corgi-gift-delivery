@@ -2,8 +2,9 @@ package tech.nmhillusion.corgi_gift_delivery.service.business;
 
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
+import tech.nmhillusion.n2mix.exception.ApiResponseException;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * created by: nmhillusion
@@ -13,5 +14,8 @@ import java.io.IOException;
 public interface DeliveryService extends BaseBusinessService<DeliveryEntity> {
     Long getDeliveryIdByEventAndCustomer(String eventId, String customerId);
 
-    Iterable<DeliveryEntity> saveBatchByExcelFile(MultipartFile excelFile) throws IOException;
+    List<DeliveryEntity> insertBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException;
+
+    List<DeliveryEntity> updateBatchByExcelFile(MultipartFile excelFile);
+
 }

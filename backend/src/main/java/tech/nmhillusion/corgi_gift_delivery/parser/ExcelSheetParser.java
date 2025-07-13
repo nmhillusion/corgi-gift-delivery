@@ -1,5 +1,6 @@
 package tech.nmhillusion.corgi_gift_delivery.parser;
 
+import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 
 import java.util.List;
@@ -10,5 +11,5 @@ import java.util.List;
  * created date: 2025-07-08
  */
 public interface ExcelSheetParser<E> {
-    List<E> parse(SheetData sheetData);
+    List<E> parse(SheetData sheetData) throws NotFoundException;
 }

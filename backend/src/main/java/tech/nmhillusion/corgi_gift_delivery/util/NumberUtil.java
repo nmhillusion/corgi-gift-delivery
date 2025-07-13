@@ -11,7 +11,7 @@ public abstract class NumberUtil {
 
     public static String parseStringFromDoubleToLong(String doubleString) {
         if (StringValidator.isBlank(doubleString)) {
-            return null;
+            return doubleString;
         }
 
         return String.valueOf(

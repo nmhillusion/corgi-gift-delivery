@@ -1,6 +1,11 @@
 package tech.nmhillusion.corgi_gift_delivery.entity.business;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+import java.time.ZonedDateTime;
 
 /**
  * created by: nmhillusion
@@ -12,7 +17,6 @@ import jakarta.persistence.*;
 @Table(name = "t_cx_delivery")
 public class DeliveryEntity extends BaseBusinessEntity<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
     private Long deliveryId;
 
@@ -44,7 +48,7 @@ public class DeliveryEntity extends BaseBusinessEntity<Long> {
     private String customerLevel;
 
     @Column(name = "customer_id")
-    private Long customerId;
+    private String customerId;
 
     @Column(name = "customer_name")
     private String customerName;
@@ -60,6 +64,15 @@ public class DeliveryEntity extends BaseBusinessEntity<Long> {
 
     @Column(name = "gift_name")
     private String giftName;
+
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "insert_date", insertable = false, updatable = false)
+    private ZonedDateTime insertDate;
+
+    @Column(name = "update_date")
+    private ZonedDateTime updateDate;
 
     public Long getDeliveryId() {
         return deliveryId;
@@ -151,11 +164,11 @@ public class DeliveryEntity extends BaseBusinessEntity<Long> {
         return this;
     }
 
-    public Long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public DeliveryEntity setCustomerId(Long customerId) {
+    public DeliveryEntity setCustomerId(String customerId) {
         this.customerId = customerId;
         return this;
     }
@@ -202,6 +215,33 @@ public class DeliveryEntity extends BaseBusinessEntity<Long> {
 
     public DeliveryEntity setGiftName(String giftName) {
         this.giftName = giftName;
+        return this;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public DeliveryEntity setNote(String note) {
+        this.note = note;
+        return this;
+    }
+
+    public ZonedDateTime getInsertDate() {
+        return insertDate;
+    }
+
+    public DeliveryEntity setInsertDate(ZonedDateTime insertDate) {
+        this.insertDate = insertDate;
+        return this;
+    }
+
+    public ZonedDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public DeliveryEntity setUpdateDate(ZonedDateTime updateDate) {
+        this.updateDate = updateDate;
         return this;
     }
 

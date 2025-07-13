@@ -31,14 +31,18 @@ public class SequenceServiceImpl implements SequenceService {
 
     @Override
     public <T> Long getNextValue(Class<T> clazz) {
+        final SequenceEntity sequenceEntity = new SequenceEntity()
+                .setSeqName(clazz.getName());
         try {
-            return getCurrentValue(clazz) + 1;
+            sequenceEntity
+                    .setSeqValue(
+                            getCurrentValue(clazz) + 1
+                    );
         } catch (NoSuchElementException ex) {
-            final SequenceEntity sequenceEntity = new SequenceEntity()
-                    .setSeqName(clazz.getName())
+            sequenceEntity
                     .setSeqValue(IdConstant.MIN_ID);
 
-            return sequenceRepository.save(sequenceEntity).getSeqValue();
         }
+        return sequenceRepository.save(sequenceEntity).getSeqValue();
     }
 }

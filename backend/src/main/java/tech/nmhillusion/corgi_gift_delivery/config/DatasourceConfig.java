@@ -4,18 +4,19 @@ import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import tech.nmhillusion.corgi_gift_delivery.Application;
 import tech.nmhillusion.n2mix.constant.CommonConfigDataSourceValue;
 import tech.nmhillusion.n2mix.exception.InvalidArgument;
 import tech.nmhillusion.n2mix.helper.database.config.DataSourceProperties;
 import tech.nmhillusion.n2mix.helper.database.config.DatabaseConfigHelper;
 import tech.nmhillusion.n2mix.helper.database.query.DatabaseHelper;
-import tech.nmhillusion.corgi_gift_delivery.Application;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -33,22 +34,25 @@ public class DatasourceConfig {
 
     private final DataSourceProperties dataSourceProperties;
 
-    public DatasourceConfig() {
+    public DatasourceConfig(@Value("${database.jdbcUrl}")
+                            String dbJdbcUrl,
+                            @Value("${database.username}")
+                            String dbUsername,
+                            @Value("${database.password}")
+                            String dbPassword,
+                            @Value("${database.driverClassName}")
+                            String dbDriverClassName) {
         final CommonConfigDataSourceValue.DataSourceConfig dataSourceConfig = new CommonConfigDataSourceValue
                 .DataSourceConfig()
-                .setDriverClass("org.h2.Driver")
+                .setDriverClass(dbDriverClassName)
                 .setDialectClass("org.hibernate.dialect.H2Dialect");
-
-        final String dbUrl = "jdbc:h2:file:./dbdata/slitran";
-        final String user = "sa"; // Default user
-        final String password = ""; // Default password
 
         dataSourceProperties = DataSourceProperties.generateFromDefaultDataSourceProperties(
                 "slitran-db"
                 , dataSourceConfig
-                , dbUrl
-                , user
-                , password
+                , dbJdbcUrl
+                , dbUsername
+                , dbPassword
         );
     }
 
@@ -102,7 +106,7 @@ public class DatasourceConfig {
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         // Add Hibernate properties as needed
         final Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", "none");
         properties.setProperty("showSql", "true");
         em.setJpaProperties(properties);
         return em;

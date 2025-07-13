@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.business.DeliveryService;
 
+import java.util.List;
+
 /**
  * created by: nmhillusion
  * <p>
@@ -24,8 +26,13 @@ public class DeliveryController {
         this.deliveryService = deliveryService;
     }
 
-    @PostMapping(value = "/save/batch", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<DeliveryEntity> saveBatchByExcelFile(@RequestBody MultipartFile excelFile) {
-        return deliveryService.saveBatchByExcelFile(excelFile);
+    @PostMapping(value = "/insert/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<DeliveryEntity> insertBatchByExcelFile(@RequestBody MultipartFile excelFile) {
+        return deliveryService.insertBatchByExcelFile(excelFile);
+    }
+
+    @PostMapping(value = "/update/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<DeliveryEntity> updateBatchByExcelFile(@RequestBody MultipartFile excelFile) {
+        return deliveryService.updateBatchByExcelFile(excelFile);
     }
 }

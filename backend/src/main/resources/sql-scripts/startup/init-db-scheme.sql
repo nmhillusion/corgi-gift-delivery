@@ -19,28 +19,30 @@ create table if not exists t_cx_delivery_status (
 create table if not exists t_cx_delivery_return_status (
   status_id int primary key,
   status_name nvarchar(100) not null
-)
+);
 
 ---------
 
 create table if not exists t_cx_delivery (
-  delivery_id number primary key,
+  delivery_id bigint primary key,
   event_id varchar(200),
-  delivery_period_year number,
-  delivery_period_month number,
+  delivery_period_year int,
+  delivery_period_month int,
   territory nvarchar(200),
   region nvarchar(200),
   organ_id varchar(20),
   received_organ nvarchar(200),
   amd_name nvarchar(200),
   customer_level nvarchar(100),
-  customer_id number,
+  customer_id varchar(20),
   customer_name nvarchar(500),
   id_card_number varchar(100),
   phone_number varchar(30),
   address nvarchar(1000),
   gift_name nvarchar(300),
-  note text
+  note text,
+  insert_date timestamp with time zone default CURRENT_TIMESTAMP,
+  update_date timestamp with time zone
 );
 
 alter table t_cx_delivery
@@ -48,11 +50,13 @@ add constraint if not exists uniq_cx_delivery__event_id__customer_id
 unique (event_id, customer_id);
 
 create table if not exists t_cx_deliver_attempt (
-  attempt_id number primary key,
-  delivery_id number,
-  delivery_type_id number,
-  delivery_status_id number,
-  note text
+  attempt_id bigint primary key,
+  delivery_id bigint,
+  delivery_type_id int,
+  delivery_status_id int,
+  note text,
+  insert_date timestamp with time zone default CURRENT_TIMESTAMP,
+  update_date timestamp with time zone
 );
 
 alter table t_cx_deliver_attempt
@@ -69,10 +73,12 @@ foreign key (delivery_status_id) references t_cx_delivery_status(status_id);
 
 
 create table if not exists t_cx_delivery_return (
-  return_id number primary key,
-  delivery_id number,
-  return_status_id number,
-  note text
+  return_id bigint primary key,
+  delivery_id bigint,
+  return_status_id int,
+  note text,
+  insert_date timestamp with time zone default CURRENT_TIMESTAMP,
+  update_date timestamp with time zone
 );
 
 alter table t_cx_delivery_return

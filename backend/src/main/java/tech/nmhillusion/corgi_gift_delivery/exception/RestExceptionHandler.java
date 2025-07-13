@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.AppRuntimeException;
 
 /**
@@ -20,6 +21,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleAppRuntimeException(AppRuntimeException ex, WebRequest request) {
 
         final String bodyOfResponse = "Error: %s".formatted(ex.getMessage());
+
+        return handleExceptionInternal(ex, bodyOfResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request
+        );
+    }
+
+    @ExceptionHandler(value = {ApiResponseException.class})
+    protected ResponseEntity<Object> handleAppRuntimeException(ApiResponseException ex, WebRequest request) {
+
+        final String bodyOfResponse = "API Error: %s".formatted(ex.getMessage());
 
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request
