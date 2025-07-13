@@ -1,13 +1,10 @@
-package tech.nmhillusion.corgi_gift_delivery.controller.business;
+package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
-import tech.nmhillusion.corgi_gift_delivery.service.business.DeliveryService;
 
 import java.util.List;
 
@@ -24,6 +21,17 @@ public class DeliveryController {
 
     public DeliveryController(DeliveryService deliveryService) {
         this.deliveryService = deliveryService;
+    }
+
+    @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<DeliveryEntity> search(@RequestBody DeliveryDto deliveryDto,
+                                       @RequestParam(defaultValue = "0") int pageIndex,
+                                       @RequestParam(defaultValue = "10") int pageSize) {
+        return deliveryService.search(
+                deliveryDto
+                , pageIndex
+                , pageSize
+        );
     }
 
     @PostMapping(value = "/insert/batch", produces = MediaType.APPLICATION_JSON_VALUE)

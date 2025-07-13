@@ -1,4 +1,4 @@
-package tech.nmhillusion.corgi_gift_delivery.parser.delivery;
+package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
 import org.springframework.stereotype.Component;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;

@@ -1,12 +1,12 @@
-package tech.nmhillusion.corgi_gift_delivery.service_impl.business;
+package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
-import tech.nmhillusion.corgi_gift_delivery.parser.delivery.DeliveryExcelSheetParser;
-import tech.nmhillusion.corgi_gift_delivery.repository.business.DeliveryRepository;
-import tech.nmhillusion.corgi_gift_delivery.service.business.DeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
+import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.ExcelReader;
@@ -87,5 +87,10 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
         } catch (Exception ex) {
             throw new ApiResponseException(ex);
         }
+    }
+
+    @Override
+    public Page<DeliveryEntity> search(DeliveryDto deliveryDto, int pageIndex, int pageSize) {
+        return deliveryRepository.search(deliveryDto, PageRequest.of(pageIndex, pageSize));
     }
 }

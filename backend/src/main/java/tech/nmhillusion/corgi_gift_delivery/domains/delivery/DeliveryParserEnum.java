@@ -1,4 +1,4 @@
-package tech.nmhillusion.corgi_gift_delivery.parser.delivery;
+package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
 /**
  * created by: minguy1
