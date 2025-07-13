@@ -4,13 +4,11 @@ import org.springframework.stereotype.Component;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
 import tech.nmhillusion.corgi_gift_delivery.parser.ExcelSheetParser;
 import tech.nmhillusion.corgi_gift_delivery.parser.RowIdxMapping;
-import tech.nmhillusion.corgi_gift_delivery.util.CollectionUtil;
 import tech.nmhillusion.corgi_gift_delivery.util.NumberUtil;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.CellData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.RowData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
-import tech.nmhillusion.n2mix.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,37 +20,7 @@ import java.util.List;
  * created date: 2025-07-08
  */
 @Component
-public class DeliveryExcelSheetParser implements ExcelSheetParser<DeliveryEntity> {
-    private static List<RowIdxMapping> mappingIndicesForColumns(List<CellData> dataRowCells) {
-        return Arrays.stream(DeliveryParserEnum.values())
-                .map(deliveryParserEnum -> {
-                    final String columnName = deliveryParserEnum.getColumnName();
-
-                    final int foundIdx = CollectionUtil.findIndex(dataRowCells, cellData ->
-                            StringUtil.trimWithNull(cellData.getStringValue())
-                                    .equalsIgnoreCase(columnName)
-                    );
-
-                    return new RowIdxMapping(columnName, foundIdx);
-                })
-                .toList();
-    }
-
-    private static String getValueOfColumn(List<CellData> dataRowCells, List<RowIdxMapping> rowIdxMappings, DeliveryParserEnum deliveryParserEnum) {
-        return dataRowCells
-                .get(
-                        rowIdxMappings
-                                .stream().filter(it ->
-                                        deliveryParserEnum
-                                                .getColumnName()
-                                                .equals(it.columnName())
-                                )
-                                .findFirst()
-                                .orElseThrow()
-                                .columnIdx()
-                )
-                .getStringValue();
-    }
+public class DeliveryExcelSheetParser extends ExcelSheetParser<DeliveryEntity> {
 
     @Override
     public List<DeliveryEntity> parse(SheetData sheetData) throws NotFoundException {
@@ -69,13 +37,12 @@ public class DeliveryExcelSheetParser implements ExcelSheetParser<DeliveryEntity
             }
 
             if (null == rowIdxMappings) {
-                rowIdxMappings = mappingIndicesForColumns(dataRowCells);
-
-                final List<RowIdxMapping> notFoundColumns = rowIdxMappings.stream().filter(it -> it.columnIdx() == -1)
-                        .toList();
-                if (!notFoundColumns.isEmpty()) {
-                    throw new NotFoundException("Not found columns: %s".formatted(notFoundColumns));
-                }
+                rowIdxMappings = mappingIndicesForColumns(
+                        dataRowCells
+                        , Arrays.stream(DeliveryParserEnum.values())
+                                .map(DeliveryParserEnum::getColumnName)
+                                .toList()
+                );
 
                 continue;
             }
@@ -83,62 +50,62 @@ public class DeliveryExcelSheetParser implements ExcelSheetParser<DeliveryEntity
             resultList.add(
                     new DeliveryEntity()
                             .setEventId(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.EVENT_ID)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.EVENT_ID.getColumnName())
                             )
                             .setDeliveryPeriodYear(
                                     Integer.parseInt(
                                             NumberUtil.parseStringFromDoubleToLong(
-                                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.DELIVERY_PERIOD_YEAR)
+                                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.DELIVERY_PERIOD_YEAR.getColumnName())
                                             )
                                     )
                             )
                             .setDeliveryPeriodMonth(
                                     Integer.parseInt(
                                             NumberUtil.parseStringFromDoubleToLong(
-                                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.DELIVERY_PERIOD_MONTH)
+                                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.DELIVERY_PERIOD_MONTH.getColumnName())
                                             )
                                     )
                             )
                             .setTerritory(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.TERRITORY)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.TERRITORY.getColumnName())
                             )
                             .setRegion(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.REGION)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.REGION.getColumnName())
                             )
                             .setOrganId(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.ORGAN_ID)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.ORGAN_ID.getColumnName())
                             )
                             .setReceivedOrgan(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.RECEIVED_ORGAN)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.RECEIVED_ORGAN.getColumnName())
                             )
                             .setAmdName(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.AMD_NAME)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.AMD_NAME.getColumnName())
                             )
                             .setCustomerLevel(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.CUSTOMER_LEVEL)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.CUSTOMER_LEVEL.getColumnName())
                             )
                             .setCustomerId(
                                     NumberUtil.parseStringFromDoubleToLong(
-                                            getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.CUSTOMER_ID)
+                                            getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.CUSTOMER_ID.getColumnName())
                                     )
                             )
                             .setCustomerName(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.CUSTOMER_NAME)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.CUSTOMER_NAME.getColumnName())
                             )
                             .setIdCardNumber(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.ID_CARD_NUMBER)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.ID_CARD_NUMBER.getColumnName())
                             )
                             .setPhoneNumber(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.PHONE_NUMBER)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.PHONE_NUMBER.getColumnName())
                             )
                             .setAddress(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.ADDRESS)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.ADDRESS.getColumnName())
                             )
                             .setGiftName(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.GIFT_NAME)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.GIFT_NAME.getColumnName())
                             )
                             .setNote(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.NOTE)
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.NOTE.getColumnName())
                             )
             )
             ;
