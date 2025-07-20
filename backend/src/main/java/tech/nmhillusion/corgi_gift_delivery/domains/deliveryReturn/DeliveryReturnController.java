@@ -1,6 +1,7 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturn;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tech.nmhillusion.corgi_gift_delivery.domains.base.BaseDeliveryController;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnEntity;
 
@@ -9,7 +10,7 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnEntity
  * <p>
  * created date: 2025-07-19
  */
-
+@RestController
 @RequestMapping("/api/delivery-return")
 public class DeliveryReturnController extends BaseDeliveryController<DeliveryReturnEntity, DeliveryReturnDto> {
     public DeliveryReturnController(DeliveryReturnService service) {

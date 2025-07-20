@@ -9,7 +9,7 @@ server:
 
 spring:
   application:
-    name: Slight Transportation
+    name: CorgiDeli
   output:
     ansi:
       enabled: always

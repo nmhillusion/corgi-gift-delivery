@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.BaseBusinessEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseDeliveryService;
@@ -18,8 +17,7 @@ import java.util.List;
  * created date: 2025-07-19
  */
 
-@RestController
-public class BaseDeliveryController<E extends BaseBusinessEntity<Long>, DTO> {
+public abstract class BaseDeliveryController<E extends BaseBusinessEntity<Long>, DTO> {
     private final BaseDeliveryService<E, DTO> service;
 
     public BaseDeliveryController(BaseDeliveryService<E, DTO> service) {
