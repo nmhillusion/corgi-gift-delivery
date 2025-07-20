@@ -1,4 +1,4 @@
-package tech.nmhillusion.corgi_gift_delivery.domains.base;
+package tech.nmhillusion.corgi_gift_delivery.service.business;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;

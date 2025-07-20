@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.BaseBusinessEntity;
+import tech.nmhillusion.corgi_gift_delivery.service.business.BaseDeliveryService;
 
 import java.util.List;
 

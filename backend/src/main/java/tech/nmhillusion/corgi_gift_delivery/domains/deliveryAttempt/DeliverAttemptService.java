@@ -8,9 +8,9 @@ package tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
-import tech.nmhillusion.corgi_gift_delivery.domains.base.BaseDeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliverAttemptEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseBusinessService;
+import tech.nmhillusion.corgi_gift_delivery.service.business.BaseDeliveryService;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 
 import java.util.List;
