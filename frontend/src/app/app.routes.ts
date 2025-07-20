@@ -7,34 +7,10 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
-    path: "commodity",
-    loadChildren: () =>
-      import("./pages/commodity/commodity.module").then(
-        (m) => m.CommodityModule
-      ),
-  },
-  {
     path: "delivery",
     loadChildren: () =>
-      import("./pages/delivery/delivery.module").then((m) => m.DeliveryModule),
-  },
-  {
-    path: "recipient",
-    loadChildren: () =>
-      import("./pages/recipient/recipient.module").then(
-        (m) => m.RecipientModule
+      import("./pages/delivery/delivery.module").then(
+        (m) => m.CommodityModule
       ),
-  },
-  {
-    path: "shipper",
-    loadChildren: () =>
-      import("./pages/shipper/shipper.module").then((m) => m.ShipperModule),
-  },
-  {
-    path: "warehouse",
-    loadChildren: () =>
-      import("./pages/warehouse/warehouse.module").then(
-        (m) => m.WarehouseModule
-      ),
-  },
+  }
 ];
