@@ -9,12 +9,8 @@ import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
 import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
-import tech.nmhillusion.n2mix.helper.office.excel.reader.ExcelReader;
-import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 
-import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,29 +40,18 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
     @Override
     public List<DeliveryEntity> insertBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException {
         try {
-            final List<DeliveryEntity> combinedList = convertExcelFileToDeliveries(excelFile);
+            final List<DeliveryEntity> combinedList = parseExcelFileToEntityList(excelFile, deliveryExcelSheetParser::parse);
 
             return saveBatch(combinedList);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             throw new ApiResponseException(ex);
         }
-    }
-
-    private List<DeliveryEntity> convertExcelFileToDeliveries(MultipartFile excelFile) throws IOException, NotFoundException {
-        final List<SheetData> sheetList = ExcelReader.read(excelFile.getInputStream());
-        final List<DeliveryEntity> combinedList = new ArrayList<>();
-
-        for (SheetData sheetData : sheetList) {
-            final List<DeliveryEntity> deliveryEntities = deliveryExcelSheetParser.parse(sheetData);
-            combinedList.addAll(deliveryEntities);
-        }
-        return combinedList;
     }
 
     @Override
     public List<DeliveryEntity> updateBatchByExcelFile(MultipartFile excelFile) {
         try {
-            final List<DeliveryEntity> deliveryEntities = convertExcelFileToDeliveries(excelFile);
+            final List<DeliveryEntity> deliveryEntities = parseExcelFileToEntityList(excelFile, deliveryExcelSheetParser::parse);
 
             for (DeliveryEntity deliveryEntity : deliveryEntities) {
                 final Long existedDeliveryId = getDeliveryIdByEventAndCustomer(deliveryEntity.getEventId(), deliveryEntity.getCustomerId());
@@ -84,7 +69,7 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
             }
 
             return deliveryRepository.saveAllAndFlush(deliveryEntities);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             throw new ApiResponseException(ex);
         }
     }

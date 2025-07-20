@@ -1,6 +1,9 @@
 package tech.nmhillusion.corgi_gift_delivery.entity.business;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * created by: nmhillusion
@@ -10,9 +13,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "t_cx_deliver_attempt")
-public class DeliverAttemptEntity {
+public class DeliverAttemptEntity extends BaseBusinessEntity<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attempt_id")
     private Long attemptId;
 
@@ -73,4 +75,13 @@ public class DeliverAttemptEntity {
         return this;
     }
 
+    @Override
+    public Long getId() {
+        return attemptId;
+    }
+
+    @Override
+    public BaseBusinessEntity<Long> setId(Long id) {
+        return setAttemptId(id);
+    }
 }

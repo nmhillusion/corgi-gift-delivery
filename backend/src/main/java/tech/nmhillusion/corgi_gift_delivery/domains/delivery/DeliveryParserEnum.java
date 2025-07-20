@@ -1,11 +1,13 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
+import tech.nmhillusion.corgi_gift_delivery.parser.StandardParserEnum;
+
 /**
  * created by: minguy1
  * <p>
  * created date: 2025-07-12
  */
-public enum DeliveryParserEnum {
+public enum DeliveryParserEnum implements StandardParserEnum {
     EVENT_ID("event_id"),
     DELIVERY_PERIOD_YEAR("delivery_period_year"),
     DELIVERY_PERIOD_MONTH("delivery_period_month"),
@@ -29,6 +31,7 @@ public enum DeliveryParserEnum {
         this.columnName = columnName;
     }
 
+    @Override
     public String getColumnName() {
         return columnName;
     }

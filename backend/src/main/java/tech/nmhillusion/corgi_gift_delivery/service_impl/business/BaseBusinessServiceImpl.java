@@ -1,11 +1,16 @@
 package tech.nmhillusion.corgi_gift_delivery.service_impl.business;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.BaseBusinessEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseBusinessService;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
 import tech.nmhillusion.corgi_gift_delivery.validator.IdValidator;
+import tech.nmhillusion.n2mix.helper.office.excel.reader.ExcelReader;
+import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
+import tech.nmhillusion.n2mix.type.function.ThrowableFunction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +20,7 @@ import java.util.List;
  */
 public abstract class BaseBusinessServiceImpl<E extends BaseBusinessEntity<Long>, R extends JpaRepository<E, Long>>
         implements BaseBusinessService<E> {
-    private final R repository;
+    protected final R repository;
     private final SequenceService sequenceService;
 
     protected BaseBusinessServiceImpl(R repository, SequenceService sequenceService) {
@@ -38,5 +43,16 @@ public abstract class BaseBusinessServiceImpl<E extends BaseBusinessEntity<Long>
         return repository.saveAll(
                 entities
         );
+    }
+
+    protected List<E> parseExcelFileToEntityList(MultipartFile excelFile, ThrowableFunction<SheetData, List<E>> parser) throws Throwable {
+        final List<SheetData> sheetList = ExcelReader.read(excelFile.getInputStream());
+        final List<E> combinedList = new ArrayList<>();
+
+        for (SheetData sheetData : sheetList) {
+            final List<E> deliveryEntities = parser.throwableApply(sheetData);
+            combinedList.addAll(deliveryEntities);
+        }
+        return combinedList;
     }
 }
