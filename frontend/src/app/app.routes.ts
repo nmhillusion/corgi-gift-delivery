@@ -10,7 +10,7 @@ export const routes: Routes = [
     path: "delivery",
     loadChildren: () =>
       import("./pages/delivery/delivery.module").then(
-        (m) => m.CommodityModule
+        (m) => m.DeliveryModule
       ),
   }
 ];

@@ -1,0 +1,134 @@
+<main-layout [basePage]="this">
+  <div class="delivery-page">
+    <h1>Delivery Information</h1>
+    <div class="delivery-details">
+      <mat-table matTable [dataSource]="dataSource">
+        <ng-container matColumnDef="deliveryId">
+          <th mat-header-cell *matHeaderCellDef>DeliveryId</th>
+          <td mat-cell *matCellDef="let element">{{ element.deliveryId }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="eventId">
+          <th mat-header-cell *matHeaderCellDef>Event ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.eventId }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryPeriodYear">
+          <th mat-header-cell *matHeaderCellDef>Period Year</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.deliveryPeriodYear }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryPeriodMonth">
+          <th mat-header-cell *matHeaderCellDef>Period Month</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.deliveryPeriodMonth }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="territory">
+          <th mat-header-cell *matHeaderCellDef>Territory</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.territory }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="region">
+          <th mat-header-cell *matHeaderCellDef>Region</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.region }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="organId">
+          <th mat-header-cell *matHeaderCellDef>Organ ID</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.organId }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="receivedOrgan">
+          <th mat-header-cell *matHeaderCellDef>Received Organ</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.receivedOrgan }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="amdName">
+          <th mat-header-cell *matHeaderCellDef>AMD Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.amdName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerLevel">
+          <th mat-header-cell *matHeaderCellDef>Customer Level</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.customerLevel }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerId">
+          <th mat-header-cell *matHeaderCellDef>Customer Id</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.customerId }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerName">
+          <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.customerName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="idCardNumber">
+          <th mat-header-cell *matHeaderCellDef>ID Card Number</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.idCardNumber }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phoneNumber">
+          <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.phoneNumber }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef>Address</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.address }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="giftName">
+          <th mat-header-cell *matHeaderCellDef>Gift Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.giftName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="note">
+          <th mat-header-cell *matHeaderCellDef>Note</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.note }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </mat-table>
+
+      <mat-paginator
+        [length]="paginator.length$()"
+        [pageSize]="paginator.pageSize$()"
+        [pageSizeOptions]="paginator.pageSizeOptions$()"
+        (page)="paginator.onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</main-layout>

@@ -15,7 +15,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { environment } from "@app/../environments/environment";
 import { PAGE } from "@app/layout/page.constant";
 import { SIZE } from "@app/layout/size.constant";
-import { NoteOwnerDto } from "@app/model/business/note.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { Page, PaginatorHandler } from "@app/model/core/page.model";
 import { FormUtils } from "@app/util/form.util";
@@ -129,17 +128,4 @@ export class BasePage implements OnInit, OnDestroy {
       });
     },
   };
-
-  showNoteDialog<T>(
-    noteOwner$: BehaviorSubject<NoteOwnerDto>,
-    componentType: ComponentType<T>
-  ) {
-    this.$dialog.open<T>(componentType, {
-      data: {
-        noteOwner$,
-      },
-      width: SIZE.DIALOG.width,
-      maxHeight: SIZE.DIALOG.height,
-    });
-  }
 }
