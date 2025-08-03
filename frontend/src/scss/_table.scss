@@ -17,3 +17,7 @@
     background-color: color.scale($color: vars.$themeColor, $alpha: -85%);
   }
 }
+
+.mat-mdc-table {
+  overflow: auto;
+}

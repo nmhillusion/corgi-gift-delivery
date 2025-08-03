@@ -12,7 +12,7 @@ export class DeliveryService {
   private $http = inject(HttpClient);
 
   buildUrl(partLink: number | string): string {
-    return `${environment.LINK.API_BASE_URL}/delivery/${partLink}`;
+    return `${environment.LINK.API_BASE_URL}/api/delivery/${partLink}`;
   }
 
   search(
