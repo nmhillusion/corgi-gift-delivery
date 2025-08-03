@@ -20,4 +20,10 @@ public class DeliveryReturnStatusServiceImpl implements DeliveryReturnStatusServ
     public DeliveryReturnStatusEntity getDeliveryReturnStatusByStatusName(String statusName) {
         return repository.findByStatusName(statusName);
     }
+
+    @Override
+    public DeliveryReturnStatusEntity getDeliveryReturnStatusByStatusId(String statusId) {
+        return repository.findById(statusId)
+                .orElseThrow();
+    }
 }

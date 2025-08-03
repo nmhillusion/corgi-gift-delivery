@@ -1,5 +1,8 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.nmhillusion.corgi_gift_delivery.domains.base.BaseDeliveryController;
@@ -13,8 +16,20 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
 @RestController
 @RequestMapping("/api/delivery")
 public class DeliveryController extends BaseDeliveryController<DeliveryEntity, DeliveryDto> {
+    private final DeliveryService deliveryService;
 
     public DeliveryController(DeliveryService deliveryService) {
         super(deliveryService);
+        this.deliveryService = deliveryService;
+    }
+
+    @GetMapping(value = "/{deliveryId}/customer/{customerId}/name", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String getCustomerNameOfDelivery(@PathVariable String deliveryId, @PathVariable String customerId) {
+        return deliveryService.getCustomerNameOfDelivery(deliveryId, customerId);
+    }
+
+    @GetMapping(value = "/{deliveryId}", produces = MediaType.TEXT_PLAIN_VALUE)
+    public DeliveryEntity getById(@PathVariable String deliveryId) {
+        return deliveryService.getById(deliveryId);
     }
 }

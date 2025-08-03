@@ -17,6 +17,7 @@ import { PAGE } from "@app/layout/page.constant";
 import { SIZE } from "@app/layout/size.constant";
 import { Nullable } from "@app/model/core/nullable.model";
 import { Page, PaginatorHandler } from "@app/model/core/page.model";
+import { ErrorUtil } from "@app/util/error.util";
 import { FormUtils } from "@app/util/form.util";
 import { ParamUtils } from "@app/util/param.util";
 import { AlertDialog } from "@app/widget/dialog/alert-dialog/alert.dialog";
@@ -33,6 +34,7 @@ export class BasePage implements OnInit, OnDestroy {
   protected $activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   protected $dialog = inject(MatDialog);
   public $injector = inject(Injector);
+  protected $errorUtil = inject(ErrorUtil);
 
   CONSTANTS = {
     FORMAT: {

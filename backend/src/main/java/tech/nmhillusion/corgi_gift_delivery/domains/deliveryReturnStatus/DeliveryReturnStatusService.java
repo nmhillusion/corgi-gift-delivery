@@ -9,4 +9,6 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnStatus
  */
 public interface DeliveryReturnStatusService {
     DeliveryReturnStatusEntity getDeliveryReturnStatusByStatusName(String statusName);
+
+    DeliveryReturnStatusEntity getDeliveryReturnStatusByStatusId(String statusId);
 }

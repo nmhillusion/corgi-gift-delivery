@@ -78,4 +78,15 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
     public Page<DeliveryEntity> search(DeliveryDto deliveryDto, int pageIndex, int pageSize) {
         return deliveryRepository.search(deliveryDto, PageRequest.of(pageIndex, pageSize));
     }
+
+    @Override
+    public String getCustomerNameOfDelivery(String deliveryId, String customerId) {
+        return deliveryRepository.getCustomerNameOfDelivery(deliveryId, customerId);
+    }
+
+    @Override
+    public DeliveryEntity getById(String id) {
+        return deliveryRepository.findById(Long.valueOf(id))
+                .orElseThrow();
+    }
 }

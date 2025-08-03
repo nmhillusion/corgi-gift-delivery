@@ -1,0 +1,98 @@
+<main-layout [basePage]="this">
+  <div class="delivery-header">
+    <h1>Delivery Attempt Management</h1>
+    <p>Manage and view delivery attempt information for gifts.</p>
+  </div>
+
+  <div class="delivery-actions">
+    <app-input-file
+      [inputFile]="deliveryAttemptImportFile$"
+      [multiple]="false"
+      fileExtension=".xlsx, .xls"
+    ></app-input-file>
+    <div class="action-box">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="importNewDeliveryAttempt()"
+      >
+        Import NEW Delivery Attempts
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="updateDeliveryAttemptsBatch()"
+      >
+        Update Delivery Attempts
+      </button>
+    </div>
+  </div>
+
+  <div class="delivery-page">
+    <h1>Delivery Attempt Information</h1>
+    <div class="delivery-details">
+      <mat-table matTable appTable [dataSource]="dataSource">
+        <ng-container matColumnDef="attemptId">
+          <th mat-header-cell *matHeaderCellDef>attemptId</th>
+          <td mat-cell *matCellDef="let element">{{ element.attemptId }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryId">
+          <th mat-header-cell *matHeaderCellDef>DeliveryId</th>
+          <td mat-cell *matCellDef="let element">{{ element.deliveryId }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="eventId">
+          <th mat-header-cell *matHeaderCellDef>Event ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.eventId$() }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerId">
+          <th mat-header-cell *matHeaderCellDef>Customer Id</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.customerId$() }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerName">
+          <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.customerName$() }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryTypeName">
+          <th mat-header-cell *matHeaderCellDef>Delivery Type</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.deliveryTypeName$() }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryStatusName">
+          <th mat-header-cell *matHeaderCellDef>Delivery Status</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.deliveryStatusName$() }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="note">
+          <th mat-header-cell *matHeaderCellDef>Note</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.note }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </mat-table>
+
+      <mat-paginator
+        [length]="paginator.length$()"
+        [pageSize]="paginator.pageSize$()"
+        [pageSizeOptions]="paginator.pageSizeOptions$()"
+        (page)="paginator.onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</main-layout>

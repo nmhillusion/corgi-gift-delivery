@@ -22,4 +22,7 @@ public interface DeliveryService extends BaseBusinessService<DeliveryEntity>, Ba
     List<DeliveryEntity> updateBatchByExcelFile(MultipartFile excelFile);
 
     Page<DeliveryEntity> search(DeliveryDto deliveryDto, int pageIndex, int pageSize);
+
+    String getCustomerNameOfDelivery(String deliveryId, String customerId);
+
 }

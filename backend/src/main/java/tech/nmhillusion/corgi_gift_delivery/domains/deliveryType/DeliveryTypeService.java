@@ -9,4 +9,7 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryTypeEntity;
  */
 public interface DeliveryTypeService {
     DeliveryTypeEntity getDeliveryTypeByTypeName(String typeName);
+
+    DeliveryTypeEntity getDeliveryTypeByTypeId(String typeId);
+
 }

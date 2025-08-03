@@ -73,4 +73,10 @@ public class DeliveryReturnServiceImpl extends BaseBusinessServiceImpl<DeliveryR
     public Page<DeliveryReturnEntity> search(DeliveryReturnDto dto, int pageIndex, int pageSize) {
         return repository.search(dto, PageRequest.of(pageIndex, pageSize));
     }
+
+    @Override
+    public DeliveryReturnEntity getById(String id) {
+        return repository.findById(Long.valueOf(id))
+                .orElseThrow();
+    }
 }

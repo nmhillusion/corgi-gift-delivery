@@ -72,7 +72,7 @@ export class DeliveryComponent extends BasePage {
           error: (error) => {
             console.error("Error searching delivery data:", error);
             this.dialogHandler.alert(
-              "Failed to search delivery data. " + error
+              "Failed to search delivery data. " + this.$errorUtil.retrieErrorMessage(error)
             );
           },
         })
@@ -97,7 +97,7 @@ export class DeliveryComponent extends BasePage {
           error: (error) => {
             console.error("Error importing delivery data:", error);
             this.dialogHandler.alert(
-              "Failed to import delivery data. " + error
+              "Failed to import delivery data. " + this.$errorUtil.retrieErrorMessage(error)
             );
           },
         })
@@ -125,7 +125,7 @@ export class DeliveryComponent extends BasePage {
           error: (error) => {
             console.error("Error updating delivery data:", error);
             this.dialogHandler.alert(
-              "Failed to update delivery data. " + error
+              "Failed to update delivery data. " + this.$errorUtil.retrieErrorMessage(error)
             );
           },
         })

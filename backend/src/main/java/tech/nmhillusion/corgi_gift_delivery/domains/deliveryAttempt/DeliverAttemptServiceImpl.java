@@ -72,4 +72,10 @@ public class DeliverAttemptServiceImpl extends BaseBusinessServiceImpl<DeliverAt
     public Page<DeliverAttemptEntity> search(DeliverAttemptDto dto, int pageIndex, int pageSize) {
         return repository.search(dto, PageRequest.of(pageIndex, pageSize));
     }
+
+    @Override
+    public DeliverAttemptEntity getById(String id) {
+        return repository.findById(Long.valueOf(id))
+                .orElseThrow();
+    }
 }

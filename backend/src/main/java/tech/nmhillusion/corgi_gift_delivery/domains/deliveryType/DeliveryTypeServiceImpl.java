@@ -20,4 +20,10 @@ public class DeliveryTypeServiceImpl implements DeliveryTypeService {
     public DeliveryTypeEntity getDeliveryTypeByTypeName(String typeName) {
         return repository.findByTypeName(typeName);
     }
+
+    @Override
+    public DeliveryTypeEntity getDeliveryTypeByTypeId(String typeId) {
+        return repository.findById(typeId)
+                .orElseThrow();
+    }
 }

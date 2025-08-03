@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public abstract class BaseDeliveryController<E extends BaseBusinessEntity<Long>, DTO> {
-    private final BaseDeliveryService<E, DTO> service;
+    protected final BaseDeliveryService<E, DTO> service;
 
     public BaseDeliveryController(BaseDeliveryService<E, DTO> service) {
         this.service = service;

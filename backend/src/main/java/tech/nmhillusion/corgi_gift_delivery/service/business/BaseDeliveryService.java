@@ -18,4 +18,6 @@ public interface BaseDeliveryService<E extends BaseBusinessEntity<Long>, DTO> {
     List<E> updateBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException;
 
     Page<E> search(DTO dto, int pageIndex, int pageSize);
+
+    E getById(String id);
 }

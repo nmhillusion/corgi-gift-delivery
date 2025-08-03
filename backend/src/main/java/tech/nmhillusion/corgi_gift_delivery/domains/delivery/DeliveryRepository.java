@@ -18,4 +18,8 @@ public interface DeliveryRepository extends JpaRepository<DeliveryEntity, Long> 
 
     @Query("SELECT d FROM DeliveryEntity d")
     Page<DeliveryEntity> search(DeliveryDto deliveryDto, PageRequest pageRequest);
+
+    @Query("SELECT d.customerName FROM DeliveryEntity d WHERE d.deliveryId = :deliveryId AND d.customerId = :customerId")
+    String getCustomerNameOfDelivery(String deliveryId, String customerId);
+
 }
