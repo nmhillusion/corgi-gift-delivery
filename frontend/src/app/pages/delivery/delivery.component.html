@@ -10,9 +10,14 @@
       [multiple]="false"
       fileExtension=".xlsx, .xls"
     ></app-input-file>
-    <button mat-raised-button color="primary" (click)="importDelivery()">
-      Import Delivery
-    </button>
+    <div class="action-box">
+      <button mat-raised-button color="primary" (click)="importNewDelivery()">
+        Import NEW Deliveries
+      </button>
+      <button mat-raised-button color="accent" (click)="updateDeliveriesBatch()">
+        Update Deliveries
+      </button>
+    </div>
   </div>
 
   <div class="delivery-page">

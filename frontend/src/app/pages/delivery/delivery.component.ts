@@ -79,7 +79,7 @@ export class DeliveryComponent extends BasePage {
     );
   }
 
-  importDelivery() {
+  importNewDelivery() {
     const files = this.deliveryImportFile$.getValue();
 
     console.log("Importing delivery data from files:", files);
@@ -104,6 +104,34 @@ export class DeliveryComponent extends BasePage {
       );
     } else {
       this.dialogHandler.alert("No file selected for import.");
+    }
+  }
+
+  updateDeliveriesBatch() {
+    const files = this.deliveryImportFile$.getValue();
+
+    console.log("Updating delivery data from files:", files);
+
+    if (files.length > 0) {
+      const file = files[0];
+      this.registerSubscription(
+        this.$deliveryService.updateBatchByExcelFile(file).subscribe({
+          next: (data) => {
+            console.log("Delivery data updated successfully:", data);
+            this.dialogHandler.alert("Delivery data updated successfully.");
+            this.deliveryImportFile$.next([]);
+            this.search(this.generateDefaultPage()); // Refresh the data
+          },
+          error: (error) => {
+            console.error("Error updating delivery data:", error);
+            this.dialogHandler.alert(
+              "Failed to update delivery data. " + error
+            );
+          },
+        })
+      );
+    } else {
+      this.dialogHandler.alert("No file selected for update.");
     }
   }
 }
