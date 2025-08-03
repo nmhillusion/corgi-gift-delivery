@@ -7,7 +7,7 @@ import tech.nmhillusion.corgi_gift_delivery.parser.StandardParserEnum;
  * <p>
  * created date: 2025-07-19
  */
-public enum DeliverAttemptParserEnum implements StandardParserEnum {
+public enum DeliveryAttemptParserEnum implements StandardParserEnum {
     EVENT_ID("event_id"),
     CUSTOMER_ID("customer_id"),
     DELIVERY_TYPE("delivery_type"),
@@ -16,7 +16,7 @@ public enum DeliverAttemptParserEnum implements StandardParserEnum {
 
     private final String columnName;
 
-    DeliverAttemptParserEnum(String columnName) {
+    DeliveryAttemptParserEnum(String columnName) {
         this.columnName = columnName;
     }
 

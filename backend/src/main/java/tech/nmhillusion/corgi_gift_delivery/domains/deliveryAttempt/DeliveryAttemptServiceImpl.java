@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
-import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliverAttemptEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryAttemptEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
 import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
@@ -19,12 +19,12 @@ import java.util.List;
  * created date: 2025-07-19
  */
 @TransactionalService
-public class DeliverAttemptServiceImpl extends BaseBusinessServiceImpl<DeliverAttemptEntity, DeliverAttemptRepository> implements DeliverAttemptService {
-    private final DeliverAttemptExcelSheetParser deliverAttemptExcelSheetParser;
+public class DeliveryAttemptServiceImpl extends BaseBusinessServiceImpl<DeliveryAttemptEntity, DeliveryAttemptRepository> implements DeliveryAttemptService {
+    private final DeliveryAttemptExcelSheetParser deliveryAttemptExcelSheetParser;
 
-    protected DeliverAttemptServiceImpl(DeliverAttemptRepository deliverAttemptRepository, SequenceService sequenceService, DeliverAttemptExcelSheetParser deliverAttemptExcelSheetParser) {
-        super(deliverAttemptRepository, sequenceService);
-        this.deliverAttemptExcelSheetParser = deliverAttemptExcelSheetParser;
+    protected DeliveryAttemptServiceImpl(DeliveryAttemptRepository deliveryAttemptRepository, SequenceService sequenceService, DeliveryAttemptExcelSheetParser deliveryAttemptExcelSheetParser) {
+        super(deliveryAttemptRepository, sequenceService);
+        this.deliveryAttemptExcelSheetParser = deliveryAttemptExcelSheetParser;
     }
 
     @Override
@@ -33,9 +33,9 @@ public class DeliverAttemptServiceImpl extends BaseBusinessServiceImpl<DeliverAt
     }
 
     @Override
-    public List<DeliverAttemptEntity> insertBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException {
+    public List<DeliveryAttemptEntity> insertBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException {
         try {
-            final List<DeliverAttemptEntity> combinedList = parseExcelFileToEntityList(excelFile, deliverAttemptExcelSheetParser::parse);
+            final List<DeliveryAttemptEntity> combinedList = parseExcelFileToEntityList(excelFile, deliveryAttemptExcelSheetParser::parse);
 
             return saveBatch(combinedList);
         } catch (Throwable ex) {
@@ -44,11 +44,11 @@ public class DeliverAttemptServiceImpl extends BaseBusinessServiceImpl<DeliverAt
     }
 
     @Override
-    public List<DeliverAttemptEntity> updateBatchByExcelFile(MultipartFile excelFile) {
+    public List<DeliveryAttemptEntity> updateBatchByExcelFile(MultipartFile excelFile) {
         try {
-            final List<DeliverAttemptEntity> entityList = parseExcelFileToEntityList(excelFile, deliverAttemptExcelSheetParser::parse);
+            final List<DeliveryAttemptEntity> entityList = parseExcelFileToEntityList(excelFile, deliveryAttemptExcelSheetParser::parse);
 
-            for (DeliverAttemptEntity entity_ : entityList) {
+            for (DeliveryAttemptEntity entity_ : entityList) {
                 final Long maxAttemptId = repository.getMaxAttemptIdOfDeliveryId(entity_.getDeliveryId());
                 if (null == maxAttemptId) {
                     throw new NotFoundException(
@@ -69,12 +69,12 @@ public class DeliverAttemptServiceImpl extends BaseBusinessServiceImpl<DeliverAt
     }
 
     @Override
-    public Page<DeliverAttemptEntity> search(DeliverAttemptDto dto, int pageIndex, int pageSize) {
+    public Page<DeliveryAttemptEntity> search(DeliveryAttemptDto dto, int pageIndex, int pageSize) {
         return repository.search(dto, PageRequest.of(pageIndex, pageSize));
     }
 
     @Override
-    public DeliverAttemptEntity getById(String id) {
+    public DeliveryAttemptEntity getById(String id) {
         return repository.findById(Long.valueOf(id))
                 .orElseThrow();
     }

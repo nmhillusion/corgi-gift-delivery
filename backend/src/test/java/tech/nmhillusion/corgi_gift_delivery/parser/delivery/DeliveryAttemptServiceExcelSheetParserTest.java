@@ -17,8 +17,8 @@ import java.util.List;
  * <p>
  * created date: 2025-07-12
  */
-class DeliverAttemptServiceExcelSheetParserTest {
-    private final Logger logger = LoggerFactory.getLogger(DeliverAttemptServiceExcelSheetParserTest.class);
+class DeliveryAttemptServiceExcelSheetParserTest {
+    private final Logger logger = LoggerFactory.getLogger(DeliveryAttemptServiceExcelSheetParserTest.class);
 
     @Test
     void parse() {

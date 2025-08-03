@@ -2,8 +2,8 @@ package tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturn;
 
 import org.springframework.stereotype.Component;
 import tech.nmhillusion.corgi_gift_delivery.domains.delivery.DeliveryService;
-import tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt.DeliverAttemptParserEnum;
-import tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt.DeliverAttemptService;
+import tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt.DeliveryAttemptParserEnum;
+import tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt.DeliveryAttemptService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturnStatus.DeliveryReturnStatusService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnEntity;
 import tech.nmhillusion.corgi_gift_delivery.parser.ExcelSheetParser;
@@ -25,13 +25,13 @@ import java.util.List;
 @Component
 public class DeliveryReturnExcelSheetParser extends ExcelSheetParser<DeliveryReturnEntity> {
     private final DeliveryService deliveryService;
-    private final DeliverAttemptService deliverAttemptService;
+    private final DeliveryAttemptService deliveryAttemptService;
     private final DeliveryReturnStatusService deliveryReturnStatusService;
 
 
-    public DeliveryReturnExcelSheetParser(DeliveryService deliveryService, DeliverAttemptService deliverAttemptService, DeliveryReturnStatusService deliveryReturnStatusService) {
+    public DeliveryReturnExcelSheetParser(DeliveryService deliveryService, DeliveryAttemptService deliveryAttemptService, DeliveryReturnStatusService deliveryReturnStatusService) {
         this.deliveryService = deliveryService;
-        this.deliverAttemptService = deliverAttemptService;
+        this.deliveryAttemptService = deliveryAttemptService;
         this.deliveryReturnStatusService = deliveryReturnStatusService;
     }
 
@@ -60,8 +60,8 @@ public class DeliveryReturnExcelSheetParser extends ExcelSheetParser<DeliveryRet
                 continue;
             }
 
-            final String eventId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliverAttemptParserEnum.EVENT_ID.getColumnName());
-            final String customerId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliverAttemptParserEnum.CUSTOMER_ID.getColumnName());
+            final String eventId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.EVENT_ID.getColumnName());
+            final String customerId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.CUSTOMER_ID.getColumnName());
             final Long deliveryId = deliveryService.getDeliveryIdByEventAndCustomer(eventId, customerId);
 
             final String returnStatus = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryReturnParserEnum.RETURN_STATUS.getColumnName());
@@ -72,7 +72,7 @@ public class DeliveryReturnExcelSheetParser extends ExcelSheetParser<DeliveryRet
                                     deliveryId
                             )
                             .setAttemptId(
-                                    deliverAttemptService.getMaxAttemptIdOfDeliveryId(deliveryId)
+                                    deliveryAttemptService.getMaxAttemptIdOfDeliveryId(deliveryId)
                             )
                             .setReturnStatusId(
                                     Integer.parseInt(

@@ -12,8 +12,8 @@ import jakarta.persistence.Table;
  */
 
 @Entity
-@Table(name = "t_cx_deliver_attempt")
-public class DeliverAttemptEntity extends BaseBusinessEntity<Long> {
+@Table(name = "t_cx_delivery_attempt")
+public class DeliveryAttemptEntity extends BaseBusinessEntity<Long> {
     @Id
     @Column(name = "attempt_id")
     private Long attemptId;
@@ -34,7 +34,7 @@ public class DeliverAttemptEntity extends BaseBusinessEntity<Long> {
         return attemptId;
     }
 
-    public DeliverAttemptEntity setAttemptId(Long attemptId) {
+    public DeliveryAttemptEntity setAttemptId(Long attemptId) {
         this.attemptId = attemptId;
         return this;
     }
@@ -43,7 +43,7 @@ public class DeliverAttemptEntity extends BaseBusinessEntity<Long> {
         return deliveryId;
     }
 
-    public DeliverAttemptEntity setDeliveryId(Long deliveryId) {
+    public DeliveryAttemptEntity setDeliveryId(Long deliveryId) {
         this.deliveryId = deliveryId;
         return this;
     }
@@ -52,7 +52,7 @@ public class DeliverAttemptEntity extends BaseBusinessEntity<Long> {
         return deliveryTypeId;
     }
 
-    public DeliverAttemptEntity setDeliveryTypeId(Integer deliveryTypeId) {
+    public DeliveryAttemptEntity setDeliveryTypeId(Integer deliveryTypeId) {
         this.deliveryTypeId = deliveryTypeId;
         return this;
     }
@@ -61,7 +61,7 @@ public class DeliverAttemptEntity extends BaseBusinessEntity<Long> {
         return deliveryStatusId;
     }
 
-    public DeliverAttemptEntity setDeliveryStatusId(Integer deliveryStatusId) {
+    public DeliveryAttemptEntity setDeliveryStatusId(Integer deliveryStatusId) {
         this.deliveryStatusId = deliveryStatusId;
         return this;
     }
@@ -70,7 +70,7 @@ public class DeliverAttemptEntity extends BaseBusinessEntity<Long> {
         return note;
     }
 
-    public DeliverAttemptEntity setNote(String note) {
+    public DeliveryAttemptEntity setNote(String note) {
         this.note = note;
         return this;
     }

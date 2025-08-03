@@ -1,7 +1,7 @@
 import { WritableSignal } from "@angular/core";
 import { IdType } from "../core/id.model";
 
-export interface DeliveryAttempt {
+export interface DeliverAttempt {
   attemptId: number;
   deliveryId: number;
   deliveryTypeId: number;
@@ -9,7 +9,7 @@ export interface DeliveryAttempt {
   note: string;
 }
 
-export interface DeliveryAttemptFE extends DeliveryAttempt {
+export interface DeliveryAttemptFE extends DeliverAttempt {
   eventId: WritableSignal<IdType>;
   customerId: WritableSignal<IdType>;
   customerName: WritableSignal<string>;

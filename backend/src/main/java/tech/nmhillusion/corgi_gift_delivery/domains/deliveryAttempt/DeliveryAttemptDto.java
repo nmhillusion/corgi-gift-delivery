@@ -7,5 +7,5 @@ import tech.nmhillusion.n2mix.type.Stringeable;
  * <p>
  * created date: 2025-07-19
  */
-public class DeliverAttemptDto extends Stringeable {
+public class DeliveryAttemptDto extends Stringeable {
 }

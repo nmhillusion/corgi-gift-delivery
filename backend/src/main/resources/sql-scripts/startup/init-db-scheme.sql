@@ -49,7 +49,7 @@ alter table t_cx_delivery
 add constraint if not exists uniq_cx_delivery__event_id__customer_id
 unique (event_id, customer_id);
 
-create table if not exists t_cx_deliver_attempt (
+create table if not exists t_cx_delivery_attempt (
   attempt_id bigint primary key,
   delivery_id bigint,
   delivery_type_id int,
@@ -59,16 +59,16 @@ create table if not exists t_cx_deliver_attempt (
   update_date timestamp with time zone
 );
 
-alter table t_cx_deliver_attempt
-add constraint if not exists fk_cx_deliver_attempt__delivery_id
+alter table t_cx_delivery_attempt
+add constraint if not exists fk_cx_delivery_attempt__delivery_id
 foreign key (delivery_id) references t_cx_delivery(delivery_id);
 
-alter table t_cx_deliver_attempt
-add constraint if not exists fk_cx_deliver_attempt__delivery_type_id
+alter table t_cx_delivery_attempt
+add constraint if not exists fk_cx_delivery_attempt__delivery_type_id
 foreign key (delivery_type_id) references t_cx_delivery_type(type_id);
 
-alter table t_cx_deliver_attempt
-add constraint if not exists fk_cx_deliver_attempt__delivery_status_id
+alter table t_cx_delivery_attempt
+add constraint if not exists fk_cx_delivery_attempt__delivery_status_id
 foreign key (delivery_status_id) references t_cx_delivery_status(status_id);
 
 

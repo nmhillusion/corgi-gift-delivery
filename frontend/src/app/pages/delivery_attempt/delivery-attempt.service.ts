@@ -1,16 +1,15 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, inject, signal } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { environment } from "@app/../environments/environment";
-import { Page } from "@app/model/core/page.model";
-import { Delivery } from "@app/model/business/delivery.model";
-import { map, Observable } from "rxjs";
 import {
-  DeliveryAttempt,
+  DeliverAttempt,
   DeliveryAttemptFE,
 } from "@app/model/business/delivery-attempt.model";
-import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
+import { Delivery } from "@app/model/business/delivery.model";
+import { Page } from "@app/model/core/page.model";
 import { DeliveryStatusService } from "@app/service/delivery-status.service";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
+import { Observable } from "rxjs";
 import { DeliveryService } from "../delivery/delivery.service";
 
 @Injectable({
@@ -27,8 +26,8 @@ export class DeliveryAttemptService {
     dto: {},
     pageIndex: number,
     pageSize: number
-  ): Observable<Page<DeliveryAttempt>> {
-    return this.$http.post<Page<DeliveryAttempt>>(
+  ): Observable<Page<DeliverAttempt>> {
+    return this.$http.post<Page<DeliverAttempt>>(
       this.buildUrl("search"),
       dto,
       {
@@ -40,7 +39,7 @@ export class DeliveryAttemptService {
     );
   }
 
-  convertToFE(deliveryAttempt: DeliveryAttempt): DeliveryAttemptFE {
+  convertToFE(deliveryAttempt: DeliverAttempt): DeliveryAttemptFE {
     const feItem = deliveryAttempt as DeliveryAttemptFE;
     feItem.eventId = signal(-1);
     feItem.customerId = signal(-1);
@@ -88,7 +87,7 @@ export class DeliveryAttemptService {
     const formData = new FormData();
     formData.append("excelFile", excelFile);
 
-    return this.$http.post<DeliveryAttempt[]>(
+    return this.$http.post<DeliverAttempt[]>(
       this.buildUrl("insert/batch"),
       formData,
       {
@@ -103,7 +102,7 @@ export class DeliveryAttemptService {
     const formData = new FormData();
     formData.append("excelFile", excelFile);
 
-    return this.$http.post<DeliveryAttempt[]>(
+    return this.$http.post<DeliverAttempt[]>(
       this.buildUrl("update/batch"),
       formData,
       {

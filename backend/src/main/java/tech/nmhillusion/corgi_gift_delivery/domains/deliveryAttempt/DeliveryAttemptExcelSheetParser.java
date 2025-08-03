@@ -5,7 +5,7 @@ import tech.nmhillusion.corgi_gift_delivery.domains.delivery.DeliveryParserEnum;
 import tech.nmhillusion.corgi_gift_delivery.domains.delivery.DeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
-import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliverAttemptEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryAttemptEntity;
 import tech.nmhillusion.corgi_gift_delivery.parser.ExcelSheetParser;
 import tech.nmhillusion.corgi_gift_delivery.parser.RowIdxMapping;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
@@ -24,51 +24,51 @@ import java.util.List;
  */
 
 @Component
-public class DeliverAttemptExcelSheetParser extends ExcelSheetParser<DeliverAttemptEntity> {
+public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAttemptEntity> {
     private final DeliveryService deliveryService;
     private final DeliveryTypeService deliveryTypeService;
     private final DeliveryStatusService deliveryStatusService;
 
-    public DeliverAttemptExcelSheetParser(DeliveryService deliveryService, DeliveryTypeService deliveryTypeService, DeliveryStatusService deliveryStatusService) {
+    public DeliveryAttemptExcelSheetParser(DeliveryService deliveryService, DeliveryTypeService deliveryTypeService, DeliveryStatusService deliveryStatusService) {
         this.deliveryService = deliveryService;
         this.deliveryTypeService = deliveryTypeService;
         this.deliveryStatusService = deliveryStatusService;
     }
 
     @Override
-    public List<DeliverAttemptEntity> parse(SheetData sheetData) throws NotFoundException {
+    public List<DeliveryAttemptEntity> parse(SheetData sheetData) throws NotFoundException {
         final List<RowData> dataRows = sheetData.getRows();
-        final List<DeliverAttemptEntity> resultList = new ArrayList<>();
+        final List<DeliveryAttemptEntity> resultList = new ArrayList<>();
 
         List<RowIdxMapping> rowIdxMappings = null;
 
         for (RowData dataRow : dataRows) {
             final List<CellData> dataRowCells = dataRow.getCells();
 
-            if (dataRowCells.size() < DeliverAttemptParserEnum.values().length) {
+            if (dataRowCells.size() < DeliveryAttemptParserEnum.values().length) {
                 continue;
             }
 
             if (null == rowIdxMappings) {
                 rowIdxMappings = mappingIndicesForColumns(
                         dataRowCells
-                        , Arrays.stream(DeliverAttemptParserEnum.values())
-                                .map(DeliverAttemptParserEnum::getColumnName)
+                        , Arrays.stream(DeliveryAttemptParserEnum.values())
+                                .map(DeliveryAttemptParserEnum::getColumnName)
                                 .toList()
                 );
 
                 continue;
             }
 
-            final String eventId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliverAttemptParserEnum.EVENT_ID.getColumnName());
-            final String customerId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliverAttemptParserEnum.CUSTOMER_ID.getColumnName());
+            final String eventId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.EVENT_ID.getColumnName());
+            final String customerId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.CUSTOMER_ID.getColumnName());
             final Long deliveryId = deliveryService.getDeliveryIdByEventAndCustomer(eventId, customerId);
 
-            final String deliveryType = getValueOfColumn(dataRowCells, rowIdxMappings, DeliverAttemptParserEnum.DELIVERY_TYPE.getColumnName());
-            final String deliveryStatus = getValueOfColumn(dataRowCells, rowIdxMappings, DeliverAttemptParserEnum.DELIVERY_STATUS.getColumnName());
+            final String deliveryType = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_TYPE.getColumnName());
+            final String deliveryStatus = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_STATUS.getColumnName());
 
             resultList.add(
-                    new DeliverAttemptEntity()
+                    new DeliveryAttemptEntity()
                             .setDeliveryId(
                                     deliveryId
                             )

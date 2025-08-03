@@ -25,13 +25,13 @@ export class MainLayoutComponent implements OnInit {
     this.menuList$.update((list) => {
 
       list.push({
-        url: "/delivery/list",
+        url: "/delivery",
         name: "Delivery Mgmt",
         icon: "local_shipping",
       });
 
       list.push({
-        url: "/delivery-attempt/list",
+        url: "/delivery-attempt",
         name: "Delivery Attempt Mgmt",
         icon: "delivery_dining",
       });

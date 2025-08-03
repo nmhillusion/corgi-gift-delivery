@@ -8,19 +8,19 @@ package tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
-import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliverAttemptEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryAttemptEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseBusinessService;
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseDeliveryService;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 
 import java.util.List;
 
-public interface DeliverAttemptService extends BaseBusinessService<DeliverAttemptEntity>, BaseDeliveryService<DeliverAttemptEntity, DeliverAttemptDto> {
+public interface DeliveryAttemptService extends BaseBusinessService<DeliveryAttemptEntity>, BaseDeliveryService<DeliveryAttemptEntity, DeliveryAttemptDto> {
     Long getMaxAttemptIdOfDeliveryId(Long deliveryId);
 
-    List<DeliverAttemptEntity> insertBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException;
+    List<DeliveryAttemptEntity> insertBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException;
 
-    List<DeliverAttemptEntity> updateBatchByExcelFile(MultipartFile excelFile);
+    List<DeliveryAttemptEntity> updateBatchByExcelFile(MultipartFile excelFile);
 
-    Page<DeliverAttemptEntity> search(DeliverAttemptDto deliveryDto, int pageIndex, int pageSize);
+    Page<DeliveryAttemptEntity> search(DeliveryAttemptDto deliveryDto, int pageIndex, int pageSize);
 }

@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
-import { DeliveryRoutingModule } from "./delivery_routing.module";
-import { DeliveryComponent } from "./delivery.component";
+import { DeliveryAttemptComponent } from "./delivery-attempt.component";
+import { DeliveryAttemptRoutingModule } from "./delivery-attempt_routing.module";
 
 @NgModule({
-  imports: [DeliveryRoutingModule, DeliveryComponent],
-  exports: [DeliveryComponent],
+  imports: [DeliveryAttemptRoutingModule, DeliveryAttemptComponent],
+  exports: [DeliveryAttemptComponent],
 })
-export class DeliveryModule {}
+export class DeliveryAttemptModule {}
