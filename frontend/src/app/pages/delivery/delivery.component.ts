@@ -54,11 +54,7 @@ export class DeliveryComponent extends BasePage {
 
   protected override __ngOnInit__() {
     // Initial search
-    this.search({
-      pageIndex: 0,
-      pageSize: this.paginator.pageSize$(),
-      length: this.paginator.length$(),
-    });
+    this.search(this.generateDefaultPage());
   }
 
   override search(pageEvt: PageEvent): void {
@@ -96,11 +92,7 @@ export class DeliveryComponent extends BasePage {
             console.log("Delivery data imported successfully:", data);
             this.dialogHandler.alert("Delivery data imported successfully.");
             this.deliveryImportFile$.next([]);
-            this.search({
-              pageIndex: 0,
-              pageSize: this.paginator.pageSize$(),
-              length: this.paginator.length$(),
-            });
+            this.search(this.generateDefaultPage()); // Refresh the data
           },
           error: (error) => {
             console.error("Error importing delivery data:", error);

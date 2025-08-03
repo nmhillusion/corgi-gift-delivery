@@ -72,6 +72,10 @@ export class BasePage implements OnInit, OnDestroy {
     } as PaginatorHandler;
   }
 
+  generateDefaultPage() {
+    return PAGE.DEFAULT_PAGE_EVENT;
+  }
+
   search(pageEvt: PageEvent) {
     throw new Error("Method not implemented.");
   }
