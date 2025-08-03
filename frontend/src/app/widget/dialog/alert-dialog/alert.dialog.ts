@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 
 @Component({
@@ -11,6 +11,11 @@ import { MatDividerModule } from "@angular/material/divider";
 })
 export class AlertDialog {
   dialogData = inject(MAT_DIALOG_DATA);
+  dialogRef = inject(MatDialog);
 
   constructor() {}
+
+  onClose() {
+    this.dialogRef.closeAll();
+  }
 }
