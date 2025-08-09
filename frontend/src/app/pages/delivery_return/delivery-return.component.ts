@@ -26,7 +26,6 @@ export class DeliveryReturnComponent extends BasePage {
     "returnId",
     "deliveryId",
     "eventId",
-    "attemptId",
     "customerId",
     "customerName",
     "returnStatusName",

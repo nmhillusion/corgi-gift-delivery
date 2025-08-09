@@ -37,7 +37,8 @@ export class DeliveryReturnService {
     const feItem = deliveryReturn as DeliveryReturnFE;
     feItem.eventId$ = signal(-1);
     feItem.customerId$ = signal(-1);
-    feItem.customerName$ = signal("");
+    feItem.customerName$ = signal(null);
+    feItem.returnStatusName$ = signal(null);
 
     (function () {
       const deliveryService = basePage.$injector.get(DeliveryService);
