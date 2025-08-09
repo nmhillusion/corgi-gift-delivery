@@ -8,6 +8,7 @@ import tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturnStatus.Deliver
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnEntity;
 import tech.nmhillusion.corgi_gift_delivery.parser.ExcelSheetParser;
 import tech.nmhillusion.corgi_gift_delivery.parser.RowIdxMapping;
+import tech.nmhillusion.corgi_gift_delivery.util.NumberUtil;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.CellData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.RowData;
@@ -61,7 +62,9 @@ public class DeliveryReturnExcelSheetParser extends ExcelSheetParser<DeliveryRet
             }
 
             final String eventId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.EVENT_ID.getColumnName());
-            final String customerId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.CUSTOMER_ID.getColumnName());
+            final String customerId = NumberUtil.parseStringFromDoubleToLong(
+                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.CUSTOMER_ID.getColumnName())
+            );
             final Long deliveryId = deliveryService.getDeliveryIdByEventAndCustomer(eventId, customerId);
 
             final String returnStatus = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryReturnParserEnum.RETURN_STATUS.getColumnName());
@@ -70,9 +73,6 @@ public class DeliveryReturnExcelSheetParser extends ExcelSheetParser<DeliveryRet
                     new DeliveryReturnEntity()
                             .setDeliveryId(
                                     deliveryId
-                            )
-                            .setAttemptId(
-                                    deliveryAttemptService.getMaxAttemptIdOfDeliveryId(deliveryId)
                             )
                             .setReturnStatusId(
                                     Integer.parseInt(

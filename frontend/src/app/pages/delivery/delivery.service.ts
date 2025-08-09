@@ -68,7 +68,10 @@ export class DeliveryService {
     customerId: IdType
   ): Observable<string> {
     return this.$http.get<string>(
-      `${this.buildUrl(deliveryId)}/customer/${customerId}/name`
+      `${this.buildUrl(deliveryId)}/customer/${customerId}/name`,
+      {
+        responseType: "text" as "json",
+      }
     );
   }
 }

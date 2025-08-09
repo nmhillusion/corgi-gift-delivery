@@ -10,9 +10,9 @@ export interface DeliverAttempt {
 }
 
 export interface DeliveryAttemptFE extends DeliverAttempt {
-  eventId: WritableSignal<IdType>;
-  customerId: WritableSignal<IdType>;
-  customerName: WritableSignal<string>;
-  deliveryTypeName: WritableSignal<string>;
-  deliveryStatusName: WritableSignal<string>;
+  eventId$: WritableSignal<IdType>;
+  customerId$: WritableSignal<IdType>;
+  customerName$: WritableSignal<string>;
+  deliveryTypeName$: WritableSignal<string>;
+  deliveryStatusName$: WritableSignal<string>;
 }

@@ -7,18 +7,21 @@ create table if not exists t_cx_sequence (
 
 create table if not exists t_cx_delivery_type (
   type_id int primary key,
-  type_name nvarchar(100) not null
+  type_name nvarchar(100) not null,
+  type_desc text
 );
 
 create table if not exists t_cx_delivery_status (
   status_id int primary key,
   status_name nvarchar(100) not null,
+  status_desc text,
   status_order numeric
 );
 
 create table if not exists t_cx_delivery_return_status (
   status_id int primary key,
-  status_name nvarchar(100) not null
+  status_name nvarchar(100) not null,
+  status_desc text
 );
 
 ---------

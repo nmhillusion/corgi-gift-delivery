@@ -1,37 +1,37 @@
 
-insert into t_cx_delivery_type (type_id, type_name) values (
-  1, 'Agent trao hàng'
+insert into t_cx_delivery_type (type_id, type_name, type_desc) values (
+  1, 'AGENT_GIAO_HANG', 'Agent trao hàng'
 );
 
-insert into t_cx_delivery_type (type_id, type_name) values (
-  2, 'CA trao hàng'
+insert into t_cx_delivery_type (type_id, type_name, type_desc) values (
+  2, 'CA_TRAO_HANG', 'CA trao hàng'
 );
 
-insert into t_cx_delivery_type (type_id, type_name) values (
-  3, 'Gửi hàng bưu điện'
+insert into t_cx_delivery_type (type_id, type_name, type_desc) values (
+  3, 'GUI_BUU_DIEN', 'Gửi hàng bưu điện'
 );
 
 ---------
 
-insert into t_cx_delivery_status ( status_id , status_name, status_order)
-values (1, 'Tạo giao hàng. Chưa tiếp nhận.', 1);
+insert into t_cx_delivery_status ( status_id , status_name, status_desc, status_order)
+values (1, 'TAO_GIAO_HANG', 'Tạo giao hàng. Chưa tiếp nhận.', 1);
 
-insert into t_cx_delivery_status ( status_id , status_name, status_order)
-values (2, 'Đang giao hàng', 2);
+insert into t_cx_delivery_status ( status_id , status_name, status_desc, status_order)
+values (2, 'DANG_GIAO_HANG', 'Đang giao hàng', 2);
 
-insert into t_cx_delivery_status ( status_id , status_name, status_order)
-values (3, 'Giao hàng thành công', 3);
+insert into t_cx_delivery_status ( status_id , status_name, status_desc, status_order)
+values (3, 'GIAO_HANG_THANH_CONG', 'Giao hàng thành công', 3);
 
-insert into t_cx_delivery_status ( status_id , status_name, status_order)
-values (4, 'Giao hàng thất bại', 4);
+insert into t_cx_delivery_status ( status_id , status_name, status_desc, status_order)
+values (4, 'GIAO_HANG_THAT_BAI', 'Giao hàng thất bại', 4);
 
 ---------
 
-insert into t_cx_delivery_return_status (status_id, status_name)
-values (1, 'Đang yêu cầu trả hàng');
+insert into t_cx_delivery_return_status (status_id, status_name, status_desc)
+values (1, 'YEU_CAU_TRA_HANG', 'Đang yêu cầu trả hàng');
 
-insert into t_cx_delivery_return_status (status_id, status_name)
-values (2, 'NCC đã nhận trả hàng');
+insert into t_cx_delivery_return_status (status_id, status_name, status_desc)
+values (2, 'NCC_DA_NHAN_TRA_HANG', 'NCC đã nhận trả hàng');
 
-insert into t_cx_delivery_return_status (status_id, status_name)
-values (3, 'NCC đã đổi hàng');
+insert into t_cx_delivery_return_status (status_id, status_name, status_desc)
+values (3, 'NCC_DA_DOI_HANG', 'NCC đã đổi hàng');

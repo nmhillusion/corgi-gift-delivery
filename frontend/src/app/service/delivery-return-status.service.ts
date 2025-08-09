@@ -1,8 +1,12 @@
 import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { environment } from "@app/../environments/environment";
 import { DeliveryReturnStatus } from "@app/model/business/delivery-return-status.model";
 import { IdType } from "@app/model/core/id.model";
 
+@Injectable({
+  providedIn: "root",
+})
 export class DeliveryReturnStatusService {
   constructor(private $http: HttpClient) {}
 

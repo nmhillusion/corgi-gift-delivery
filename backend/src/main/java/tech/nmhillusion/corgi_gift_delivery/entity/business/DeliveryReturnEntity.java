@@ -21,9 +21,6 @@ public class DeliveryReturnEntity extends BaseBusinessEntity<Long> {
     @Column(name = "delivery_id")
     private Long deliveryId;
 
-    @Column(name = "attempt_id")
-    private Long attemptId;
-
     @Column(name = "return_status_id")
     private Integer returnStatusId;
 
@@ -46,15 +43,6 @@ public class DeliveryReturnEntity extends BaseBusinessEntity<Long> {
 
     public DeliveryReturnEntity setDeliveryId(Long deliveryId) {
         this.deliveryId = deliveryId;
-        return this;
-    }
-
-    public Long getAttemptId() {
-        return attemptId;
-    }
-
-    public DeliveryReturnEntity setAttemptId(Long attemptId) {
-        this.attemptId = attemptId;
         return this;
     }
 

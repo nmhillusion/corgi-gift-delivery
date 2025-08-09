@@ -2,65 +2,57 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { environment } from "@app/../environments/environment";
 import {
-  DeliverAttempt,
-  DeliveryAttemptFE,
+  DeliverAttempt
 } from "@app/model/business/delivery-attempt.model";
+import {
+  DeliveryReturn,
+  DeliveryReturnFE,
+} from "@app/model/business/delivery-return.model";
 import { Delivery } from "@app/model/business/delivery.model";
 import { Page } from "@app/model/core/page.model";
-import { DeliveryStatusService } from "@app/service/delivery-status.service";
-import { DeliveryTypeService } from "@app/service/delivery-type.service";
-import { Observable } from "rxjs";
-import { DeliveryService } from "../delivery/delivery.service";
 import { BasePage } from "@app/pages/base.page";
+import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
+import { DeliveryService } from "../delivery/delivery.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class DeliveryAttemptService {
+export class DeliveryReturnService {
   private $http = inject(HttpClient);
 
   buildUrl(partLink: number | string): string {
-    return `${environment.LINK.API_BASE_URL}/api/delivery-attempt/${partLink}`;
+    return `${environment.LINK.API_BASE_URL}/api/delivery-return/${partLink}`;
   }
 
-  search(
-    dto: {},
-    pageIndex: number,
-    pageSize: number
-  ): Observable<Page<DeliverAttempt>> {
-    return this.$http.post<Page<DeliverAttempt>>(
-      this.buildUrl("search"),
-      dto,
-      {
-        params: {
-          pageIndex,
-          pageSize,
-        },
-      }
-    );
+  search(dto: {}, pageIndex: number, pageSize: number) {
+    return this.$http.post<Page<DeliveryReturn>>(this.buildUrl("search"), dto, {
+      params: {
+        pageIndex,
+        pageSize,
+      },
+    });
   }
 
-  convertToFE(deliveryAttempt: DeliverAttempt, basePage: BasePage): DeliveryAttemptFE {
-    const feItem = deliveryAttempt as DeliveryAttemptFE;
+  convertToFE(deliveryReturn: DeliveryReturn, basePage: BasePage) {
+    const feItem = deliveryReturn as DeliveryReturnFE;
     feItem.eventId$ = signal(-1);
     feItem.customerId$ = signal(-1);
     feItem.customerName$ = signal("");
-    feItem.deliveryTypeName$ = signal("");
-    feItem.deliveryStatusName$ = signal("");
 
     (function () {
       const deliveryService = basePage.$injector.get(DeliveryService);
-      const deliveryTypeService = basePage.$injector.get(DeliveryTypeService);
-      const deliveryStatusService = basePage.$injector.get(DeliveryStatusService);
+      const deliveryReturnStatusService = basePage.$injector.get(
+        DeliveryReturnStatusService
+      );
 
       deliveryService
-        .getById(deliveryAttempt.deliveryId)
+        .getById(deliveryReturn.deliveryId)
         .subscribe((delivery: Delivery) => {
           feItem.eventId$.set(delivery.eventId);
           feItem.customerId$.set(delivery.customerId);
           deliveryService
             .getCustomerNameOfDelivery(
-              deliveryAttempt.deliveryId,
+              deliveryReturn.deliveryId,
               delivery.customerId
             )
             .subscribe((name) => {
@@ -68,16 +60,10 @@ export class DeliveryAttemptService {
             });
         });
 
-      deliveryTypeService
-        .getById(deliveryAttempt.deliveryTypeId)
-        .subscribe((type) => {
-          feItem.deliveryTypeName$.set(type.typeName);
-        });
-
-      deliveryStatusService
-        .getById(deliveryAttempt.deliveryStatusId)
+      deliveryReturnStatusService
+        .getById(deliveryReturn.returnStatusId)
         .subscribe((status) => {
-          feItem.deliveryStatusName$.set(status.statusName);
+          feItem.returnStatusName$.set(status.statusName);
         });
     })();
 

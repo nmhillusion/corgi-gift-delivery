@@ -18,4 +18,11 @@ export const routes: Routes = [
         (m) => m.DeliveryAttemptModule
       ),
   },
+  {
+    path: "delivery-return",
+    loadChildren: () =>
+      import("./pages/delivery_return/delivery-return.module").then(
+        (m) => m.DeliveryReturnModule
+      ),
+  },
 ];

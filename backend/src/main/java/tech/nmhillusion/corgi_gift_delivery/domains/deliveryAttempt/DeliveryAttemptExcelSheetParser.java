@@ -8,10 +8,13 @@ import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeSer
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryAttemptEntity;
 import tech.nmhillusion.corgi_gift_delivery.parser.ExcelSheetParser;
 import tech.nmhillusion.corgi_gift_delivery.parser.RowIdxMapping;
+import tech.nmhillusion.corgi_gift_delivery.util.NumberUtil;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.CellData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.RowData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
+import tech.nmhillusion.n2mix.validator.StringValidator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +64,15 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
             }
 
             final String eventId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.EVENT_ID.getColumnName());
-            final String customerId = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.CUSTOMER_ID.getColumnName());
+            final String customerId = NumberUtil.parseStringFromDoubleToLong(
+                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.CUSTOMER_ID.getColumnName())
+            );
+
+            if (StringValidator.isBlank(eventId) || StringValidator.isBlank(customerId)) {
+                LogHelper.getLogger(this).error("this error is empty of key. {}", dataRow);
+                continue;
+            }
+
             final Long deliveryId = deliveryService.getDeliveryIdByEventAndCustomer(eventId, customerId);
 
             final String deliveryType = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_TYPE.getColumnName());

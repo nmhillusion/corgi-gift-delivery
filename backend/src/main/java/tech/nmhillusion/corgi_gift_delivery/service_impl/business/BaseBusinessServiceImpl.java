@@ -40,7 +40,7 @@ public abstract class BaseBusinessServiceImpl<E extends BaseBusinessEntity<Long>
             }
         }
 
-        return repository.saveAll(
+        return repository.saveAllAndFlush(
                 entities
         );
     }

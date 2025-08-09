@@ -3,16 +3,16 @@ import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
-import { DeliveryAttemptFE } from "@app/model/business/delivery-attempt.model";
 import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
-import { DeliveryAttemptService } from "./delivery-attempt.service";
+import { DeliveryReturnService } from "./delivery-return.service";
+import { DeliveryReturnFE } from "@app/model/business/delivery-return.model";
 
 @Component({
   standalone: true,
-  templateUrl: "./delivery-attempt.component.html",
-  styleUrl: "./delivery-attempt.component.scss",
+  templateUrl: "./delivery-return.component.html",
+  styleUrl: "./delivery-return.component.scss",
   imports: [
     MainLayoutComponent,
     MatTableModule,
@@ -20,26 +20,26 @@ import { DeliveryAttemptService } from "./delivery-attempt.service";
     AppInputFileComponent,
   ],
 })
-export class DeliveryAttemptComponent extends BasePage {
+export class DeliveryReturnComponent extends BasePage {
   // fields
   displayedColumns = [
-    "attemptId",
+    "returnId",
     "deliveryId",
     "eventId",
+    "attemptId",
     "customerId",
     "customerName",
-    "deliveryTypeName",
-    "deliveryStatusName",
+    "returnStatusName",
     "note",
   ];
-  dataSource = new MatTableDataSource<DeliveryAttemptFE>([]);
+  dataSource = new MatTableDataSource<DeliveryReturnFE>([]);
 
   paginator = this.generatePaginator();
 
-  deliveryAttemptImportFile$ = new BehaviorSubject<File[]>([]);
+  deliveryReturnImportFile$ = new BehaviorSubject<File[]>([]);
 
   // methods
-  constructor(private $deliveryAttemptService: DeliveryAttemptService) {
+  constructor(private $deliveryReturnService: DeliveryReturnService) {
     super();
   }
 
@@ -53,20 +53,20 @@ export class DeliveryAttemptComponent extends BasePage {
     this.paginator.pageSize$.set(pageEvt.pageSize);
 
     this.registerSubscription(
-      this.$deliveryAttemptService
+      this.$deliveryReturnService
         .search({}, pageEvt.pageIndex, pageEvt.pageSize)
         .subscribe({
           next: (page) => {
-            console.log("Delivery attempt data:", page);
+            console.log("Delivery return data:", page);
             this.dataSource.data = page.content.map((item) =>
-              this.$deliveryAttemptService.convertToFE(item, this)
+              this.$deliveryReturnService.convertToFE(item, this)
             );
             this.paginator.length$.set(page.page.totalElements || 0);
           },
           error: (error) => {
-            console.error("Error searching delivery attempt data:", error);
+            console.error("Error searching delivery return data:", error);
             this.dialogHandler.alert(
-              "Failed to search delivery attempt data. " +
+              "Failed to search delivery return data. " +
                 this.$errorUtil.retrieErrorMessage(error)
             );
           },
@@ -74,27 +74,27 @@ export class DeliveryAttemptComponent extends BasePage {
     );
   }
 
-  importNewDeliveryAttempt() {
-    const files = this.deliveryAttemptImportFile$.getValue();
+  importNewDeliveryReturns() {
+    const files = this.deliveryReturnImportFile$.getValue();
 
-    console.log("Importing delivery attempt data from files:", files);
+    console.log("Importing delivery return data from files:", files);
 
     if (files.length > 0) {
       const file = files[0];
       this.registerSubscription(
-        this.$deliveryAttemptService.insertBatchByExcelFile(file).subscribe({
+        this.$deliveryReturnService.insertBatchByExcelFile(file).subscribe({
           next: (data) => {
-            console.log("Delivery attempt data imported successfully:", data);
+            console.log("Delivery return data imported successfully:", data);
             this.dialogHandler.alert(
-              "Delivery attempt data imported successfully."
+              "Delivery return data imported successfully."
             );
-            this.deliveryAttemptImportFile$.next([]);
+            this.deliveryReturnImportFile$.next([]);
             this.search(this.generateDefaultPage()); // Refresh the data
           },
           error: (error) => {
-            console.error("Error importing delivery attempt data:", error);
+            console.error("Error importing delivery return data:", error);
             this.dialogHandler.alert(
-              "Failed to import delivery attempt data. " +
+              "Failed to import delivery return data. " +
                 this.$errorUtil.retrieErrorMessage(error)
             );
           },
@@ -105,27 +105,27 @@ export class DeliveryAttemptComponent extends BasePage {
     }
   }
 
-  updateDeliveryAttemptsBatch() {
-    const files = this.deliveryAttemptImportFile$.getValue();
+  updateDeliveryReturnsBatch() {
+    const files = this.deliveryReturnImportFile$.getValue();
 
-    console.log("Updating delivery attempt data from files:", files);
+    console.log("Updating delivery return data from files:", files);
 
     if (files.length > 0) {
       const file = files[0];
       this.registerSubscription(
-        this.$deliveryAttemptService.updateBatchByExcelFile(file).subscribe({
+        this.$deliveryReturnService.updateBatchByExcelFile(file).subscribe({
           next: (data) => {
-            console.log("Delivery attempt data updated successfully:", data);
+            console.log("Delivery return data updated successfully:", data);
             this.dialogHandler.alert(
-              "Delivery attempt data updated successfully."
+              "Delivery return data updated successfully."
             );
-            this.deliveryAttemptImportFile$.next([]);
+            this.deliveryReturnImportFile$.next([]);
             this.search(this.generateDefaultPage()); // Refresh the data
           },
           error: (error) => {
-            console.error("Error updating delivery attempt data:", error);
+            console.error("Error updating delivery return data:", error);
             this.dialogHandler.alert(
-              "Failed to update delivery attempt data. " +
+              "Failed to update delivery return data. " +
                 this.$errorUtil.retrieErrorMessage(error)
             );
           },

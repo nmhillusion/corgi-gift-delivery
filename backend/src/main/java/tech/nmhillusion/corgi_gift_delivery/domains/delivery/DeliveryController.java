@@ -28,7 +28,7 @@ public class DeliveryController extends BaseDeliveryController<DeliveryEntity, D
         return deliveryService.getCustomerNameOfDelivery(deliveryId, customerId);
     }
 
-    @GetMapping(value = "/{deliveryId}", produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/{deliveryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public DeliveryEntity getById(@PathVariable String deliveryId) {
         return deliveryService.getById(deliveryId);
     }

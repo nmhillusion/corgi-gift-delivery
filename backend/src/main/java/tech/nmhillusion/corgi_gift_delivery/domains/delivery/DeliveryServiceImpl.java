@@ -9,9 +9,11 @@ import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
 import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by: nmhillusion
@@ -33,8 +35,10 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
 
     @Override
     public Long getDeliveryIdByEventAndCustomer(String eventId, String customerId) {
-        return deliveryRepository.findByEventIdAndCustomerId(eventId, customerId)
-                .getDeliveryId();
+        final Optional<DeliveryEntity> entity_ = deliveryRepository.findByEventIdAndCustomerId(eventId, customerId);
+        LogHelper.getLogger(this).info("getDeliveryIdByEventAndCustomer(String eventId = {}, String customerId = {}) = {}", eventId, customerId, entity_);
+
+        return entity_.map(DeliveryEntity::getDeliveryId).orElseThrow();
     }
 
     @Override

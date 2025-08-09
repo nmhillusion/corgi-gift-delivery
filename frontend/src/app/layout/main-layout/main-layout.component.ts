@@ -23,7 +23,6 @@ export class MainLayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuList$.update((list) => {
-
       list.push({
         url: "/delivery",
         name: "Delivery Mgmt",
@@ -34,6 +33,12 @@ export class MainLayoutComponent implements OnInit {
         url: "/delivery-attempt",
         name: "Delivery Attempt Mgmt",
         icon: "delivery_dining",
+      });
+
+      list.push({
+        url: "/delivery-return",
+        name: "Delivery Return Mgmt",
+        icon: "repartition",
       });
 
       return list;

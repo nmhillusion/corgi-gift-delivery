@@ -50,8 +50,8 @@ public class DeliveryReturnServiceImpl extends BaseBusinessServiceImpl<DeliveryR
             final List<DeliveryReturnEntity> entityList = parseExcelFileToEntityList(excelFile, deliverReturnExcelSheetParser::parse);
 
             for (DeliveryReturnEntity entity_ : entityList) {
-                final Long maxAttemptId = repository.getMaxReturnIdOfDeliveryId(entity_.getDeliveryId());
-                if (null == maxAttemptId) {
+                final Long maxReturnId = repository.getMaxReturnIdOfDeliveryId(entity_.getDeliveryId());
+                if (null == maxReturnId) {
                     throw new NotFoundException(
                             MessageFormat.format(
                                     "Latest deliver return not found to update, delivery id: {0}"
@@ -60,7 +60,7 @@ public class DeliveryReturnServiceImpl extends BaseBusinessServiceImpl<DeliveryR
                     );
                 }
 
-                entity_.setAttemptId(maxAttemptId);
+                entity_.setReturnId(maxReturnId);
             }
 
             return repository.saveAllAndFlush(entityList);
