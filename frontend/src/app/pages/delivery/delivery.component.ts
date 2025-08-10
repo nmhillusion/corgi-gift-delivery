@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
 import { BasePage } from "@app/pages/base.page";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
-import { Delivery } from "@app/model/business/delivery.model";
+import { Delivery, DeliveryFE } from "@app/model/business/delivery.model";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
@@ -40,8 +40,15 @@ export class DeliveryComponent extends BasePage {
     "address",
     "giftName",
     "note",
+    ///
+    "attempt_deliveryType",
+    "attempt_deliveryStatus",
+    "attempt_note",
+    ///
+    "return_returnStatus",
+    "return_note",
   ];
-  dataSource = new MatTableDataSource<Delivery>([]);
+  dataSource = new MatTableDataSource<DeliveryFE>([]);
 
   paginator = this.generatePaginator();
 
@@ -66,7 +73,9 @@ export class DeliveryComponent extends BasePage {
         .search({}, pageEvt.pageIndex, pageEvt.pageSize)
         .subscribe({
           next: (page) => {
-            this.dataSource.data = page.content;
+            this.dataSource.data = page.content.map((item) =>
+              this.$deliveryService.convertToFE(item, this)
+            );
             this.paginator.length$.set(page.page.totalElements || 0);
           },
           error: (error) => {

@@ -13,7 +13,11 @@
       <button mat-raised-button color="primary" (click)="importNewDelivery()">
         Import NEW Deliveries
       </button>
-      <button mat-raised-button color="accent" (click)="updateDeliveriesBatch()">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="updateDeliveriesBatch()"
+      >
         Update Deliveries
       </button>
     </div>
@@ -135,6 +139,44 @@
           <th mat-header-cell *matHeaderCellDef>Note</th>
           <td mat-cell *matCellDef="let element">
             {{ element.note }}
+          </td>
+        </ng-container>
+
+        <!-- ATTEMPT -->
+
+        <ng-container matColumnDef="attempt_deliveryType">
+          <th mat-header-cell *matHeaderCellDef>Attempt: Delivery Type</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.latestDeliveryAttempt$()?.deliveryTypeName$() }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="attempt_deliveryStatus">
+          <th mat-header-cell *matHeaderCellDef>Attempt: Delivery Status</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.latestDeliveryAttempt$()?.deliveryStatusName$() }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="attempt_note">
+          <th mat-header-cell *matHeaderCellDef>Attempt: Note</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.latestDeliveryAttempt$()?.note }}
+          </td>
+        </ng-container>
+
+        <!-- RETURN -->
+        <ng-container matColumnDef="return_returnStatus">
+          <th mat-header-cell *matHeaderCellDef>Return: Return Status</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.latestDeliveryReturn$()?.returnStatusName$() }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="return_note">
+          <th mat-header-cell *matHeaderCellDef>Return: Note</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.latestDeliveryReturn$()?.note }}
           </td>
         </ng-container>
 

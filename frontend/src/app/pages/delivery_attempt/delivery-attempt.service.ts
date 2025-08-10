@@ -12,6 +12,7 @@ import { DeliveryTypeService } from "@app/service/delivery-type.service";
 import { Observable } from "rxjs";
 import { DeliveryService } from "../delivery/delivery.service";
 import { BasePage } from "@app/pages/base.page";
+import { IdType } from "@app/model/core/id.model";
 
 @Injectable({
   providedIn: "root",
@@ -101,6 +102,12 @@ export class DeliveryAttemptService {
           enctype: "multipart/form-data",
         },
       }
+    );
+  }
+
+  getLatestDeliveryAttemptByDeliveryId(deliveryId: IdType) {
+    return this.$http.get<DeliveryAttemptFE>(
+      this.buildUrl(`${deliveryId}/latest-attempt`)
     );
   }
 }

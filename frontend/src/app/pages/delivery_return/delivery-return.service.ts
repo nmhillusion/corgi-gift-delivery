@@ -11,6 +11,7 @@ import { Page } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
 import { DeliveryService } from "../delivery/delivery.service";
+import { IdType } from "@app/model/core/id.model";
 
 @Injectable({
   providedIn: "root",
@@ -85,6 +86,12 @@ export class DeliveryReturnService {
           enctype: "multipart/form-data",
         },
       }
+    );
+  }
+
+  getLatestDeliveryReturnByDeliveryId(deliveryId: IdType) {
+    return this.$http.get<DeliveryReturnFE>(
+      this.buildUrl(`${deliveryId}/latest-return`)
     );
   }
 }

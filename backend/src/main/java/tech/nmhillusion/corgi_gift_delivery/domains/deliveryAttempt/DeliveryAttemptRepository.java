@@ -14,7 +14,7 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryAttemptEntit
 public interface DeliveryAttemptRepository extends JpaRepository<DeliveryAttemptEntity, Long> {
 
     @Query(value = "SELECT MAX(t.attemptId) FROM DeliveryAttemptEntity t WHERE t.deliveryId = :deliveryId")
-    Long getMaxAttemptIdOfDeliveryId(Long deliveryId);
+    Long getMaxAttemptIdOfDeliveryId(long deliveryId);
 
     @Query(value = "SELECT t FROM DeliveryAttemptEntity t")
     Page<DeliveryAttemptEntity> search(DeliveryAttemptDto dto, PageRequest pageRequest);

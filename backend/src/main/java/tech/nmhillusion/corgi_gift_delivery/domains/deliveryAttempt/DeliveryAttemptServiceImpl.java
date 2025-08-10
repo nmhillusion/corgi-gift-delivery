@@ -9,6 +9,7 @@ import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
 import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -77,5 +78,22 @@ public class DeliveryAttemptServiceImpl extends BaseBusinessServiceImpl<Delivery
     public DeliveryAttemptEntity getById(String id) {
         return repository.findById(Long.valueOf(id))
                 .orElseThrow();
+    }
+
+    @Override
+    public DeliveryAttemptEntity getLatestAttemptByDeliveryId(String deliveryId) {
+        try {
+            final Long latestAttemptId = repository.getMaxAttemptIdOfDeliveryId(Long.parseLong(deliveryId));
+
+            if (null == latestAttemptId) {
+                throw new NotFoundException("Not found latest delivery attempt, delivery id: " + deliveryId);
+            }
+
+            return repository.findById(latestAttemptId)
+                    .orElseThrow();
+        } catch (Throwable ex) {
+            LogHelper.getLogger(this).error(ex);
+            throw new ApiResponseException(ex);
+        }
     }
 }

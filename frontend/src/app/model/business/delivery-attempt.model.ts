@@ -4,10 +4,10 @@ import { Delivery } from "./delivery.model";
 import { Nullable } from "../core/nullable.model";
 
 export interface DeliverAttempt {
-  attemptId: number;
-  deliveryId: number;
-  deliveryTypeId: number;
-  deliveryStatusId: number;
+  attemptId: IdType;
+  deliveryId: IdType;
+  deliveryTypeId: IdType;
+  deliveryStatusId: IdType;
   note: string;
 }
 

@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.AppRuntimeException;
+import tech.nmhillusion.n2mix.model.ApiErrorResponse;
 
 /**
  * created by: nmhillusion
@@ -22,17 +23,29 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         final String bodyOfResponse = "Error: %s".formatted(ex.getMessage());
 
-        return handleExceptionInternal(ex, bodyOfResponse,
+        final ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST
+                , ex.getClass().getName()
+                , bodyOfResponse
+        );
+
+        return handleExceptionInternal(ex, apiErrorResponse.toString(),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request
         );
     }
 
     @ExceptionHandler(value = {ApiResponseException.class})
-    protected ResponseEntity<Object> handleAppRuntimeException(ApiResponseException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleApiResponseException(ApiResponseException ex, WebRequest request) {
 
         final String bodyOfResponse = "API Error: %s".formatted(ex.getMessage());
 
-        return handleExceptionInternal(ex, bodyOfResponse,
+        final ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST
+                , ex.getClass().getName()
+                , bodyOfResponse
+        );
+
+        return handleExceptionInternal(ex, apiErrorResponse.toString(),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request
         );
     }
