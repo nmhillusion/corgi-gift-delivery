@@ -28,6 +28,7 @@ export class DeliveryReturnComponent extends BasePage {
     "eventId",
     "customerId",
     "customerName",
+    "giftName",
     "returnStatusName",
     "note",
   ];

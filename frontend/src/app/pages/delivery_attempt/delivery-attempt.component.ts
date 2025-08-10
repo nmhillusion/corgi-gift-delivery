@@ -28,6 +28,7 @@ export class DeliveryAttemptComponent extends BasePage {
     "eventId",
     "customerId",
     "customerName",
+    "giftName",
     "deliveryTypeName",
     "deliveryStatusName",
     "note",
