@@ -1,5 +1,7 @@
 import { WritableSignal } from "@angular/core";
 import { IdType } from "../core/id.model";
+import { Delivery } from "./delivery.model";
+import { Nullable } from "../core/nullable.model";
 
 export interface DeliverAttempt {
   attemptId: number;
@@ -10,9 +12,7 @@ export interface DeliverAttempt {
 }
 
 export interface DeliveryAttemptFE extends DeliverAttempt {
-  eventId$: WritableSignal<IdType>;
-  customerId$: WritableSignal<IdType>;
-  customerName$: WritableSignal<string>;
+  delivery$: WritableSignal<Nullable<Delivery>>;
   deliveryTypeName$: WritableSignal<string>;
   deliveryStatusName$: WritableSignal<string>;
 }

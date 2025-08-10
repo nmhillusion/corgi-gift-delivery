@@ -40,7 +40,7 @@ export class DeliveryAttemptComponent extends BasePage {
 
   // methods
   constructor(private $deliveryAttemptService: DeliveryAttemptService) {
-    super();
+    super("Delivery Attempt Management");
   }
 
   protected override __ngOnInit__() {

@@ -1,27 +1,34 @@
 import {
   Component,
   Input,
-  OnInit,
   signal,
-  WritableSignal,
+  WritableSignal
 } from "@angular/core";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { Menu } from "@app/model/core/menu.model";
-import { MenuComponent } from "../menu/menu.component";
+import { LoadingMonitor } from "@app/monitor/loading.monitor";
 import { BasePage } from "@app/pages/base.page";
+import { MenuComponent } from "../menu/menu.component";
 
 @Component({
   standalone: true,
   selector: "main-layout",
   templateUrl: "./main-layout.component.html",
   styleUrls: ["./main-layout.component.scss"],
-  imports: [MenuComponent],
+  imports: [MenuComponent, MatProgressBarModule],
 })
-export class MainLayoutComponent implements OnInit {
+export class MainLayoutComponent {
   menuList$: WritableSignal<Menu[]> = signal([]);
+
+  loading$: WritableSignal<boolean> = signal(false);
 
   @Input({ required: true }) basePage!: BasePage;
 
-  ngOnInit(): void {
+  constructor(loadingMonitor: LoadingMonitor) {
+    loadingMonitor.onLoadingStateChange((loading) => {
+      this.loading$.set(loading);
+    });
+
     this.menuList$.update((list) => {
       list.push({
         url: "/delivery",

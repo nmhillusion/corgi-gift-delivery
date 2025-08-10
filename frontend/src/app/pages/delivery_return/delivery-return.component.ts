@@ -39,7 +39,7 @@ export class DeliveryReturnComponent extends BasePage {
 
   // methods
   constructor(private $deliveryReturnService: DeliveryReturnService) {
-    super();
+    super("Delivery Return Management");
   }
 
   protected override __ngOnInit__() {

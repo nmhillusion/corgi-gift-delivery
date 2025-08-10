@@ -1,9 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { environment } from "@app/../environments/environment";
-import {
-  DeliverAttempt
-} from "@app/model/business/delivery-attempt.model";
+import { DeliverAttempt } from "@app/model/business/delivery-attempt.model";
 import {
   DeliveryReturn,
   DeliveryReturnFE,
@@ -35,9 +33,7 @@ export class DeliveryReturnService {
 
   convertToFE(deliveryReturn: DeliveryReturn, basePage: BasePage) {
     const feItem = deliveryReturn as DeliveryReturnFE;
-    feItem.eventId$ = signal(-1);
-    feItem.customerId$ = signal(-1);
-    feItem.customerName$ = signal(null);
+    feItem.delivery$ = signal(null);
     feItem.returnStatusName$ = signal(null);
 
     (function () {
@@ -49,16 +45,7 @@ export class DeliveryReturnService {
       deliveryService
         .getById(deliveryReturn.deliveryId)
         .subscribe((delivery: Delivery) => {
-          feItem.eventId$.set(delivery.eventId);
-          feItem.customerId$.set(delivery.customerId);
-          deliveryService
-            .getCustomerNameOfDelivery(
-              deliveryReturn.deliveryId,
-              delivery.customerId
-            )
-            .subscribe((name) => {
-              feItem.customerName$.set(name);
-            });
+          feItem.delivery$.set(delivery);
         });
 
       deliveryReturnStatusService

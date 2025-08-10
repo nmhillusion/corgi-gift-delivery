@@ -8,10 +8,14 @@ $themeColor: rgb(0, 139, 97);
 
 header {
   background-color: whitesmoke;
-  padding: 0.5em;
   border-bottom: 1px solid $themeColor;
   font-weight: 900;
   font-size: 22px;
+
+  .page-title {
+    font-weight: 900;
+    padding: 0.5em 0.4em;
+  }
 }
 
 .main-content {

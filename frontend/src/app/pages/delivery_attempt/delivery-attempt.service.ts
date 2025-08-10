@@ -28,44 +28,34 @@ export class DeliveryAttemptService {
     pageIndex: number,
     pageSize: number
   ): Observable<Page<DeliverAttempt>> {
-    return this.$http.post<Page<DeliverAttempt>>(
-      this.buildUrl("search"),
-      dto,
-      {
-        params: {
-          pageIndex,
-          pageSize,
-        },
-      }
-    );
+    return this.$http.post<Page<DeliverAttempt>>(this.buildUrl("search"), dto, {
+      params: {
+        pageIndex,
+        pageSize,
+      },
+    });
   }
 
-  convertToFE(deliveryAttempt: DeliverAttempt, basePage: BasePage): DeliveryAttemptFE {
+  convertToFE(
+    deliveryAttempt: DeliverAttempt,
+    basePage: BasePage
+  ): DeliveryAttemptFE {
     const feItem = deliveryAttempt as DeliveryAttemptFE;
-    feItem.eventId$ = signal(-1);
-    feItem.customerId$ = signal(-1);
-    feItem.customerName$ = signal("");
+    feItem.delivery$ = signal(null);
     feItem.deliveryTypeName$ = signal("");
     feItem.deliveryStatusName$ = signal("");
 
     (function () {
       const deliveryService = basePage.$injector.get(DeliveryService);
       const deliveryTypeService = basePage.$injector.get(DeliveryTypeService);
-      const deliveryStatusService = basePage.$injector.get(DeliveryStatusService);
+      const deliveryStatusService = basePage.$injector.get(
+        DeliveryStatusService
+      );
 
       deliveryService
         .getById(deliveryAttempt.deliveryId)
         .subscribe((delivery: Delivery) => {
-          feItem.eventId$.set(delivery.eventId);
-          feItem.customerId$.set(delivery.customerId);
-          deliveryService
-            .getCustomerNameOfDelivery(
-              deliveryAttempt.deliveryId,
-              delivery.customerId
-            )
-            .subscribe((name) => {
-              feItem.customerName$.set(name);
-            });
+          feItem.delivery$.set(delivery);
         });
 
       deliveryTypeService
