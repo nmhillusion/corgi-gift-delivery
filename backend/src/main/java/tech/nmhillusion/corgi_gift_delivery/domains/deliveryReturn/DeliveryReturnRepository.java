@@ -15,6 +15,13 @@ public interface DeliveryReturnRepository extends JpaRepository<DeliveryReturnEn
     @Query(value = "SELECT MAX(t.returnId) FROM DeliveryReturnEntity t WHERE t.deliveryId = :deliveryId")
     Long getMaxReturnIdOfDeliveryId(Long deliveryId);
 
-    @Query(value = "SELECT t FROM DeliveryReturnEntity t")
-    Page<DeliveryReturnEntity> search(DeliveryReturnDto dto, PageRequest pageRequest);
+    @Query(value = """
+            SELECT r FROM DeliveryReturnEntity r
+            join DeliveryEntity d
+            on d.deliveryId = r.deliveryId
+            where 1 = 1
+            and (:#{#dto.eventId} is null or d.eventId = :#{#dto.eventId})
+            and (:#{#dto.customerId} is null or d.customerId = :#{#dto.customerId})
+            """)
+    Page<DeliveryReturnEntity> search(DeliveryReturnSearchDto dto, PageRequest pageRequest);
 }

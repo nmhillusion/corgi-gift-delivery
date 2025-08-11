@@ -15,7 +15,7 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
  */
 @RestController
 @RequestMapping("/api/delivery")
-public class DeliveryController extends BaseDeliveryController<DeliveryEntity, DeliveryDto> {
+public class DeliveryController extends BaseDeliveryController<DeliveryEntity, DeliverySearchDto> {
     private final DeliveryService deliveryService;
 
     public DeliveryController(DeliveryService deliveryService) {

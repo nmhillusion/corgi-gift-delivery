@@ -6,7 +6,6 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnEntity
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseBusinessService;
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseDeliveryService;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
-import tech.nmhillusion.n2mix.exception.NotFoundException;
 
 import java.util.List;
 
@@ -15,14 +14,14 @@ import java.util.List;
  * <p>
  * created date: 2025-07-19
  */
-public interface DeliveryReturnService extends BaseBusinessService<DeliveryReturnEntity>, BaseDeliveryService<DeliveryReturnEntity, DeliveryReturnDto> {
+public interface DeliveryReturnService extends BaseBusinessService<DeliveryReturnEntity>, BaseDeliveryService<DeliveryReturnEntity, DeliveryReturnSearchDto> {
     Long getMaxReturnIdOfDeliveryId(Long deliveryId);
 
     List<DeliveryReturnEntity> insertBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException;
 
     List<DeliveryReturnEntity> updateBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException;
 
-    Page<DeliveryReturnEntity> search(DeliveryReturnDto deliveryDto, int pageIndex, int pageSize);
+    Page<DeliveryReturnEntity> search(DeliveryReturnSearchDto deliveryDto, int pageIndex, int pageSize);
 
     DeliveryReturnEntity getLatestAttemptByDeliveryId(String deliveryId);
 }

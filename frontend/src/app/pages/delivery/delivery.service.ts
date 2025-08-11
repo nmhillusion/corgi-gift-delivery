@@ -1,13 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject, signal } from "@angular/core";
 import { environment } from "@app/../environments/environment";
-import { Page } from "@app/model/core/page.model";
 import { Delivery, DeliveryFE } from "@app/model/business/delivery.model";
-import { Observable } from "rxjs";
+import { CoreDeliverySearchDto } from "@app/model/business/dto/core-delivery.search.dto.model";
 import { IdType } from "@app/model/core/id.model";
+import { Page } from "@app/model/core/page.model";
+import { Observable } from "rxjs";
 import { BasePage } from "../base.page";
 import { DeliveryAttemptService } from "../delivery_attempt/delivery-attempt.service";
 import { DeliveryReturnService } from "../delivery_return/delivery-return.service";
+
+export interface DeliverySearchDto extends CoreDeliverySearchDto {}
 
 @Injectable({
   providedIn: "root",
@@ -19,11 +22,9 @@ export class DeliveryService {
     return `${environment.LINK.API_BASE_URL}/api/delivery/${partLink}`;
   }
 
-  search(
-    dto: {},
-    pageIndex: number,
-    pageSize: number
-  ): Observable<Page<Delivery>> {
+  search(dto: DeliverySearchDto, pageIndex: number, pageSize: number) {
+    console.log("Searching deliveries with DTO: ", dto);
+
     return this.$http.post<Page<Delivery>>(this.buildUrl("search"), dto, {
       params: {
         pageIndex,

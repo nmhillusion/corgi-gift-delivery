@@ -6,13 +6,16 @@ import {
   DeliveryAttemptFE,
 } from "@app/model/business/delivery-attempt.model";
 import { Delivery } from "@app/model/business/delivery.model";
+import { CoreDeliverySearchDto } from "@app/model/business/dto/core-delivery.search.dto.model";
+import { IdType } from "@app/model/core/id.model";
 import { Page } from "@app/model/core/page.model";
+import { BasePage } from "@app/pages/base.page";
 import { DeliveryStatusService } from "@app/service/delivery-status.service";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
 import { Observable } from "rxjs";
 import { DeliveryService } from "../delivery/delivery.service";
-import { BasePage } from "@app/pages/base.page";
-import { IdType } from "@app/model/core/id.model";
+
+export interface DeliveryAttemptSearchDto extends CoreDeliverySearchDto {}
 
 @Injectable({
   providedIn: "root",
@@ -25,7 +28,7 @@ export class DeliveryAttemptService {
   }
 
   search(
-    dto: {},
+    dto: DeliveryAttemptSearchDto,
     pageIndex: number,
     pageSize: number
   ): Observable<Page<DeliverAttempt>> {

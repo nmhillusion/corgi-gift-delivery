@@ -79,7 +79,7 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
     }
 
     @Override
-    public Page<DeliveryEntity> search(DeliveryDto deliveryDto, int pageIndex, int pageSize) {
+    public Page<DeliveryEntity> search(DeliverySearchDto deliveryDto, int pageIndex, int pageSize) {
         return deliveryRepository.search(deliveryDto, PageRequest.of(pageIndex, pageSize));
     }
 

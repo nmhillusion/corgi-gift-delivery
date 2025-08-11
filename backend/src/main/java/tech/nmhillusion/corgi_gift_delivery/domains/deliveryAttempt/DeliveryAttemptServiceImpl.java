@@ -70,7 +70,7 @@ public class DeliveryAttemptServiceImpl extends BaseBusinessServiceImpl<Delivery
     }
 
     @Override
-    public Page<DeliveryAttemptEntity> search(DeliveryAttemptDto dto, int pageIndex, int pageSize) {
+    public Page<DeliveryAttemptEntity> search(DeliveryAttemptSearchDto dto, int pageIndex, int pageSize) {
         return repository.search(dto, PageRequest.of(pageIndex, pageSize));
     }
 

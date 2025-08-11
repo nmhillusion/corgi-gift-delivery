@@ -15,13 +15,18 @@ import java.util.Optional;
  */
 public interface DeliveryRepository extends JpaRepository<DeliveryEntity, Long> {
 
-    @Query("SELECT d FROM DeliveryEntity d WHERE d.eventId = :eventId AND d.customerId = :customerId")
+    @Query(value = "SELECT d FROM DeliveryEntity d WHERE d.eventId = :eventId AND d.customerId = :customerId")
     Optional<DeliveryEntity> findByEventIdAndCustomerId(String eventId, String customerId);
 
-    @Query("SELECT d FROM DeliveryEntity d")
-    Page<DeliveryEntity> search(DeliveryDto deliveryDto, PageRequest pageRequest);
+    @Query(value = """
+        SELECT d FROM DeliveryEntity d
+        WHERE 1 = 1
+        and (:#{#dto.eventId} is null or d.eventId = :#{#dto.eventId})
+        and (:#{#dto.customerId} is null or d.customerId = :#{#dto.customerId})
+        """)
+    Page<DeliveryEntity> search(DeliverySearchDto dto, PageRequest pageRequest);
 
-    @Query("SELECT d.customerName FROM DeliveryEntity d WHERE d.deliveryId = :deliveryId AND d.customerId = :customerId")
+    @Query(value = "SELECT d.customerName FROM DeliveryEntity d WHERE d.deliveryId = :deliveryId AND d.customerId = :customerId")
     String getCustomerNameOfDelivery(String deliveryId, String customerId);
 
 }

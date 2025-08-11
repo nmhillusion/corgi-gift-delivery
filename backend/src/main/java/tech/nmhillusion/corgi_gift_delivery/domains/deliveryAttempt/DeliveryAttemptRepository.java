@@ -16,6 +16,13 @@ public interface DeliveryAttemptRepository extends JpaRepository<DeliveryAttempt
     @Query(value = "SELECT MAX(t.attemptId) FROM DeliveryAttemptEntity t WHERE t.deliveryId = :deliveryId")
     Long getMaxAttemptIdOfDeliveryId(long deliveryId);
 
-    @Query(value = "SELECT t FROM DeliveryAttemptEntity t")
-    Page<DeliveryAttemptEntity> search(DeliveryAttemptDto dto, PageRequest pageRequest);
+    @Query(value = """
+            SELECT a FROM DeliveryAttemptEntity a
+            join DeliveryEntity d
+            on d.deliveryId = a.deliveryId
+            where 1 = 1
+            and (:#{#dto.eventId} is null or d.eventId = :#{#dto.eventId})
+            and (:#{#dto.customerId} is null or d.customerId = :#{#dto.customerId})
+            """)
+    Page<DeliveryAttemptEntity> search(DeliveryAttemptSearchDto dto, PageRequest pageRequest);
 }

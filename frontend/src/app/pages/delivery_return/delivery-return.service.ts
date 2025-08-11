@@ -7,11 +7,14 @@ import {
   DeliveryReturnFE,
 } from "@app/model/business/delivery-return.model";
 import { Delivery } from "@app/model/business/delivery.model";
+import { CoreDeliverySearchDto } from "@app/model/business/dto/core-delivery.search.dto.model";
+import { IdType } from "@app/model/core/id.model";
 import { Page } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
 import { DeliveryService } from "../delivery/delivery.service";
-import { IdType } from "@app/model/core/id.model";
+
+export interface DeliveryReturnSearchDto extends CoreDeliverySearchDto {}
 
 @Injectable({
   providedIn: "root",
@@ -23,7 +26,7 @@ export class DeliveryReturnService {
     return `${environment.LINK.API_BASE_URL}/api/delivery-return/${partLink}`;
   }
 
-  search(dto: {}, pageIndex: number, pageSize: number) {
+  search(dto: DeliveryReturnSearchDto, pageIndex: number, pageSize: number) {
     return this.$http.post<Page<DeliveryReturn>>(this.buildUrl("search"), dto, {
       params: {
         pageIndex,

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.nmhillusion.corgi_gift_delivery.domains.base.BaseDeliveryController;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnEntity;
-import tech.nmhillusion.n2mix.exception.NotFoundException;
 
 /**
  * created by: minguy1
@@ -17,7 +16,7 @@ import tech.nmhillusion.n2mix.exception.NotFoundException;
  */
 @RestController
 @RequestMapping("/api/delivery-return")
-public class DeliveryReturnController extends BaseDeliveryController<DeliveryReturnEntity, DeliveryReturnDto> {
+public class DeliveryReturnController extends BaseDeliveryController<DeliveryReturnEntity, DeliveryReturnSearchDto> {
     private final DeliveryReturnService deliveryReturnService;
 
     public DeliveryReturnController(DeliveryReturnService service) {

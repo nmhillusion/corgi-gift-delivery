@@ -14,14 +14,14 @@ import java.util.List;
  * <p>
  * created date: 2025-07-06
  */
-public interface DeliveryService extends BaseBusinessService<DeliveryEntity>, BaseDeliveryService<DeliveryEntity, DeliveryDto> {
+public interface DeliveryService extends BaseBusinessService<DeliveryEntity>, BaseDeliveryService<DeliveryEntity, DeliverySearchDto> {
     Long getDeliveryIdByEventAndCustomer(String eventId, String customerId);
 
     List<DeliveryEntity> insertBatchByExcelFile(MultipartFile excelFile) throws ApiResponseException;
 
     List<DeliveryEntity> updateBatchByExcelFile(MultipartFile excelFile);
 
-    Page<DeliveryEntity> search(DeliveryDto deliveryDto, int pageIndex, int pageSize);
+    Page<DeliveryEntity> search(DeliverySearchDto deliveryDto, int pageIndex, int pageSize);
 
     String getCustomerNameOfDelivery(String deliveryId, String customerId);
 

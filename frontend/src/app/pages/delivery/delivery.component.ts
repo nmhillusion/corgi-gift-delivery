@@ -1,13 +1,14 @@
 import { Component } from "@angular/core";
-import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
-import { BasePage } from "@app/pages/base.page";
+import { FormControl, FormGroup } from "@angular/forms";
+import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
-import { Delivery, DeliveryFE } from "@app/model/business/delivery.model";
 import { AppCommonModule } from "@app/core/app-common.module";
+import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.component";
+import { DeliveryFE } from "@app/model/business/delivery.model";
+import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
 import { DeliveryService } from "./delivery.service";
-import { PageEvent } from "@angular/material/paginator";
 
 @Component({
   standalone: true,
@@ -54,6 +55,11 @@ export class DeliveryComponent extends BasePage {
 
   deliveryImportFile$ = new BehaviorSubject<File[]>([]);
 
+  searchForm = new FormGroup({
+    eventId: new FormControl<string | null>(null),
+    customerId: new FormControl<string | null>(null),
+  });
+
   // methods
   constructor(private $deliveryService: DeliveryService) {
     super("Delivery Management");
@@ -65,12 +71,17 @@ export class DeliveryComponent extends BasePage {
   }
 
   override search(pageEvt: PageEvent): void {
+    console.log(" search form = ", this.searchForm.value);
+
     this.paginator.pageIndex$.set(pageEvt.pageIndex);
     this.paginator.pageSize$.set(pageEvt.pageSize);
 
     this.registerSubscription(
       this.$deliveryService
-        .search({}, pageEvt.pageIndex, pageEvt.pageSize)
+        .search({
+          eventId: this.searchForm.value.eventId || null,
+          customerId: this.searchForm.value.customerId || null,
+        }, pageEvt.pageIndex, pageEvt.pageSize)
         .subscribe({
           next: (page) => {
             this.dataSource.data = page.content.map((item) =>
