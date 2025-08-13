@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
@@ -9,6 +9,7 @@ import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
 import { DeliveryService } from "./delivery.service";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @Component({
   standalone: true,
@@ -19,6 +20,7 @@ import { DeliveryService } from "./delivery.service";
     MatTableModule,
     AppCommonModule,
     AppInputFileComponent,
+    MatSlideToggleModule,
   ],
 })
 export class DeliveryComponent extends BasePage {
@@ -51,6 +53,13 @@ export class DeliveryComponent extends BasePage {
   ];
   dataSource = new MatTableDataSource<DeliveryFE>([]);
 
+  handler = {
+    isImporting$: signal<boolean>(false),
+    toggleImporting() {
+      this.isImporting$.update((value: boolean) => !value);
+    },
+  };
+
   paginator = this.generatePaginator();
 
   deliveryImportFile$ = new BehaviorSubject<File[]>([]);
@@ -78,10 +87,14 @@ export class DeliveryComponent extends BasePage {
 
     this.registerSubscription(
       this.$deliveryService
-        .search({
-          eventId: this.searchForm.value.eventId || null,
-          customerId: this.searchForm.value.customerId || null,
-        }, pageEvt.pageIndex, pageEvt.pageSize)
+        .search(
+          {
+            eventId: this.searchForm.value.eventId || null,
+            customerId: this.searchForm.value.customerId || null,
+          },
+          pageEvt.pageIndex,
+          pageEvt.pageSize
+        )
         .subscribe({
           next: (page) => {
             this.dataSource.data = page.content.map((item) =>

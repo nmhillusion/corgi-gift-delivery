@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { AppCommonModule } from "@app/core/app-common.module";
@@ -8,6 +8,7 @@ import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
 import { DeliveryAttemptService } from "./delivery-attempt.service";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @Component({
   standalone: true,
@@ -18,6 +19,7 @@ import { DeliveryAttemptService } from "./delivery-attempt.service";
     MatTableModule,
     AppCommonModule,
     AppInputFileComponent,
+    MatSlideToggleModule,
   ],
 })
 export class DeliveryAttemptComponent extends BasePage {
@@ -36,6 +38,13 @@ export class DeliveryAttemptComponent extends BasePage {
   dataSource = new MatTableDataSource<DeliveryAttemptFE>([]);
 
   paginator = this.generatePaginator();
+
+  handler = {
+    isImporting$: signal<boolean>(false),
+    toggleImporting() {
+      this.isImporting$.update((value: boolean) => !value);
+    },
+  };
 
   deliveryAttemptImportFile$ = new BehaviorSubject<File[]>([]);
 

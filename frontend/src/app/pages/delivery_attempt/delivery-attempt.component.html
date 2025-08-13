@@ -3,7 +3,18 @@
     <p>Manage and view delivery attempt information for gifts.</p>
   </div>
 
-  <div class="delivery-actions">
+  <div class="import-box delivery-actions">
+    <h3>Import Delivery Attempts</h3>
+    <p>
+      Upload a file to import delivery attempts. Ensure the file format is
+      correct before uploading. Supported file formats: .xlsx, .xls
+    </p>
+    <mat-slide-toggle
+      class="delivery-toggle"
+      [checked]="handler.isImporting$()"
+      (change)="handler.toggleImporting()"
+    />
+    @if (handler.isImporting$()) {
     <app-input-file
       [inputFile]="deliveryAttemptImportFile$"
       [multiple]="false"
@@ -25,6 +36,7 @@
         Update Delivery Attempts
       </button>
     </div>
+    }
   </div>
 
   <div class="delivery-page">
