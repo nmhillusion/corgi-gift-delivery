@@ -1,5 +1,7 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
+import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
@@ -24,5 +26,7 @@ public interface DeliveryService extends BaseBusinessService<DeliveryEntity>, Ba
     Page<DeliveryEntity> search(DeliverySearchDto deliveryDto, int pageIndex, int pageSize);
 
     String getCustomerNameOfDelivery(String deliveryId, String customerId);
+
+    Resource exportDeliveries(DeliverySearchDto deliveryDto);
 
 }

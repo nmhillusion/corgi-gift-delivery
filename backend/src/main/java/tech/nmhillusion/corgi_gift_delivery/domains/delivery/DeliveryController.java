@@ -1,10 +1,9 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
+import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.nmhillusion.corgi_gift_delivery.domains.base.BaseDeliveryController;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
 
@@ -31,5 +30,10 @@ public class DeliveryController extends BaseDeliveryController<DeliveryEntity, D
     @GetMapping(value = "/{deliveryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public DeliveryEntity getById(@PathVariable String deliveryId) {
         return deliveryService.getById(deliveryId);
+    }
+
+    @PostMapping(value = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Resource exportDeliveries(@RequestBody @Valid DeliverySearchDto deliveryDto) {
+        return deliveryService.exportDeliveries(deliveryDto);
     }
 }

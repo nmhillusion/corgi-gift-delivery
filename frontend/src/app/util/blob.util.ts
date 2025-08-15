@@ -7,5 +7,6 @@ export class BlobUtil {
     document.body.appendChild(aEl);
     aEl.click();
     aEl.remove();
+    window.URL.revokeObjectURL(url);
   }
 }

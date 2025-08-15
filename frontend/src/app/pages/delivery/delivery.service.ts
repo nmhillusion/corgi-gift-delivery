@@ -111,4 +111,10 @@ export class DeliveryService {
 
     return feItem;
   }
+
+  exportDeliveries(dto: { eventId: string | null; customerId: string | null }) {
+    return this.$http.post(this.buildUrl("export"), dto, {
+      responseType: "blob",
+    });
+  }
 }

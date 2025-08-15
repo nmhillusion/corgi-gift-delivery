@@ -35,6 +35,12 @@
     }
   </div>
 
+  <div class="action-box">
+    <button mat-raised-button color="primary" (click)="exportDeliveries()">
+      Export Deliveries
+    </button>
+  </div>
+
   <div class="delivery-search">
     <form class="search-form" [formGroup]="searchForm">
       <mat-form-field>

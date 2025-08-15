@@ -10,6 +10,7 @@ import { AppInputFileComponent } from "@app/widget/component/input-file/input-fi
 import { BehaviorSubject } from "rxjs";
 import { DeliveryService } from "./delivery.service";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { BlobUtil } from "@app/util/blob.util";
 
 @Component({
   standalone: true,
@@ -169,5 +170,31 @@ export class DeliveryComponent extends BasePage {
     } else {
       this.dialogHandler.alert("No file selected for update.");
     }
+  }
+
+  exportDeliveries() {
+    this.registerSubscription(
+      this.$deliveryService
+        .exportDeliveries({
+          eventId: this.searchForm.value.eventId || null,
+          customerId: this.searchForm.value.customerId || null,
+        })
+        .subscribe({
+          next: (response) => {
+            const blob = new Blob([response], {
+              type: "application/vnd.ms-excel",
+            });
+            BlobUtil.downloadBlob(blob, "deliveries_export.xlsx");
+            this.dialogHandler.alert("Deliveries exported successfully.");
+          },
+          error: (error) => {
+            console.error("Error exporting deliveries:", error);
+            this.dialogHandler.alert(
+              "Failed to export deliveries. " +
+                this.$errorUtil.retrieErrorMessage(error)
+            );
+          },
+        })
+    );
   }
 }
