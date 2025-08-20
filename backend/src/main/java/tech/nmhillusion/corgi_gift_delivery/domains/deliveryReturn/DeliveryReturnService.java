@@ -23,5 +23,5 @@ public interface DeliveryReturnService extends BaseBusinessService<DeliveryRetur
 
     Page<DeliveryReturnEntity> search(DeliveryReturnSearchDto deliveryDto, int pageIndex, int pageSize);
 
-    DeliveryReturnEntity getLatestAttemptByDeliveryId(String deliveryId);
+    DeliveryReturnEntity getLatestReturnByDeliveryId(String deliveryId);
 }

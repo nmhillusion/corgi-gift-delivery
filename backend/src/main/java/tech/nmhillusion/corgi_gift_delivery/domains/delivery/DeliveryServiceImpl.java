@@ -6,17 +6,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
+import tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt.DeliveryAttemptService;
+import tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturn.DeliveryReturnService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.export.LatestDeliveryReportEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
 import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.ExcelWriteHelper;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.model.ExcelDataConverterModel;
+import tech.nmhillusion.n2mix.type.function.NoInputFunction;
 
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 
@@ -30,12 +35,18 @@ import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity, DeliveryRepository> implements DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final DeliveryExcelSheetParser deliveryExcelSheetParser;
+    private final DeliveryAttemptService deliveryAttemptService;
+    private final DeliveryReturnService deliveryReturnService;
 
-
-    public DeliveryServiceImpl(DeliveryRepository deliveryRepository, SequenceService sequenceService, DeliveryExcelSheetParser deliveryExcelSheetParser) {
+    public DeliveryServiceImpl(DeliveryRepository deliveryRepository
+            , SequenceService sequenceService
+            , DeliveryExcelSheetParser deliveryExcelSheetParser
+            , DeliveryAttemptService deliveryAttemptService, DeliveryReturnService deliveryReturnService) {
         super(deliveryRepository, sequenceService);
         this.deliveryRepository = deliveryRepository;
         this.deliveryExcelSheetParser = deliveryExcelSheetParser;
+        this.deliveryAttemptService = deliveryAttemptService;
+        this.deliveryReturnService = deliveryReturnService;
     }
 
     @Override
@@ -106,7 +117,10 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
             final long totalElements = samplePage.getTotalElements();
 
             final Page<DeliveryEntity> allItemsPage = search(deliveryDto, 0, (int) totalElements);
-            final List<DeliveryEntity> allItems = allItemsPage.getContent();
+            final List<LatestDeliveryReportEntity> allItems = allItemsPage.getContent()
+                    .stream()
+                    .map(this::convertToLatestDeliveryReport)
+                    .toList();
 
 //            "event_id", "delivery_period_year", "delivery_period_month", "territory", "region", "organ_id", "received_organ", "amd_name",
 //            "customer_level", "customer_id", "customer_name", "id_card_number_raw", "id_card_number", "phone_number_raw", "phone_number",
@@ -114,7 +128,7 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
 
             final byte[] byteData = new ExcelWriteHelper()
                     .addSheetData(
-                            new ExcelDataConverterModel<DeliveryEntity>()
+                            new ExcelDataConverterModel<LatestDeliveryReportEntity>()
                                     .setSheetName("Deliveries")
                                     .setRawData(allItems)
                                     //-- Mark: DELIVERY
@@ -134,8 +148,15 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
                                     .addColumnConverters("address", DeliveryEntity::getAddress)
                                     .addColumnConverters("gift_name", DeliveryEntity::getGiftName)
                                     .addColumnConverters("note", DeliveryEntity::getNote)
-                            //-- Mark: DELIVERY ATTEMPT
-                            //-- Mark: DELIVERY RETURN
+                                    //-- Mark: DELIVERY ATTEMPT
+                                    .addColumnConverters("latest_attempt__attempt_id", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getAttemptId()), ""))
+                                    .addColumnConverters("latest_attempt__delivery_status", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getDeliveryStatusId()), ""))
+                                    .addColumnConverters("latest_attempt__delivery_type", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getDeliveryTypeId()), ""))
+                                    .addColumnConverters("latest_attempt__note", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> attempt.getNote(), ""))
+                                    //-- Mark: DELIVERY RETURN
+                                    .addColumnConverters("latest_return__return_id", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnId()), ""))
+                                    .addColumnConverters("latest_return__return_status", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnStatusId()), ""))
+                                    .addColumnConverters("latest_return__note", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> return_.getNote(), ""))
                     )
                     .build();
 
@@ -143,5 +164,47 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
         } catch (Throwable ex) {
             throw new ApiResponseException(ex);
         }
+    }
+
+    private <T, R> R getValueIfPass(NoInputFunction<T> getterFunc, Function<T, R> getterIfPass, R defaultValue) {
+        final T getterValue = getterFunc.apply();
+
+        if (null == getterValue) {
+            return defaultValue;
+        }
+
+        return getterIfPass.apply(getterValue);
+    }
+
+    @Override
+    public LatestDeliveryReportEntity convertToLatestDeliveryReport(DeliveryEntity deliveryEntity) {
+        final LatestDeliveryReportEntity latestDeliveryReport = new LatestDeliveryReportEntity();
+        final String deliveryId = String.valueOf(deliveryEntity.getDeliveryId());
+        latestDeliveryReport
+                .setAddress(deliveryEntity.getAddress())
+                .setAmdName(deliveryEntity.getAmdName())
+                .setCustomerId(deliveryEntity.getCustomerId())
+                .setCustomerLevel(deliveryEntity.getCustomerLevel())
+                .setCustomerName(deliveryEntity.getCustomerName())
+                .setDeliveryId(deliveryEntity.getDeliveryId())
+                .setDeliveryPeriodMonth(deliveryEntity.getDeliveryPeriodMonth())
+                .setDeliveryPeriodYear(deliveryEntity.getDeliveryPeriodYear())
+                .setEventId(deliveryEntity.getEventId())
+                .setGiftName(deliveryEntity.getGiftName())
+                .setIdCardNumber(deliveryEntity.getIdCardNumber())
+                .setInsertDate(deliveryEntity.getInsertDate())
+                .setNote(deliveryEntity.getNote())
+                .setOrganId(deliveryEntity.getOrganId())
+                .setPhoneNumber(deliveryEntity.getPhoneNumber())
+                .setReceivedOrgan(deliveryEntity.getReceivedOrgan())
+                .setRegion(deliveryEntity.getRegion())
+                .setTerritory(deliveryEntity.getTerritory())
+                .setUpdateDate(deliveryEntity.getUpdateDate());
+
+        latestDeliveryReport.setLatestDeliveryAttempt(deliveryAttemptService.getLatestAttemptByDeliveryId(deliveryId));
+
+        latestDeliveryReport.setLatestDeliveryReturn(deliveryReturnService.getLatestReturnByDeliveryId(deliveryId));
+
+        return latestDeliveryReport;
     }
 }

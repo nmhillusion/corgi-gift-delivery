@@ -1,10 +1,10 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
-import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.export.LatestDeliveryReportEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseBusinessService;
 import tech.nmhillusion.corgi_gift_delivery.service.business.BaseDeliveryService;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
@@ -29,4 +29,5 @@ public interface DeliveryService extends BaseBusinessService<DeliveryEntity>, Ba
 
     Resource exportDeliveries(DeliverySearchDto deliveryDto);
 
+    LatestDeliveryReportEntity convertToLatestDeliveryReport(DeliveryEntity deliveryEntity);
 }

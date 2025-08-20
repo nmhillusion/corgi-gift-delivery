@@ -82,7 +82,7 @@ public class DeliveryReturnServiceImpl extends BaseBusinessServiceImpl<DeliveryR
     }
 
     @Override
-    public DeliveryReturnEntity getLatestAttemptByDeliveryId(String deliveryId) {
+    public DeliveryReturnEntity getLatestReturnByDeliveryId(String deliveryId) {
         try {
             final Long latestReturnId = repository.getMaxReturnIdOfDeliveryId(Long.parseLong(deliveryId));
 
