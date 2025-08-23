@@ -8,6 +8,7 @@ import tech.nmhillusion.corgi_gift_delivery.service.business.BaseDeliveryService
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by: minguy1
@@ -23,5 +24,5 @@ public interface DeliveryReturnService extends BaseBusinessService<DeliveryRetur
 
     Page<DeliveryReturnEntity> search(DeliveryReturnSearchDto deliveryDto, int pageIndex, int pageSize);
 
-    DeliveryReturnEntity getLatestReturnByDeliveryId(String deliveryId);
+    Optional<DeliveryReturnEntity> getLatestReturnByDeliveryId(String deliveryId);
 }

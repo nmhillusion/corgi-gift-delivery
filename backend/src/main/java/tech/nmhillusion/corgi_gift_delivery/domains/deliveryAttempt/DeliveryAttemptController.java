@@ -27,7 +27,8 @@ public class DeliveryAttemptController extends BaseDeliveryController<DeliveryAt
 
     @GetMapping(value = "/{deliveryId}/latest-attempt", produces = MediaType.APPLICATION_JSON_VALUE)
     public DeliveryAttemptEntity getLatestAttemptByDeliveryId(@PathVariable @NotBlank String deliveryId) {
-        return deliveryAttemptService.getLatestAttemptByDeliveryId(deliveryId);
+        return deliveryAttemptService.getLatestAttemptByDeliveryId(deliveryId)
+                .orElseThrow();
     }
 
 }

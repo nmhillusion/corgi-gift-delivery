@@ -13,6 +13,7 @@ import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by: minguy1
@@ -82,19 +83,14 @@ public class DeliveryReturnServiceImpl extends BaseBusinessServiceImpl<DeliveryR
     }
 
     @Override
-    public DeliveryReturnEntity getLatestReturnByDeliveryId(String deliveryId) {
-        try {
-            final Long latestReturnId = repository.getMaxReturnIdOfDeliveryId(Long.parseLong(deliveryId));
+    public Optional<DeliveryReturnEntity> getLatestReturnByDeliveryId(String deliveryId) {
+        final Long latestReturnId = repository.getMaxReturnIdOfDeliveryId(Long.parseLong(deliveryId));
 
-            if (null == latestReturnId) {
-                throw new NotFoundException("Not found latest deliver return, delivery id: " + deliveryId);
-            }
-
-            return repository.findById(latestReturnId)
-                    .orElseThrow();
-        } catch (Throwable ex) {
-            LogHelper.getLogger(this).error(ex);
-            throw new ApiResponseException(ex);
+        if (null == latestReturnId) {
+            LogHelper.getLogger(this).warn("Not found latest deliver return, delivery id: " + deliveryId);
+            return Optional.empty();
         }
+
+        return repository.findById(latestReturnId);
     }
 }

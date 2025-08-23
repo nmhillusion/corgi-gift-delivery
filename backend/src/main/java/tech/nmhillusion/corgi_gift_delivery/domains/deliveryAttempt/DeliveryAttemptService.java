@@ -14,6 +14,7 @@ import tech.nmhillusion.corgi_gift_delivery.service.business.BaseDeliveryService
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DeliveryAttemptService extends BaseBusinessService<DeliveryAttemptEntity>, BaseDeliveryService<DeliveryAttemptEntity, DeliveryAttemptSearchDto> {
     Long getMaxAttemptIdOfDeliveryId(Long deliveryId);
@@ -24,6 +25,6 @@ public interface DeliveryAttemptService extends BaseBusinessService<DeliveryAtte
 
     Page<DeliveryAttemptEntity> search(DeliveryAttemptSearchDto deliveryDto, int pageIndex, int pageSize);
 
-    DeliveryAttemptEntity getLatestAttemptByDeliveryId(String deliveryId);
+    Optional<DeliveryAttemptEntity> getLatestAttemptByDeliveryId(String deliveryId);
 
 }

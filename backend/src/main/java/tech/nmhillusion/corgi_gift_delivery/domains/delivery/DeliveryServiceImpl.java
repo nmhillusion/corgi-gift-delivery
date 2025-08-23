@@ -1,5 +1,6 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ import tech.nmhillusion.n2mix.helper.office.excel.writer.ExcelWriteHelper;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.model.ExcelDataConverterModel;
 import tech.nmhillusion.n2mix.type.function.NoInputFunction;
 
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
@@ -35,18 +39,21 @@ import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity, DeliveryRepository> implements DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final DeliveryExcelSheetParser deliveryExcelSheetParser;
-    private final DeliveryAttemptService deliveryAttemptService;
-    private final DeliveryReturnService deliveryReturnService;
+    private final BeanFactory beanFactory;
 
-    public DeliveryServiceImpl(DeliveryRepository deliveryRepository
+
+    public DeliveryServiceImpl(BeanFactory beanFactory, DeliveryRepository deliveryRepository
             , SequenceService sequenceService
             , DeliveryExcelSheetParser deliveryExcelSheetParser
-            , DeliveryAttemptService deliveryAttemptService, DeliveryReturnService deliveryReturnService) {
+    ) {
         super(deliveryRepository, sequenceService);
+        this.beanFactory = beanFactory;
         this.deliveryRepository = deliveryRepository;
         this.deliveryExcelSheetParser = deliveryExcelSheetParser;
-        this.deliveryAttemptService = deliveryAttemptService;
-        this.deliveryReturnService = deliveryReturnService;
+    }
+
+    private <T> T injectForService(Class<T> class2Inject) {
+        return beanFactory.getBean(class2Inject);
     }
 
     @Override
@@ -126,38 +133,38 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
 //            "customer_level", "customer_id", "customer_name", "id_card_number_raw", "id_card_number", "phone_number_raw", "phone_number",
 //            "address", "gift_name", "note"
 
+            final ExcelDataConverterModel<LatestDeliveryReportEntity> exportSheetData = new ExcelDataConverterModel<LatestDeliveryReportEntity>()
+                    .setSheetName("Deliveries")
+                    .setRawData(allItems)
+                    //-- Mark: DELIVERY
+                    .addColumnConverters("event_id", DeliveryEntity::getEventId)
+                    .addColumnConverters("delivery_period_year", it -> String.valueOf(it.getDeliveryPeriodYear()))
+                    .addColumnConverters("delivery_period_month", it -> String.valueOf(it.getDeliveryPeriodMonth()))
+                    .addColumnConverters("territory", DeliveryEntity::getTerritory)
+                    .addColumnConverters("region", DeliveryEntity::getRegion)
+                    .addColumnConverters("organ_id", DeliveryEntity::getOrganId)
+                    .addColumnConverters("received_organ", DeliveryEntity::getReceivedOrgan)
+                    .addColumnConverters("amd_name", DeliveryEntity::getAmdName)
+                    .addColumnConverters("customer_level", DeliveryEntity::getCustomerLevel)
+                    .addColumnConverters("customer_id", DeliveryEntity::getCustomerId)
+                    .addColumnConverters("customer_name", DeliveryEntity::getCustomerName)
+                    .addColumnConverters("id_card_number", DeliveryEntity::getIdCardNumber)
+                    .addColumnConverters("phone_number", DeliveryEntity::getPhoneNumber)
+                    .addColumnConverters("address", DeliveryEntity::getAddress)
+                    .addColumnConverters("gift_name", DeliveryEntity::getGiftName)
+                    .addColumnConverters("note", DeliveryEntity::getNote)
+                    //-- Mark: DELIVERY ATTEMPT
+                    .addColumnConverters("latest_attempt__attempt_id", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getAttemptId()), ""))
+                    .addColumnConverters("latest_attempt__delivery_status", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getDeliveryStatusId()), ""))
+                    .addColumnConverters("latest_attempt__delivery_type", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getDeliveryTypeId()), ""))
+                    .addColumnConverters("latest_attempt__note", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> attempt.getNote(), ""))
+                    //-- Mark: DELIVERY RETURN
+                    .addColumnConverters("latest_return__return_id", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnId()), ""))
+                    .addColumnConverters("latest_return__return_status", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnStatusId()), ""))
+                    .addColumnConverters("latest_return__note", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> return_.getNote(), ""));
+
             final byte[] byteData = new ExcelWriteHelper()
-                    .addSheetData(
-                            new ExcelDataConverterModel<LatestDeliveryReportEntity>()
-                                    .setSheetName("Deliveries")
-                                    .setRawData(allItems)
-                                    //-- Mark: DELIVERY
-                                    .addColumnConverters("event_id", DeliveryEntity::getEventId)
-                                    .addColumnConverters("delivery_period_year", it -> String.valueOf(it.getDeliveryPeriodYear()))
-                                    .addColumnConverters("delivery_period_month", it -> String.valueOf(it.getDeliveryPeriodMonth()))
-                                    .addColumnConverters("territory", DeliveryEntity::getTerritory)
-                                    .addColumnConverters("region", DeliveryEntity::getRegion)
-                                    .addColumnConverters("organ_id", DeliveryEntity::getOrganId)
-                                    .addColumnConverters("received_organ", DeliveryEntity::getReceivedOrgan)
-                                    .addColumnConverters("amd_name", DeliveryEntity::getAmdName)
-                                    .addColumnConverters("customer_level", DeliveryEntity::getCustomerLevel)
-                                    .addColumnConverters("customer_id", DeliveryEntity::getCustomerId)
-                                    .addColumnConverters("customer_name", DeliveryEntity::getCustomerName)
-                                    .addColumnConverters("id_card_number", DeliveryEntity::getIdCardNumber)
-                                    .addColumnConverters("phone_number", DeliveryEntity::getPhoneNumber)
-                                    .addColumnConverters("address", DeliveryEntity::getAddress)
-                                    .addColumnConverters("gift_name", DeliveryEntity::getGiftName)
-                                    .addColumnConverters("note", DeliveryEntity::getNote)
-                                    //-- Mark: DELIVERY ATTEMPT
-                                    .addColumnConverters("latest_attempt__attempt_id", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getAttemptId()), ""))
-                                    .addColumnConverters("latest_attempt__delivery_status", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getDeliveryStatusId()), ""))
-                                    .addColumnConverters("latest_attempt__delivery_type", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getDeliveryTypeId()), ""))
-                                    .addColumnConverters("latest_attempt__note", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> attempt.getNote(), ""))
-                                    //-- Mark: DELIVERY RETURN
-                                    .addColumnConverters("latest_return__return_id", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnId()), ""))
-                                    .addColumnConverters("latest_return__return_status", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnStatusId()), ""))
-                                    .addColumnConverters("latest_return__note", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> return_.getNote(), ""))
-                    )
+                    .addSheetData(exportSheetData)
                     .build();
 
             return new ByteArrayResource(byteData);
@@ -201,9 +208,11 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
                 .setTerritory(deliveryEntity.getTerritory())
                 .setUpdateDate(deliveryEntity.getUpdateDate());
 
-        latestDeliveryReport.setLatestDeliveryAttempt(deliveryAttemptService.getLatestAttemptByDeliveryId(deliveryId));
+        final DeliveryAttemptService deliveryAttemptService = injectForService(DeliveryAttemptService.class);
+        final DeliveryReturnService deliveryReturnService = injectForService(DeliveryReturnService.class);
 
-        latestDeliveryReport.setLatestDeliveryReturn(deliveryReturnService.getLatestReturnByDeliveryId(deliveryId));
+        latestDeliveryReport.setLatestDeliveryAttempt(deliveryAttemptService.getLatestAttemptByDeliveryId(deliveryId).orElse(null));
+        latestDeliveryReport.setLatestDeliveryReturn(deliveryReturnService.getLatestReturnByDeliveryId(deliveryId).orElse(null));
 
         return latestDeliveryReport;
     }

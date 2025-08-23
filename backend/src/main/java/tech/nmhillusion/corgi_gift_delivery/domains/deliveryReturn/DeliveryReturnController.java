@@ -26,6 +26,7 @@ public class DeliveryReturnController extends BaseDeliveryController<DeliveryRet
 
     @GetMapping(value = "/{deliveryId}/latest-return", produces = MediaType.APPLICATION_JSON_VALUE)
     public DeliveryReturnEntity getLatestAttemptByDeliveryId(@PathVariable @NotBlank String deliveryId) {
-        return deliveryReturnService.getLatestReturnByDeliveryId(deliveryId);
+        return deliveryReturnService.getLatestReturnByDeliveryId(deliveryId)
+                .orElseThrow();
     }
 }

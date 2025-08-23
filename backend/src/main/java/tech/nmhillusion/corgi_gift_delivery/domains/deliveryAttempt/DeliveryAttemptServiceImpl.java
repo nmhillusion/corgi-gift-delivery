@@ -13,6 +13,7 @@ import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by: minguy1
@@ -81,19 +82,14 @@ public class DeliveryAttemptServiceImpl extends BaseBusinessServiceImpl<Delivery
     }
 
     @Override
-    public DeliveryAttemptEntity getLatestAttemptByDeliveryId(String deliveryId) {
-        try {
-            final Long latestAttemptId = repository.getMaxAttemptIdOfDeliveryId(Long.parseLong(deliveryId));
+    public Optional<DeliveryAttemptEntity> getLatestAttemptByDeliveryId(String deliveryId) {
+        final Long latestAttemptId = repository.getMaxAttemptIdOfDeliveryId(Long.parseLong(deliveryId));
 
-            if (null == latestAttemptId) {
-                throw new NotFoundException("Not found latest delivery attempt, delivery id: " + deliveryId);
-            }
-
-            return repository.findById(latestAttemptId)
-                    .orElseThrow();
-        } catch (Throwable ex) {
-            LogHelper.getLogger(this).error(ex);
-            throw new ApiResponseException(ex);
+        if (null == latestAttemptId) {
+            LogHelper.getLogger(this).warn("Not found latest deliver attempt, delivery id: " + deliveryId);
+            return Optional.empty();
         }
+
+        return repository.findById(latestAttemptId);
     }
 }
