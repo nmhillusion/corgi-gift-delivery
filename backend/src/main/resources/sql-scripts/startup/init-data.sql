@@ -31,7 +31,7 @@ insert into t_cx_delivery_return_status (status_id, status_name, status_desc)
 values (1, 'YEU_CAU_TRA_HANG', 'Đang yêu cầu trả hàng');
 
 insert into t_cx_delivery_return_status (status_id, status_name, status_desc)
-values (2, 'NCC_DA_NHAN_TRA_HANG', 'NCC đã nhận trả hàng');
+values (2, 'TIEP_NHAN_TRA_HANG', 'Tiếp nhận trả hàng');
 
 insert into t_cx_delivery_return_status (status_id, status_name, status_desc)
-values (3, 'NCC_DA_DOI_HANG', 'NCC đã đổi hàng');
+values (3, 'DA_TRA_HANG', 'Đã trả hàng');

@@ -9,6 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt.DeliveryAttemptService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturn.DeliveryReturnService;
+import tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturnStatus.DeliveryReturnStatusService;
+import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatusService;
+import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.export.LatestDeliveryReportEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
@@ -18,10 +21,8 @@ import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.ExcelWriteHelper;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.model.ExcelDataConverterModel;
 import tech.nmhillusion.n2mix.type.function.NoInputFunction;
+import tech.nmhillusion.n2mix.util.StringUtil;
 
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
@@ -133,6 +134,10 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
 //            "customer_level", "customer_id", "customer_name", "id_card_number_raw", "id_card_number", "phone_number_raw", "phone_number",
 //            "address", "gift_name", "note"
 
+            final DeliveryStatusService deliveryStatusService = injectForService(DeliveryStatusService.class);
+            final DeliveryTypeService deliveryTypeService = injectForService(DeliveryTypeService.class);
+            final DeliveryReturnStatusService deliveryReturnStatusService = injectForService(DeliveryReturnStatusService.class);
+
             final ExcelDataConverterModel<LatestDeliveryReportEntity> exportSheetData = new ExcelDataConverterModel<LatestDeliveryReportEntity>()
                     .setSheetName("Deliveries")
                     .setRawData(allItems)
@@ -155,12 +160,41 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
                     .addColumnConverters("note", DeliveryEntity::getNote)
                     //-- Mark: DELIVERY ATTEMPT
                     .addColumnConverters("latest_attempt__attempt_id", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getAttemptId()), ""))
-                    .addColumnConverters("latest_attempt__delivery_status", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getDeliveryStatusId()), ""))
-                    .addColumnConverters("latest_attempt__delivery_type", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getDeliveryTypeId()), ""))
+                    .addColumnConverters("latest_attempt__delivery_status", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> {
+                        final Integer deliveryStatusId = attempt.getDeliveryStatusId();
+
+                        if (null == deliveryStatusId) {
+                            return "";
+                        }
+
+                        return deliveryStatusService.getDeliveryStatusByStatusId(
+                                        StringUtil.trimWithNull(deliveryStatusId)
+                                )
+                                .getStatusName();
+                    }, ""))
+                    .addColumnConverters("latest_attempt__delivery_type", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> {
+                        final Integer deliveryTypeId = attempt.getDeliveryTypeId();
+                        if (null == deliveryTypeId) {
+                            return "";
+                        }
+
+                        return deliveryTypeService.getDeliveryTypeByTypeId(
+                                StringUtil.trimWithNull(deliveryTypeId)
+                        ).getTypeName();
+                    }, ""))
                     .addColumnConverters("latest_attempt__note", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> attempt.getNote(), ""))
                     //-- Mark: DELIVERY RETURN
                     .addColumnConverters("latest_return__return_id", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnId()), ""))
-                    .addColumnConverters("latest_return__return_status", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnStatusId()), ""))
+                    .addColumnConverters("latest_return__return_status", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> {
+                        final Integer returnStatusId = return_.getReturnStatusId();
+                        if (null == returnStatusId) {
+                            return "";
+                        }
+
+                        return deliveryReturnStatusService.getDeliveryReturnStatusByStatusId(
+                                StringUtil.trimWithNull(returnStatusId)
+                        ).getStatusName();
+                    }, ""))
                     .addColumnConverters("latest_return__note", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> return_.getNote(), ""));
 
             final byte[] byteData = new ExcelWriteHelper()
