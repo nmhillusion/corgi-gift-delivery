@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.time.ZonedDateTime;
+
 /**
  * created by: nmhillusion
  * <p>
@@ -26,6 +28,9 @@ public class DeliveryAttemptEntity extends BaseBusinessEntity<Long> {
 
     @Column(name = "delivery_status_id")
     private Integer deliveryStatusId;
+
+    @Column(name = "delivery_date")
+    private ZonedDateTime deliveryDate;
 
     @Column(name = "note")
     private String note;
@@ -63,6 +68,15 @@ public class DeliveryAttemptEntity extends BaseBusinessEntity<Long> {
 
     public DeliveryAttemptEntity setDeliveryStatusId(Integer deliveryStatusId) {
         this.deliveryStatusId = deliveryStatusId;
+        return this;
+    }
+
+    public ZonedDateTime getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public DeliveryAttemptEntity setDeliveryDate(ZonedDateTime deliveryDate) {
+        this.deliveryDate = deliveryDate;
         return this;
     }
 

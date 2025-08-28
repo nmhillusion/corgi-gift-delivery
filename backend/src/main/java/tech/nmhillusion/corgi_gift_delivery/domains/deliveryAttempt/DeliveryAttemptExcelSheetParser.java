@@ -1,7 +1,6 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt;
 
 import org.springframework.stereotype.Component;
-import tech.nmhillusion.corgi_gift_delivery.domains.delivery.DeliveryParserEnum;
 import tech.nmhillusion.corgi_gift_delivery.domains.delivery.DeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
@@ -14,6 +13,7 @@ import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.CellData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.RowData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
+import tech.nmhillusion.n2mix.util.DateUtil;
 import tech.nmhillusion.n2mix.validator.StringValidator;
 
 import java.util.ArrayList;
@@ -93,8 +93,16 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
                                             deliveryStatusService.getDeliveryStatusByStatusName(deliveryStatus).getStatusId()
                                     )
                             )
+                            .setDeliveryDate(
+                                    DateUtil.convertToZonedDateTime(
+                                            DateUtil.parse(
+                                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_DATE.getColumnName())
+                                                    , "yyyy-MM-dd"
+                                            )
+                                    )
+                            )
                             .setNote(
-                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryParserEnum.NOTE.getColumnName())
+                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.NOTE.getColumnName())
                             )
             )
             ;

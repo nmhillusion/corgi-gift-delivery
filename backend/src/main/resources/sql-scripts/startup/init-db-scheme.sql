@@ -57,6 +57,7 @@ create table if not exists t_cx_delivery_attempt (
   delivery_id bigint,
   delivery_type_id int,
   delivery_status_id int,
+  delivery_date timestamp with time zone,
   note text,
   insert_date timestamp with time zone default CURRENT_TIMESTAMP,
   update_date timestamp with time zone

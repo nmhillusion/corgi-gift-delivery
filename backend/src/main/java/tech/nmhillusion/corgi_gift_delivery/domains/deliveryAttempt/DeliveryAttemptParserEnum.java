@@ -12,6 +12,7 @@ public enum DeliveryAttemptParserEnum implements StandardParserEnum {
     CUSTOMER_ID("customer_id"),
     DELIVERY_TYPE("delivery_type"),
     DELIVERY_STATUS("delivery_status"),
+    DELIVERY_DATE("delivery_date"),
     NOTE("note");
 
     private final String columnName;
