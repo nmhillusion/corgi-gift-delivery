@@ -175,7 +175,7 @@ export class DeliveryComponent extends BasePage {
   exportDeliveries() {
     this.registerSubscription(
       this.$deliveryService
-        .exportDeliveries({
+        .exportSummaryDeliveries({
           eventId: this.searchForm.value.eventId || null,
           customerId: this.searchForm.value.customerId || null,
         })

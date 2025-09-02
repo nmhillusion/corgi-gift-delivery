@@ -27,7 +27,7 @@ public interface DeliveryService extends BaseBusinessService<DeliveryEntity>, Ba
 
     String getCustomerNameOfDelivery(String deliveryId, String customerId);
 
-    Resource exportDeliveries(DeliverySearchDto deliveryDto);
+    Resource exportSummaryDeliveries(DeliverySearchDto deliveryDto);
 
     LatestDeliveryReportEntity convertToLatestDeliveryReport(DeliveryEntity deliveryEntity);
 }

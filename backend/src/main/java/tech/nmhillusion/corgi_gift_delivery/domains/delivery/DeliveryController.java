@@ -32,8 +32,8 @@ public class DeliveryController extends BaseDeliveryController<DeliveryEntity, D
         return deliveryService.getById(deliveryId);
     }
 
-    @PostMapping(value = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Resource exportDeliveries(@RequestBody @Valid DeliverySearchDto deliveryDto) {
-        return deliveryService.exportDeliveries(deliveryDto);
+    @PostMapping(value = "/export/summary", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Resource exportSummaryDeliveries(@RequestBody @Valid DeliverySearchDto deliveryDto) {
+        return deliveryService.exportSummaryDeliveries(deliveryDto);
     }
 }

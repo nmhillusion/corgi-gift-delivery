@@ -118,7 +118,7 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
     }
 
     @Override
-    public Resource exportDeliveries(DeliverySearchDto deliveryDto) {
+    public Resource exportSummaryDeliveries(DeliverySearchDto deliveryDto) {
         try {
             final Page<DeliveryEntity> samplePage = search(deliveryDto, 0, 1);
             final long totalElements = samplePage.getTotalElements();
