@@ -14,18 +14,20 @@ import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatu
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.*;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.export.LatestDeliveryReportEntity;
+import tech.nmhillusion.corgi_gift_delivery.service.business.AbstractBaseDeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
-import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.ExcelWriteHelper;
+import tech.nmhillusion.n2mix.helper.office.excel.writer.model.BasicExcelDataModel;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.model.ExcelDataConverterModel;
-import tech.nmhillusion.n2mix.type.function.NoInputFunction;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 
@@ -36,7 +38,7 @@ import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
  */
 
 @TransactionalService
-public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity, DeliveryRepository> implements DeliveryService {
+public class DeliveryServiceImpl extends AbstractBaseDeliveryService<DeliveryEntity, DeliverySearchDto, DeliveryRepository> implements DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final DeliveryExcelSheetParser deliveryExcelSheetParser;
     private final BeanFactory beanFactory;
@@ -221,16 +223,6 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
         }
     }
 
-    private <T, R> R getValueIfPass(NoInputFunction<T> getterFunc, Function<T, R> getterIfPass, R defaultValue) {
-        final T getterValue = getterFunc.apply();
-
-        if (null == getterValue) {
-            return defaultValue;
-        }
-
-        return getterIfPass.apply(getterValue);
-    }
-
     @Override
     public LatestDeliveryReportEntity convertToLatestDeliveryReport(DeliveryEntity deliveryEntity) {
         final LatestDeliveryReportEntity latestDeliveryReport = new LatestDeliveryReportEntity();
@@ -263,5 +255,64 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
         latestDeliveryReport.setLatestDeliveryReturn(deliveryReturnService.getLatestReturnByDeliveryId(deliveryId).orElse(null));
 
         return latestDeliveryReport;
+    }
+
+    @Override
+    public Resource export(DeliverySearchDto deliverySearchDto) throws ApiResponseException {
+        try {
+            final long totalElements = getTotalElementsForSearch(deliverySearchDto);
+
+            final Page<DeliveryEntity> resultPage = search(deliverySearchDto, 0, (int) totalElements);
+
+
+            final byte[] data = new ExcelWriteHelper()
+                    .addSheetData(
+                            new BasicExcelDataModel()
+                                    .setSheetName("Deliveries")
+                                    .setHeaders(
+                                            List.of(
+                                                    Stream.of(
+                                                                    DeliveryParserEnum.values()
+                                                            )
+                                                            .map(DeliveryParserEnum::getColumnName)
+                                                            .toList()
+                                            )
+                                    )
+                                    .setBodyData(
+                                            resultPage.getContent()
+                                                    .stream()
+                                                    .map(it -> {
+                                                                final List<String> dRow = new ArrayList<>();
+
+                                                                dRow.add(it.getEventId());
+                                                                dRow.add(String.valueOf(it.getDeliveryPeriodYear()));
+                                                                dRow.add(String.valueOf(it.getDeliveryPeriodMonth()));
+                                                                dRow.add(it.getTerritory());
+                                                                dRow.add(it.getRegion());
+                                                                dRow.add(it.getOrganId());
+                                                                dRow.add(it.getReceivedOrgan());
+                                                                dRow.add(it.getAmdName());
+                                                                dRow.add(it.getCustomerLevel());
+                                                                dRow.add(it.getCustomerId());
+                                                                dRow.add(it.getCustomerName());
+                                                                dRow.add(it.getIdCardNumber());
+                                                                dRow.add(it.getPhoneNumber());
+                                                                dRow.add(it.getAddress());
+                                                                dRow.add(it.getGiftName());
+                                                                dRow.add(it.getNote());
+
+                                                                return dRow;
+                                                            }
+                                                    )
+                                                    .toList()
+                                    )
+                    )
+                    .build();
+            return new ByteArrayResource(data)
+                    ;
+        } catch (Exception ex) {
+            LogHelper.getLogger(this).error(ex);
+            throw new ApiResponseException(ex);
+        }
     }
 }

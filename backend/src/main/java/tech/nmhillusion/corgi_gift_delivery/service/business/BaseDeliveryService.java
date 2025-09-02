@@ -1,5 +1,7 @@
 package tech.nmhillusion.corgi_gift_delivery.service.business;
 
+import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.BaseBusinessEntity;
@@ -20,4 +22,8 @@ public interface BaseDeliveryService<E extends BaseBusinessEntity<Long>, DTO> {
     Page<E> search(DTO dto, int pageIndex, int pageSize);
 
     E getById(String id);
+
+    long getTotalElementsForSearch(DTO dto);
+
+    Resource export(@Valid DTO dto) throws ApiResponseException;
 }

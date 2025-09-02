@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import tech.nmhillusion.corgi_gift_delivery.domains.base.BaseDeliveryController;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
+import tech.nmhillusion.n2mix.constant.ContentType;
 
 /**
  * created by: nmhillusion
@@ -32,7 +33,7 @@ public class DeliveryController extends BaseDeliveryController<DeliveryEntity, D
         return deliveryService.getById(deliveryId);
     }
 
-    @PostMapping(value = "/export/summary", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/export/summary", produces = ContentType.MS_EXCEL_XLSX)
     public Resource exportSummaryDeliveries(@RequestBody @Valid DeliverySearchDto deliveryDto) {
         return deliveryService.exportSummaryDeliveries(deliveryDto);
     }

@@ -175,7 +175,7 @@ export class DeliveryComponent extends BasePage {
   exportDeliveries() {
     this.registerSubscription(
       this.$deliveryService
-        .exportSummaryDeliveries({
+        .exportDeliveries({
           eventId: this.searchForm.value.eventId || null,
           customerId: this.searchForm.value.customerId || null,
         })
@@ -185,6 +185,32 @@ export class DeliveryComponent extends BasePage {
               type: "application/vnd.ms-excel",
             });
             BlobUtil.downloadBlob(blob, "deliveries_export.xlsx");
+            this.dialogHandler.alert("Deliveries exported successfully.");
+          },
+          error: (error) => {
+            console.error("Error exporting deliveries:", error);
+            this.dialogHandler.alert(
+              "Failed to export deliveries. " +
+                this.$errorUtil.retrieErrorMessage(error)
+            );
+          },
+        })
+    );
+  }
+
+  exportSummaryDeliveries() {
+    this.registerSubscription(
+      this.$deliveryService
+        .exportSummaryDeliveries({
+          eventId: this.searchForm.value.eventId || null,
+          customerId: this.searchForm.value.customerId || null,
+        })
+        .subscribe({
+          next: (response) => {
+            const blob = new Blob([response], {
+              type: "application/vnd.ms-excel",
+            });
+            BlobUtil.downloadBlob(blob, "summary_deliveries_export.xlsx");
             this.dialogHandler.alert("Deliveries exported successfully.");
           },
           error: (error) => {

@@ -1,16 +1,19 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturn;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnEntity;
+import tech.nmhillusion.corgi_gift_delivery.service.business.AbstractBaseDeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
-import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
+import tech.nmhillusion.n2mix.exception.MissingDataException;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +25,7 @@ import java.util.Optional;
  */
 
 @TransactionalService
-public class DeliveryReturnServiceImpl extends BaseBusinessServiceImpl<DeliveryReturnEntity, DeliveryReturnRepository> implements DeliveryReturnService {
+public class DeliveryReturnServiceImpl extends AbstractBaseDeliveryService<DeliveryReturnEntity, DeliveryReturnSearchDto, DeliveryReturnRepository> implements DeliveryReturnService {
     private final DeliveryReturnExcelSheetParser deliverReturnExcelSheetParser;
 
     protected DeliveryReturnServiceImpl(DeliveryReturnRepository repository, SequenceService sequenceService, DeliveryReturnExcelSheetParser deliverReturnExcelSheetParser) {
@@ -92,5 +95,10 @@ public class DeliveryReturnServiceImpl extends BaseBusinessServiceImpl<DeliveryR
         }
 
         return repository.findById(latestReturnId);
+    }
+
+    @Override
+    public Resource export(DeliveryReturnSearchDto deliveryReturnSearchDto) throws ApiResponseException {
+        throw new UnsupportedOperationException();
     }
 }

@@ -1,12 +1,13 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryAttemptEntity;
+import tech.nmhillusion.corgi_gift_delivery.service.business.AbstractBaseDeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
-import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.log.LogHelper;
@@ -21,7 +22,7 @@ import java.util.Optional;
  * created date: 2025-07-19
  */
 @TransactionalService
-public class DeliveryAttemptServiceImpl extends BaseBusinessServiceImpl<DeliveryAttemptEntity, DeliveryAttemptRepository> implements DeliveryAttemptService {
+public class DeliveryAttemptServiceImpl extends AbstractBaseDeliveryService<DeliveryAttemptEntity, DeliveryAttemptSearchDto, DeliveryAttemptRepository> implements DeliveryAttemptService {
     private final DeliveryAttemptExcelSheetParser deliveryAttemptExcelSheetParser;
 
     protected DeliveryAttemptServiceImpl(DeliveryAttemptRepository deliveryAttemptRepository, SequenceService sequenceService, DeliveryAttemptExcelSheetParser deliveryAttemptExcelSheetParser) {
@@ -91,5 +92,10 @@ public class DeliveryAttemptServiceImpl extends BaseBusinessServiceImpl<Delivery
         }
 
         return repository.findById(latestAttemptId);
+    }
+
+    @Override
+    public Resource export(DeliveryAttemptSearchDto deliveryAttemptSearchDto) throws ApiResponseException {
+        throw new UnsupportedOperationException();
     }
 }
