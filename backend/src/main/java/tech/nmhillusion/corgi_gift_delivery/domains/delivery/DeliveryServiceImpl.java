@@ -12,7 +12,7 @@ import tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturn.DeliveryRetur
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturnStatus.DeliveryReturnStatusService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
-import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.*;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.export.LatestDeliveryReportEntity;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
 import tech.nmhillusion.corgi_gift_delivery.service_impl.business.BaseBusinessServiceImpl;
@@ -21,7 +21,6 @@ import tech.nmhillusion.n2mix.exception.NotFoundException;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.ExcelWriteHelper;
 import tech.nmhillusion.n2mix.helper.office.excel.writer.model.ExcelDataConverterModel;
 import tech.nmhillusion.n2mix.type.function.NoInputFunction;
-import tech.nmhillusion.n2mix.util.StringUtil;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -159,43 +158,58 @@ public class DeliveryServiceImpl extends BaseBusinessServiceImpl<DeliveryEntity,
                     .addColumnConverters("gift_name", DeliveryEntity::getGiftName)
                     .addColumnConverters("note", DeliveryEntity::getNote)
                     //-- Mark: DELIVERY ATTEMPT
-                    .addColumnConverters("latest_attempt__attempt_id", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getAttemptId()), ""))
-                    .addColumnConverters("latest_attempt__delivery_status", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> {
-                        final Integer deliveryStatusId = attempt.getDeliveryStatusId();
-
-                        if (null == deliveryStatusId) {
-                            return "";
-                        }
-
-                        return deliveryStatusService.getDeliveryStatusByStatusId(
-                                        StringUtil.trimWithNull(deliveryStatusId)
-                                )
-                                .getStatusName();
-                    }, ""))
-                    .addColumnConverters("latest_attempt__delivery_type", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> {
-                        final Integer deliveryTypeId = attempt.getDeliveryTypeId();
-                        if (null == deliveryTypeId) {
-                            return "";
-                        }
-
-                        return deliveryTypeService.getDeliveryTypeByTypeId(
-                                StringUtil.trimWithNull(deliveryTypeId)
-                        ).getTypeName();
-                    }, ""))
-                    .addColumnConverters("latest_attempt__note", it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> attempt.getNote(), ""))
+//                    .addColumnConverters("latest_attempt__attempt_id",
+//                            it -> getValueIfPass(it::getLatestDeliveryAttempt, attempt -> String.valueOf(attempt.getAttemptId()), "")
+//                    )
+                    .addColumnConverters("latest_attempt__attempt_id",
+                            it -> Optional.ofNullable(it.getLatestDeliveryAttempt())
+                                    .map(DeliveryAttemptEntity::getAttemptId)
+                                    .map(String::valueOf)
+                                    .orElse("")
+                    )
+                    .addColumnConverters("latest_attempt__delivery_status",
+                            it -> {
+                                return Optional.ofNullable(it.getLatestDeliveryAttempt())
+                                        .map(DeliveryAttemptEntity::getDeliveryStatusId)
+                                        .map(String::valueOf)
+                                        .map(deliveryStatusService::getDeliveryStatusByStatusId)
+                                        .map(DeliveryStatusEntity::getStatusName)
+                                        .orElse("");
+                            }
+                    )
+                    .addColumnConverters("latest_attempt__delivery_type",
+                            it -> Optional.ofNullable(it.getLatestDeliveryAttempt())
+                                    .map(DeliveryAttemptEntity::getDeliveryTypeId)
+                                    .map(String::valueOf)
+                                    .map(deliveryTypeService::getDeliveryTypeByTypeId)
+                                    .map(DeliveryTypeEntity::getTypeName)
+                                    .orElse("")
+                    )
+                    .addColumnConverters("latest_attempt__note",
+                            it -> Optional.ofNullable(it.getLatestDeliveryAttempt())
+                                    .map(DeliveryAttemptEntity::getNote)
+                                    .orElse("")
+                    )
                     //-- Mark: DELIVERY RETURN
-                    .addColumnConverters("latest_return__return_id", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> String.valueOf(return_.getReturnId()), ""))
-                    .addColumnConverters("latest_return__return_status", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> {
-                        final Integer returnStatusId = return_.getReturnStatusId();
-                        if (null == returnStatusId) {
-                            return "";
-                        }
-
-                        return deliveryReturnStatusService.getDeliveryReturnStatusByStatusId(
-                                StringUtil.trimWithNull(returnStatusId)
-                        ).getStatusName();
-                    }, ""))
-                    .addColumnConverters("latest_return__note", it -> getValueIfPass(it::getLatestDeliveryReturn, return_ -> return_.getNote(), ""));
+                    .addColumnConverters("latest_return__return_id",
+                            it -> Optional.ofNullable(it.getLatestDeliveryReturn())
+                                    .map(DeliveryReturnEntity::getReturnId)
+                                    .map(String::valueOf)
+                                    .orElse("")
+                    )
+                    .addColumnConverters("latest_return__return_status",
+                            it -> Optional.ofNullable(it.getLatestDeliveryReturn())
+                                    .map(DeliveryReturnEntity::getReturnStatusId)
+                                    .map(String::valueOf)
+                                    .map(deliveryReturnStatusService::getDeliveryReturnStatusByStatusId)
+                                    .map(DeliveryReturnStatusEntity::getStatusName)
+                                    .orElse("")
+                    )
+                    .addColumnConverters("latest_return__note",
+                            it -> Optional.ofNullable(it.getLatestDeliveryReturn())
+                                    .map(DeliveryReturnEntity::getNote)
+                                    .orElse("")
+                    );
 
             final byte[] byteData = new ExcelWriteHelper()
                     .addSheetData(exportSheetData)

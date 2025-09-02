@@ -18,6 +18,7 @@ import tech.nmhillusion.n2mix.validator.StringValidator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,6 +79,14 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
             final String deliveryType = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_TYPE.getColumnName());
             final String deliveryStatus = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_STATUS.getColumnName());
 
+            final String deliveryDateRaw = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_DATE.getColumnName());
+            Date deliveryDate = null;
+            if (!StringValidator.isBlank(deliveryDateRaw)) {
+                deliveryDate = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(
+                        Double.parseDouble(deliveryDateRaw)
+                );
+            }
+
             resultList.add(
                     new DeliveryAttemptEntity()
                             .setDeliveryId(
@@ -94,12 +103,7 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
                                     )
                             )
                             .setDeliveryDate(
-                                    DateUtil.convertToZonedDateTime(
-                                            DateUtil.parse(
-                                                    getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_DATE.getColumnName())
-                                                    , "yyyy-MM-dd"
-                                            )
-                                    )
+                                    DateUtil.convertToZonedDateTime(deliveryDate)
                             )
                             .setNote(
                                     getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.NOTE.getColumnName())

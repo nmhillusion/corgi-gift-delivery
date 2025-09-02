@@ -33,6 +33,7 @@ export class DeliveryAttemptComponent extends BasePage {
     "giftName",
     "deliveryTypeName",
     "deliveryStatusName",
+    "deliveryDate",
     "note",
   ];
   dataSource = new MatTableDataSource<DeliveryAttemptFE>([]);

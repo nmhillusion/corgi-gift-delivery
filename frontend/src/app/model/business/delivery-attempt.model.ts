@@ -8,6 +8,7 @@ export interface DeliverAttempt {
   deliveryId: IdType;
   deliveryTypeId: IdType;
   deliveryStatusId: IdType;
+  deliveryDate: string;
   note: string;
 }
 
