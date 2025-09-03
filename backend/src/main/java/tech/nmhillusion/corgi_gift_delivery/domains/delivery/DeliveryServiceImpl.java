@@ -1,6 +1,5 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.delivery;
 
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -14,6 +13,7 @@ import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatu
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.*;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.export.LatestDeliveryReportEntity;
+import tech.nmhillusion.corgi_gift_delivery.helper.BeanHelper;
 import tech.nmhillusion.corgi_gift_delivery.service.business.AbstractBaseDeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.service.core.SequenceService;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
@@ -41,21 +41,18 @@ import static tech.nmhillusion.n2mix.helper.log.LogHelper.getLogger;
 public class DeliveryServiceImpl extends AbstractBaseDeliveryService<DeliveryEntity, DeliverySearchDto, DeliveryRepository> implements DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final DeliveryExcelSheetParser deliveryExcelSheetParser;
-    private final BeanFactory beanFactory;
+    private final BeanHelper beanHelper;
 
 
-    public DeliveryServiceImpl(BeanFactory beanFactory, DeliveryRepository deliveryRepository
+    public DeliveryServiceImpl(DeliveryRepository deliveryRepository
             , SequenceService sequenceService
             , DeliveryExcelSheetParser deliveryExcelSheetParser
+            , BeanHelper beanHelper
     ) {
         super(deliveryRepository, sequenceService);
-        this.beanFactory = beanFactory;
+        this.beanHelper = beanHelper;
         this.deliveryRepository = deliveryRepository;
         this.deliveryExcelSheetParser = deliveryExcelSheetParser;
-    }
-
-    private <T> T injectForService(Class<T> class2Inject) {
-        return beanFactory.getBean(class2Inject);
     }
 
     @Override
@@ -135,9 +132,9 @@ public class DeliveryServiceImpl extends AbstractBaseDeliveryService<DeliveryEnt
 //            "customer_level", "customer_id", "customer_name", "id_card_number_raw", "id_card_number", "phone_number_raw", "phone_number",
 //            "address", "gift_name", "note"
 
-            final DeliveryStatusService deliveryStatusService = injectForService(DeliveryStatusService.class);
-            final DeliveryTypeService deliveryTypeService = injectForService(DeliveryTypeService.class);
-            final DeliveryReturnStatusService deliveryReturnStatusService = injectForService(DeliveryReturnStatusService.class);
+            final DeliveryStatusService deliveryStatusService = beanHelper.injectForService(DeliveryStatusService.class);
+            final DeliveryTypeService deliveryTypeService = beanHelper.injectForService(DeliveryTypeService.class);
+            final DeliveryReturnStatusService deliveryReturnStatusService = beanHelper.injectForService(DeliveryReturnStatusService.class);
 
             final ExcelDataConverterModel<LatestDeliveryReportEntity> exportSheetData = new ExcelDataConverterModel<LatestDeliveryReportEntity>()
                     .setSheetName("Deliveries")
@@ -248,8 +245,8 @@ public class DeliveryServiceImpl extends AbstractBaseDeliveryService<DeliveryEnt
                 .setTerritory(deliveryEntity.getTerritory())
                 .setUpdateDate(deliveryEntity.getUpdateDate());
 
-        final DeliveryAttemptService deliveryAttemptService = injectForService(DeliveryAttemptService.class);
-        final DeliveryReturnService deliveryReturnService = injectForService(DeliveryReturnService.class);
+        final DeliveryAttemptService deliveryAttemptService = beanHelper.injectForService(DeliveryAttemptService.class);
+        final DeliveryReturnService deliveryReturnService = beanHelper.injectForService(DeliveryReturnService.class);
 
         latestDeliveryReport.setLatestDeliveryAttempt(deliveryAttemptService.getLatestAttemptByDeliveryId(deliveryId).orElse(null));
         latestDeliveryReport.setLatestDeliveryReturn(deliveryReturnService.getLatestReturnByDeliveryId(deliveryId).orElse(null));
