@@ -1,6 +1,7 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt;
 
 import org.springframework.stereotype.Component;
+import tech.nmhillusion.corgi_gift_delivery.constant.FormatConstant;
 import tech.nmhillusion.corgi_gift_delivery.domains.delivery.DeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
@@ -16,9 +17,12 @@ import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 import tech.nmhillusion.n2mix.util.DateUtil;
 import tech.nmhillusion.n2mix.validator.StringValidator;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +36,7 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
     private final DeliveryService deliveryService;
     private final DeliveryTypeService deliveryTypeService;
     private final DeliveryStatusService deliveryStatusService;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FormatConstant.DATE_FORMAT.getFormatValue());
 
     public DeliveryAttemptExcelSheetParser(DeliveryService deliveryService, DeliveryTypeService deliveryTypeService, DeliveryStatusService deliveryStatusService) {
         this.deliveryService = deliveryService;
@@ -80,11 +85,20 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
             final String deliveryStatus = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_STATUS.getColumnName());
 
             final String deliveryDateRaw = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_DATE.getColumnName());
-            Date deliveryDate = null;
+            ZonedDateTime deliveryDate = null;
             if (!StringValidator.isBlank(deliveryDateRaw)) {
-                deliveryDate = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(
-                        Double.parseDouble(deliveryDateRaw)
-                );
+                final boolean isNumber = tech.nmhillusion.n2mix.util.NumberUtil.isNumber(deliveryDateRaw);
+
+                if (isNumber) {
+                    deliveryDate = DateUtil.convertToZonedDateTime(
+                            org.apache.poi.ss.usermodel.DateUtil.getJavaDate(
+                                    Double.parseDouble(deliveryDateRaw)
+                            )
+                    );
+                } else {
+                    final LocalDate localDate = LocalDate.parse(deliveryDateRaw, dateTimeFormatter);
+                    deliveryDate = localDate.atStartOfDay(ZoneId.systemDefault());
+                }
             }
 
             resultList.add(
@@ -103,7 +117,7 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
                                     )
                             )
                             .setDeliveryDate(
-                                    DateUtil.convertToZonedDateTime(deliveryDate)
+                                    deliveryDate
                             )
                             .setNote(
                                     getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.NOTE.getColumnName())

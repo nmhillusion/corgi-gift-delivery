@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import tech.nmhillusion.n2mix.exception.ApiResponseException;
 import tech.nmhillusion.n2mix.exception.AppRuntimeException;
+import tech.nmhillusion.n2mix.helper.log.LogHelper;
 import tech.nmhillusion.n2mix.model.ApiErrorResponse;
 
 /**
@@ -29,6 +30,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 , bodyOfResponse
         );
 
+        LogHelper.getLogger(this).error(ex);
+
         return handleExceptionInternal(ex, apiErrorResponse.toString(),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request
         );
@@ -44,6 +47,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 , ex.getClass().getName()
                 , bodyOfResponse
         );
+
+        LogHelper.getLogger(this).error(ex);
 
         return handleExceptionInternal(ex, apiErrorResponse.toString(),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request

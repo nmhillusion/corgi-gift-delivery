@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
+import tech.nmhillusion.corgi_gift_delivery.constant.FormatConstant;
 import tech.nmhillusion.corgi_gift_delivery.domains.delivery.DeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
@@ -40,7 +41,7 @@ import java.util.Optional;
 public class DeliveryAttemptServiceImpl extends AbstractBaseDeliveryService<DeliveryAttemptEntity, DeliveryAttemptSearchDto, DeliveryAttemptRepository> implements DeliveryAttemptService {
     private final DeliveryAttemptExcelSheetParser deliveryAttemptExcelSheetParser;
     private final BeanHelper beanHelper;
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FormatConstant.DATE_FORMAT.getFormatValue());
 
     protected DeliveryAttemptServiceImpl(DeliveryAttemptRepository deliveryAttemptRepository, SequenceService sequenceService, DeliveryAttemptExcelSheetParser deliveryAttemptExcelSheetParser, BeanHelper beanHelper
     ) {
