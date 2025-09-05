@@ -113,4 +113,10 @@ export class DeliveryAttemptService {
       this.buildUrl(`${deliveryId}/latest-attempt`)
     );
   }
+
+  export(dto: DeliveryAttemptSearchDto) {
+    return this.$http.post(this.buildUrl("export"), dto, {
+      responseType: "blob",
+    });
+  }
 }

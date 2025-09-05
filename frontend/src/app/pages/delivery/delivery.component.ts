@@ -175,7 +175,7 @@ export class DeliveryComponent extends BasePage {
   exportDeliveries() {
     this.registerSubscription(
       this.$deliveryService
-        .exportDeliveries({
+        .export({
           eventId: this.searchForm.value.eventId || null,
           customerId: this.searchForm.value.customerId || null,
         })
@@ -185,7 +185,6 @@ export class DeliveryComponent extends BasePage {
               type: "application/vnd.ms-excel",
             });
             BlobUtil.downloadBlob(blob, "deliveries_export.xlsx");
-            this.dialogHandler.alert("Deliveries exported successfully.");
           },
           error: (error) => {
             console.error("Error exporting deliveries:", error);
@@ -211,7 +210,6 @@ export class DeliveryComponent extends BasePage {
               type: "application/vnd.ms-excel",
             });
             BlobUtil.downloadBlob(blob, "summary_deliveries_export.xlsx");
-            this.dialogHandler.alert("Deliveries exported successfully.");
           },
           error: (error) => {
             console.error("Error exporting deliveries:", error);

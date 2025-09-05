@@ -9,6 +9,7 @@ import { BehaviorSubject } from "rxjs";
 import { DeliveryReturnService } from "./delivery-return.service";
 import { DeliveryReturnFE } from "@app/model/business/delivery-return.model";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { BlobUtil } from "@app/util/blob.util";
 
 @Component({
   standalone: true,
@@ -143,5 +144,30 @@ export class DeliveryReturnComponent extends BasePage {
     } else {
       this.dialogHandler.alert("No file selected for update.");
     }
+  }
+
+  export() {
+    this.registerSubscription(
+      this.$deliveryReturnService
+        .export({
+          eventId: null,
+          customerId: null,
+        })
+        .subscribe({
+          next: (response) => {
+            const blob = new Blob([response], {
+              type: "application/vnd.ms-excel",
+            });
+            BlobUtil.downloadBlob(blob, "delivery_returns_export.xlsx");
+          },
+          error: (error) => {
+            console.error("Error exporting delivery returns:", error);
+            this.dialogHandler.alert(
+              "Failed to export delivery returns. " +
+                this.$errorUtil.retrieErrorMessage(error)
+            );
+          },
+        })
+    );
   }
 }

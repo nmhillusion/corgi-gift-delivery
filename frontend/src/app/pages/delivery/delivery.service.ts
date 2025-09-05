@@ -121,7 +121,7 @@ export class DeliveryService {
     });
   }
 
-  exportDeliveries(dto: { eventId: string | null; customerId: string | null }) {
+  export(dto: DeliverySearchDto) {
     return this.$http.post(this.buildUrl("export"), dto, {
       responseType: "blob",
     });

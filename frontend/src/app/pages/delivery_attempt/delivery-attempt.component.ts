@@ -9,6 +9,7 @@ import { AppInputFileComponent } from "@app/widget/component/input-file/input-fi
 import { BehaviorSubject } from "rxjs";
 import { DeliveryAttemptService } from "./delivery-attempt.service";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { BlobUtil } from "@app/util/blob.util";
 
 @Component({
   standalone: true,
@@ -145,5 +146,30 @@ export class DeliveryAttemptComponent extends BasePage {
     } else {
       this.dialogHandler.alert("No file selected for update.");
     }
+  }
+
+  export() {
+    this.registerSubscription(
+      this.$deliveryAttemptService
+        .export({
+          eventId: null,
+          customerId: null,
+        })
+        .subscribe({
+          next: (response) => {
+            const blob = new Blob([response], {
+              type: "application/vnd.ms-excel",
+            });
+            BlobUtil.downloadBlob(blob, "deliveries_attempts_export.xlsx");
+          },
+          error: (error) => {
+            console.error("Error exporting delivery attempts:", error);
+            this.dialogHandler.alert(
+              "Failed to export delivery attempts. " +
+                this.$errorUtil.retrieErrorMessage(error)
+            );
+          },
+        })
+    );
   }
 }

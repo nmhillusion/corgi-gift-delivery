@@ -97,4 +97,10 @@ export class DeliveryReturnService {
       this.buildUrl(`${deliveryId}/latest-return`)
     );
   }
+
+  export(dto: DeliveryReturnSearchDto) {
+    return this.$http.post(this.buildUrl("export"), dto, {
+      responseType: "blob",
+    });
+  }
 }
