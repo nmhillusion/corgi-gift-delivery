@@ -7,9 +7,10 @@ import { DeliveryAttemptFE } from "@app/model/business/delivery-attempt.model";
 import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
-import { DeliveryAttemptService } from "./delivery-attempt.service";
+import { DeliveryAttemptSearchDto, DeliveryAttemptService } from "./delivery-attempt.service";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { BlobUtil } from "@app/util/blob.util";
+import { FormControl, FormGroup } from "@angular/forms";
 
 @Component({
   standalone: true,
@@ -48,6 +49,11 @@ export class DeliveryAttemptComponent extends BasePage {
     },
   };
 
+  searchForm = new FormGroup({
+    eventId: new FormControl<string | null>(null),
+    customerId: new FormControl<string | null>(null),
+  });
+
   deliveryAttemptImportFile$ = new BehaviorSubject<File[]>([]);
 
   // methods
@@ -66,7 +72,7 @@ export class DeliveryAttemptComponent extends BasePage {
 
     this.registerSubscription(
       this.$deliveryAttemptService
-        .search({}, pageEvt.pageIndex, pageEvt.pageSize)
+        .search(this.buildSearchDto(), pageEvt.pageIndex, pageEvt.pageSize)
         .subscribe({
           next: (page) => {
             console.log("Delivery attempt data:", page);
@@ -148,13 +154,17 @@ export class DeliveryAttemptComponent extends BasePage {
     }
   }
 
+  private buildSearchDto(): DeliveryAttemptSearchDto {
+    return {
+      eventId: this.searchForm.value.eventId,
+      customerId: this.searchForm.value.customerId,
+    };
+  }
+
   export() {
     this.registerSubscription(
       this.$deliveryAttemptService
-        .export({
-          eventId: null,
-          customerId: null,
-        })
+        .export(this.buildSearchDto())
         .subscribe({
           next: (response) => {
             const blob = new Blob([response], {

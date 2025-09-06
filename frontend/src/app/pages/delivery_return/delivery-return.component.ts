@@ -10,6 +10,7 @@ import { DeliveryReturnService } from "./delivery-return.service";
 import { DeliveryReturnFE } from "@app/model/business/delivery-return.model";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { BlobUtil } from "@app/util/blob.util";
+import { FormGroup, FormControl } from "@angular/forms";
 
 @Component({
   standalone: true,
@@ -46,6 +47,11 @@ export class DeliveryReturnComponent extends BasePage {
     },
   };
 
+  searchForm = new FormGroup({
+    eventId: new FormControl<string | null>(null),
+    customerId: new FormControl<string | null>(null),
+  });
+
   deliveryReturnImportFile$ = new BehaviorSubject<File[]>([]);
 
   // methods
@@ -58,13 +64,20 @@ export class DeliveryReturnComponent extends BasePage {
     this.search(this.generateDefaultPage());
   }
 
+  private buildSearchDto() {
+    return {
+      eventId: this.searchForm.value.eventId,
+      customerId: this.searchForm.value.customerId,
+    };
+  }
+
   override search(pageEvt: PageEvent): void {
     this.paginator.pageIndex$.set(pageEvt.pageIndex);
     this.paginator.pageSize$.set(pageEvt.pageSize);
 
     this.registerSubscription(
       this.$deliveryReturnService
-        .search({}, pageEvt.pageIndex, pageEvt.pageSize)
+        .search(this.buildSearchDto(), pageEvt.pageIndex, pageEvt.pageSize)
         .subscribe({
           next: (page) => {
             console.log("Delivery return data:", page);
@@ -149,10 +162,7 @@ export class DeliveryReturnComponent extends BasePage {
   export() {
     this.registerSubscription(
       this.$deliveryReturnService
-        .export({
-          eventId: null,
-          customerId: null,
-        })
+        .export(this.buildSearchDto())
         .subscribe({
           next: (response) => {
             const blob = new Blob([response], {
