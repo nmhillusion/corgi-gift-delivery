@@ -2,6 +2,8 @@ package tech.nmhillusion.corgi_gift_delivery.domains.deliveryType;
 
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryTypeEntity;
 
+import java.util.List;
+
 /**
  * created by: minguy1
  * <p>
@@ -11,5 +13,7 @@ public interface DeliveryTypeService {
     DeliveryTypeEntity getDeliveryTypeByTypeName(String typeName);
 
     DeliveryTypeEntity getDeliveryTypeByTypeId(String typeId);
+
+    List<DeliveryTypeEntity> getAll();
 
 }

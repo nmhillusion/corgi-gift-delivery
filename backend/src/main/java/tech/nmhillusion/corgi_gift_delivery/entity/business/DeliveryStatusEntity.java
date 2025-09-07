@@ -21,6 +21,9 @@ public class DeliveryStatusEntity extends Stringeable {
     @Column(name = "status_name")
     private String statusName;
 
+    @Column(name = "status_desc")
+    private String statusDesc;
+
     @Column(name = "status_order")
     private Integer statusOrder;
 
@@ -49,6 +52,15 @@ public class DeliveryStatusEntity extends Stringeable {
 
     public DeliveryStatusEntity setStatusOrder(Integer statusOrder) {
         this.statusOrder = statusOrder;
+        return this;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public DeliveryStatusEntity setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
         return this;
     }
 }

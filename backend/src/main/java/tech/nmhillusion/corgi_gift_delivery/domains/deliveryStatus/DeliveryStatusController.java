@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryStatusEntity;
 
+import java.util.List;
+
 /**
  * created by: nmhillusion
  * <p>
@@ -26,4 +28,10 @@ public class DeliveryStatusController {
     public DeliveryStatusEntity getById(@PathVariable String statusId) {
         return service.getDeliveryStatusByStatusId(statusId);
     }
+
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<DeliveryStatusEntity> getAll() {
+        return service.getAll();
+    }
+
 }

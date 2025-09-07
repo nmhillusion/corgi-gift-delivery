@@ -3,6 +3,8 @@ package tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryStatusEntity;
 
+import java.util.List;
+
 /**
  * created by: minguy1
  * <p>
@@ -25,5 +27,10 @@ public class DeliveryStatusServiceImpl implements DeliveryStatusService {
     public DeliveryStatusEntity getDeliveryStatusByStatusId(String statusId) {
         return repository.findById(statusId)
                 .orElseThrow();
+    }
+
+    @Override
+    public List<DeliveryStatusEntity> getAll() {
+        return repository.findAll();
     }
 }

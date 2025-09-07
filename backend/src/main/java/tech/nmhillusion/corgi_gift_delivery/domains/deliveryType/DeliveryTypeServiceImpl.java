@@ -3,6 +3,8 @@ package tech.nmhillusion.corgi_gift_delivery.domains.deliveryType;
 import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryTypeEntity;
 
+import java.util.List;
+
 /**
  * created by: minguy1
  * <p>
@@ -25,5 +27,10 @@ public class DeliveryTypeServiceImpl implements DeliveryTypeService {
     public DeliveryTypeEntity getDeliveryTypeByTypeId(String typeId) {
         return repository.findById(typeId)
                 .orElseThrow();
+    }
+
+    @Override
+    public List<DeliveryTypeEntity> getAll() {
+        return repository.findAll();
     }
 }

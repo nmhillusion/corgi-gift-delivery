@@ -21,6 +21,9 @@ public class DeliveryReturnStatusEntity {
     @Column(name = "status_name")
     private String statusName;
 
+    @Column(name = "status_desc")
+    private String statusDesc;
+
     public String getStatusId() {
         return statusId;
     }
@@ -39,4 +42,12 @@ public class DeliveryReturnStatusEntity {
         return this;
     }
 
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public DeliveryReturnStatusEntity setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+        return this;
+    }
 }
