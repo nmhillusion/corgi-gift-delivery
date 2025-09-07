@@ -1,3 +1,10 @@
+@use "../../../scss/variables" as var_;
+
+.settings-button.selected {
+  background-color: var_.$primaryColor !important;
+  color: white !important;
+}
+
 .import-box {
   padding: 0.5em;
   margin: 0.5em 0;

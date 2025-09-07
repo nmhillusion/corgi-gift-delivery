@@ -3,18 +3,26 @@
     <p>Manage and view delivery attempt information for gifts.</p>
   </div>
 
+  <button
+    mat-icon-button
+    class="settings-button"
+    [class.selected]="handler.isImporting$()"
+    aria-label="Example icon button with a heart icon"
+    matTooltip="Toggle Import Options"
+    matTooltipPosition="above"
+    (click)="handler.toggleImporting()"
+  >
+    <mat-icon> settings </mat-icon>
+  </button>
+
+  @if (handler.isImporting$()) {
   <div class="import-box delivery-actions">
     <h3>Import Delivery Attempts</h3>
     <p>
       Upload a file to import delivery attempts. Ensure the file format is
       correct before uploading. Supported file formats: .xlsx, .xls
     </p>
-    <mat-slide-toggle
-      class="delivery-toggle"
-      [checked]="handler.isImporting$()"
-      (change)="handler.toggleImporting()"
-    />
-    @if (handler.isImporting$()) {
+
     <app-input-file
       [inputFile]="deliveryAttemptImportFile$"
       [multiple]="false"
@@ -36,13 +44,11 @@
         Update Delivery Attempts
       </button>
     </div>
-    }
+  </div>
+  }
 
-    <div class="action-box">
-      <button mat-raised-button color="primary" (click)="export()">
-        Export
-      </button>
-    </div>
+  <div class="action-box">
+    <button mat-raised-button color="primary" (click)="export()">Export</button>
   </div>
 
   <div class="search-panel">

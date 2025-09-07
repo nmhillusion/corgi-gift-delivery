@@ -56,7 +56,6 @@
 [mat-icon-button]:not(:disabled) {
   @mixin iconStyle($color) {
     color: $color !important;
-    background-color: transparent !important;
   }
 
   @include iconStyle(var_.$themeColor);
