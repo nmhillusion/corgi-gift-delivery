@@ -45,6 +45,33 @@
     </div>
   </div>
 
+  <div class="search-panel">
+    <form class="search-form" [formGroup]="searchForm">
+      <mat-form-field>
+        <mat-label>Event ID</mat-label>
+        <input matInput type="text" name="eventId" formControlName="eventId" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Customer ID</mat-label>
+        <input
+          matInput
+          type="text"
+          name="customerId"
+          formControlName="customerId"
+        />
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="search(generateDefaultPage())"
+      >
+        Search
+      </button>
+    </form>
+  </div>
+
   <div class="delivery-page">
     <h1>Delivery Attempt Information</h1>
     <div class="delivery-details">
