@@ -17,4 +17,8 @@ export class DeliveryTypeService {
   getById(id: IdType) {
     return this.$http.get<DeliveryType>(this.buildUrl(id));
   }
+
+  getAll() {
+    return this.$http.get<DeliveryType[]>(this.buildUrl("list"));
+  }
 }

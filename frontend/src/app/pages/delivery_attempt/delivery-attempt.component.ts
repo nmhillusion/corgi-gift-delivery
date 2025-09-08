@@ -7,10 +7,16 @@ import { DeliveryAttemptFE } from "@app/model/business/delivery-attempt.model";
 import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
-import { DeliveryAttemptSearchDto, DeliveryAttemptService } from "./delivery-attempt.service";
+import {
+  DeliveryAttemptSearchDto,
+  DeliveryAttemptService,
+} from "./delivery-attempt.service";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { BlobUtil } from "@app/util/blob.util";
 import { FormControl, FormGroup } from "@angular/forms";
+import { DeliveryStatus } from "@app/model/business/delivery-status.model";
+import { DeliveryStatusService } from "@app/service/delivery-status.service";
+import { IdType } from "@app/model/core/id.model";
 
 @Component({
   standalone: true,
@@ -42,6 +48,8 @@ export class DeliveryAttemptComponent extends BasePage {
 
   paginator = this.generatePaginator();
 
+  deliveryStatusList$ = signal<DeliveryStatus[]>([]);
+
   handler = {
     isImporting$: signal<boolean>(false),
     toggleImporting() {
@@ -52,16 +60,36 @@ export class DeliveryAttemptComponent extends BasePage {
   searchForm = new FormGroup({
     eventId: new FormControl<string | null>(null),
     customerId: new FormControl<string | null>(null),
+    deliveryStatusId: new FormControl<IdType | null>(null),
   });
 
   deliveryAttemptImportFile$ = new BehaviorSubject<File[]>([]);
 
   // methods
-  constructor(private $deliveryAttemptService: DeliveryAttemptService) {
+  constructor(
+    private $deliveryAttemptService: DeliveryAttemptService,
+    private $deliveryStatusService: DeliveryStatusService
+  ) {
     super("Delivery Attempt Management");
   }
 
   protected override __ngOnInit__() {
+    this.registerSubscription(
+      this.$deliveryStatusService.getAll().subscribe({
+        next: (list) => {
+          console.log("Fetched delivery status list:", list);
+          this.deliveryStatusList$.set(list);
+        },
+        error: (error) => {
+          console.error("Error fetching delivery status list:", error);
+          this.dialogHandler.alert(
+            "Failed to fetch delivery status list. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      })
+    );
+
     // Initial search
     this.search(this.generateDefaultPage());
   }
@@ -163,23 +191,21 @@ export class DeliveryAttemptComponent extends BasePage {
 
   export() {
     this.registerSubscription(
-      this.$deliveryAttemptService
-        .export(this.buildSearchDto())
-        .subscribe({
-          next: (response) => {
-            const blob = new Blob([response], {
-              type: "application/vnd.ms-excel",
-            });
-            BlobUtil.downloadBlob(blob, "deliveries_attempts_export.xlsx");
-          },
-          error: (error) => {
-            console.error("Error exporting delivery attempts:", error);
-            this.dialogHandler.alert(
-              "Failed to export delivery attempts. " +
-                this.$errorUtil.retrieErrorMessage(error)
-            );
-          },
-        })
+      this.$deliveryAttemptService.export(this.buildSearchDto()).subscribe({
+        next: (response) => {
+          const blob = new Blob([response], {
+            type: "application/vnd.ms-excel",
+          });
+          BlobUtil.downloadBlob(blob, "deliveries_attempts_export.xlsx");
+        },
+        error: (error) => {
+          console.error("Error exporting delivery attempts:", error);
+          this.dialogHandler.alert(
+            "Failed to export delivery attempts. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      })
     );
   }
 }

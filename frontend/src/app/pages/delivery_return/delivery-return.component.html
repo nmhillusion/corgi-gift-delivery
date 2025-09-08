@@ -68,6 +68,18 @@
         />
       </mat-form-field>
 
+      <mat-form-field>
+        <mat-label>Return Status</mat-label>
+        <mat-select formControlName="returnStatusId" name="returnStatusId">
+          <mat-option [value]="null">All</mat-option>
+          @for (status of deliveryReturnStatusList$(); track status.statusId) {
+          <mat-option [value]="status.statusId">
+            {{ status.statusName }} ({{ status.statusDesc }})
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
       <button
         mat-raised-button
         color="primary"

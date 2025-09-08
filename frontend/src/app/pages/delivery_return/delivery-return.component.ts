@@ -11,6 +11,9 @@ import { DeliveryReturnFE } from "@app/model/business/delivery-return.model";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { BlobUtil } from "@app/util/blob.util";
 import { FormGroup, FormControl } from "@angular/forms";
+import { DeliveryReturnStatus } from "@app/model/business/delivery-return-status.model";
+import { IdType } from "@app/model/core/id.model";
+import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
 
 @Component({
   standalone: true,
@@ -47,19 +50,40 @@ export class DeliveryReturnComponent extends BasePage {
     },
   };
 
+  deliveryReturnStatusList$ = signal<DeliveryReturnStatus[]>([]);
+
   searchForm = new FormGroup({
     eventId: new FormControl<string | null>(null),
     customerId: new FormControl<string | null>(null),
+    returnStatusId: new FormControl<IdType | null>(null),
   });
 
   deliveryReturnImportFile$ = new BehaviorSubject<File[]>([]);
 
   // methods
-  constructor(private $deliveryReturnService: DeliveryReturnService) {
+  constructor(
+    private $deliveryReturnService: DeliveryReturnService,
+    private $deliveryReturnStatusService: DeliveryReturnStatusService
+  ) {
     super("Delivery Return Management");
   }
 
   protected override __ngOnInit__() {
+    this.registerSubscription(
+      this.$deliveryReturnStatusService.getAll().subscribe({
+        next: (statusList) => {
+          this.deliveryReturnStatusList$.set(statusList);
+        },
+        error: (error) => {
+          console.error("Error fetching delivery return status list:", error);
+          this.dialogHandler.alert(
+            "Failed to fetch delivery return status list. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      })
+    );
+
     // Initial search
     this.search(this.generateDefaultPage());
   }
@@ -161,23 +185,21 @@ export class DeliveryReturnComponent extends BasePage {
 
   export() {
     this.registerSubscription(
-      this.$deliveryReturnService
-        .export(this.buildSearchDto())
-        .subscribe({
-          next: (response) => {
-            const blob = new Blob([response], {
-              type: "application/vnd.ms-excel",
-            });
-            BlobUtil.downloadBlob(blob, "delivery_returns_export.xlsx");
-          },
-          error: (error) => {
-            console.error("Error exporting delivery returns:", error);
-            this.dialogHandler.alert(
-              "Failed to export delivery returns. " +
-                this.$errorUtil.retrieErrorMessage(error)
-            );
-          },
-        })
+      this.$deliveryReturnService.export(this.buildSearchDto()).subscribe({
+        next: (response) => {
+          const blob = new Blob([response], {
+            type: "application/vnd.ms-excel",
+          });
+          BlobUtil.downloadBlob(blob, "delivery_returns_export.xlsx");
+        },
+        error: (error) => {
+          console.error("Error exporting delivery returns:", error);
+          this.dialogHandler.alert(
+            "Failed to export delivery returns. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      })
     );
   }
 }

@@ -17,4 +17,8 @@ export class DeliveryStatusService {
   getById(id: IdType) {
     return this.$http.get<DeliveryStatus>(this.buildUrl(id));
   }
+
+  getAll() {
+    return this.$http.get<DeliveryStatus[]>(this.buildUrl("list"));
+  }
 }
