@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@use "scss/fonts" as f;
 @use "scss/variables";
 @use "scss/inline-block-message";
 @use "scss/inline-message";
@@ -9,15 +10,7 @@
 @use "scss/pane";
 @use "scss/app-hr";
 @use "scss/button-color";
-
-.mat-mdc-unelevated-button .mat-mdc-button-touch-target,
-.mat-mdc-outlined-button .mat-mdc-button-touch-target {
-  height: 0 !important;
-}
-
-.mdc-button, .mat-mdc-button {
-  letter-spacing: 0 !important;
-}
+@use "scss/custom-material";
 
 html,
 body {
@@ -27,28 +20,8 @@ body {
   margin: 0;
 }
 
-@mixin fontFamily() {
-  font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif;
-}
-
 * {
-  @include fontFamily();
+  @include f.fontFamily();
   box-sizing: border-box;
   scroll-behavior: smooth;
-}
-
-.mat-display-large,
-.mat-typography .mat-display-large,
-.mat-typography {
-  @include fontFamily();
-
-  h1 {
-    @include fontFamily();
-  }
-}
-
-.mat-divider {
-  &.mat-divider-horizontal {
-    margin: 0.5em 0;
-  }
 }

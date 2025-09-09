@@ -1,0 +1,32 @@
+@use "fonts" as f;
+
+:root {
+  --mat-form-field-container-vertical-padding: 4px;
+  --mat-form-field-container-height: var(--mat-button-text-container-height);
+}
+
+.mat-mdc-unelevated-button .mat-mdc-button-touch-target,
+.mat-mdc-outlined-button .mat-mdc-button-touch-target {
+  height: 0 !important;
+}
+
+.mdc-button,
+.mat-mdc-button {
+  letter-spacing: 0 !important;
+}
+
+.mat-display-large,
+.mat-typography .mat-display-large,
+.mat-typography {
+  @include f.fontFamily();
+
+  h1 {
+    @include f.fontFamily();
+  }
+}
+
+.mat-divider {
+  &.mat-divider-horizontal {
+    margin: 0.5em 0;
+  }
+}
