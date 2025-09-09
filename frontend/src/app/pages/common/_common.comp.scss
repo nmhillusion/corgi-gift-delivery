@@ -1,8 +1,26 @@
 @use "../../../scss/variables" as var_;
 
-.settings-button.selected {
-  background-color: var_.$primaryColor !important;
-  color: white !important;
+.settings-button {
+  $iconSize: 32px;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &.selected {
+    background-color: var_.$primaryColor !important;
+    color: white !important;
+  }
+
+  .mat-icons {
+    width: $iconSize;
+    height: $iconSize;
+  }
+
+  .material-icons {
+    font-size: $iconSize;
+    width: $iconSize;
+    height: $iconSize;
+  }
 }
 
 .import-box {
