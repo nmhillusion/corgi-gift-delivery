@@ -14,8 +14,11 @@ import { DeliveryStatusService } from "@app/service/delivery-status.service";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
 import { Observable } from "rxjs";
 import { DeliveryService } from "../delivery/delivery.service";
+import { Nullable } from "@app/model/core/nullable.model";
 
-export interface DeliveryAttemptSearchDto extends CoreDeliverySearchDto {}
+export interface DeliveryAttemptSearchDto extends CoreDeliverySearchDto {
+  deliveryStatusId: Nullable<IdType>;
+}
 
 @Injectable({
   providedIn: "root",

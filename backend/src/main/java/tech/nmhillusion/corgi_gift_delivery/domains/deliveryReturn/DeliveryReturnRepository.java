@@ -22,6 +22,7 @@ public interface DeliveryReturnRepository extends JpaRepository<DeliveryReturnEn
             where 1 = 1
             and (:#{#dto.eventId} is null or d.eventId = :#{#dto.eventId})
             and (:#{#dto.customerId} is null or d.customerId = :#{#dto.customerId})
+            and (:#{#dto.returnStatusId} is null or r.returnStatusId = :#{#dto.returnStatusId})
             """)
     Page<DeliveryReturnEntity> search(DeliveryReturnSearchDto dto, PageRequest pageRequest);
 }

@@ -8,4 +8,14 @@ import tech.nmhillusion.corgi_gift_delivery.domains.base.CoreDeliverySearchDto;
  * created date: 2025-07-19
  */
 public class DeliveryAttemptSearchDto extends CoreDeliverySearchDto {
+    private String deliveryStatusId;
+
+    public String getDeliveryStatusId() {
+        return deliveryStatusId;
+    }
+
+    public DeliveryAttemptSearchDto setDeliveryStatusId(String deliveryStatusId) {
+        this.deliveryStatusId = deliveryStatusId;
+        return this;
+    }
 }

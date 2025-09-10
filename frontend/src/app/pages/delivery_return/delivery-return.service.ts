@@ -13,8 +13,11 @@ import { Page } from "@app/model/core/page.model";
 import { BasePage } from "@app/pages/base.page";
 import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
 import { DeliveryService } from "../delivery/delivery.service";
+import { Nullable } from "@app/model/core/nullable.model";
 
-export interface DeliveryReturnSearchDto extends CoreDeliverySearchDto {}
+export interface DeliveryReturnSearchDto extends CoreDeliverySearchDto {
+  returnStatusId: Nullable<IdType>;
+}
 
 @Injectable({
   providedIn: "root",

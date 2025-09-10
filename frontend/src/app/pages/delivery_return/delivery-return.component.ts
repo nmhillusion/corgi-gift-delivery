@@ -6,7 +6,7 @@ import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.compone
 import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
-import { DeliveryReturnService } from "./delivery-return.service";
+import { DeliveryReturnSearchDto, DeliveryReturnService } from "./delivery-return.service";
 import { DeliveryReturnFE } from "@app/model/business/delivery-return.model";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { BlobUtil } from "@app/util/blob.util";
@@ -88,10 +88,11 @@ export class DeliveryReturnComponent extends BasePage {
     this.search(this.generateDefaultPage());
   }
 
-  private buildSearchDto() {
+  private buildSearchDto(): DeliveryReturnSearchDto {
     return {
       eventId: this.searchForm.value.eventId,
       customerId: this.searchForm.value.customerId,
+      returnStatusId: this.searchForm.value.returnStatusId,
     };
   }
 

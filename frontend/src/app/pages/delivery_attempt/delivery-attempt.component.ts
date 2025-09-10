@@ -186,6 +186,7 @@ export class DeliveryAttemptComponent extends BasePage {
     return {
       eventId: this.searchForm.value.eventId,
       customerId: this.searchForm.value.customerId,
+      deliveryStatusId: this.searchForm.value.deliveryStatusId,
     };
   }
 
