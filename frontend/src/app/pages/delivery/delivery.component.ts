@@ -8,9 +8,13 @@ import { DeliveryFE } from "@app/model/business/delivery.model";
 import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
-import { DeliveryService } from "./delivery.service";
+import { DeliverySearchDto, DeliveryService } from "./delivery.service";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { BlobUtil } from "@app/util/blob.util";
+import { DeliveryStatusService } from "@app/service/delivery-status.service";
+import { DeliveryStatus } from "@app/model/business/delivery-status.model";
+import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
+import { DeliveryReturnStatus } from "@app/model/business/delivery-return-status.model";
 
 @Component({
   standalone: true,
@@ -63,21 +67,67 @@ export class DeliveryComponent extends BasePage {
 
   paginator = this.generatePaginator();
 
+  deliveryStatusList$ = signal<DeliveryStatus[]>([]);
+  deliveryReturnStatusList$ = signal<DeliveryReturnStatus[]>([]);
+
   deliveryImportFile$ = new BehaviorSubject<File[]>([]);
 
   searchForm = new FormGroup({
     eventId: new FormControl<string | null>(null),
     customerId: new FormControl<string | null>(null),
+    deliveryStatusId: new FormControl<string | null>(null),
+    returnStatusId: new FormControl<string | null>(null),
   });
 
   // methods
-  constructor(private $deliveryService: DeliveryService) {
+  constructor(
+    private $deliveryService: DeliveryService,
+    private $deliveryStatusService: DeliveryStatusService,
+    private $deliveryReturnStatusService: DeliveryReturnStatusService
+  ) {
     super("Delivery Management");
   }
 
   protected override __ngOnInit__() {
+    this.registerSubscription(
+      this.$deliveryStatusService.getAll().subscribe({
+        next: (list) => {
+          console.log("Fetched delivery status list:", list);
+          this.deliveryStatusList$.set(list);
+        },
+        error: (error) => {
+          console.error("Error fetching delivery status list:", error);
+          this.dialogHandler.alert(
+            "Failed to fetch delivery status list. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      }),
+      this.$deliveryReturnStatusService.getAll().subscribe({
+        next: (statusList) => {
+          this.deliveryReturnStatusList$.set(statusList);
+        },
+        error: (error) => {
+          console.error("Error fetching delivery return status list:", error);
+          this.dialogHandler.alert(
+            "Failed to fetch delivery return status list. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      })
+    );
+
     // Initial search
     this.search(this.generateDefaultPage());
+  }
+
+  buildSearchDto(): DeliverySearchDto {
+    return {
+      eventId: this.searchForm.value.eventId,
+      customerId: this.searchForm.value.customerId,
+      deliveryStatusId: this.searchForm.value.deliveryStatusId,
+      returnStatusId: this.searchForm.value.returnStatusId,
+    };
   }
 
   override search(pageEvt: PageEvent): void {
@@ -88,14 +138,7 @@ export class DeliveryComponent extends BasePage {
 
     this.registerSubscription(
       this.$deliveryService
-        .search(
-          {
-            eventId: this.searchForm.value.eventId || null,
-            customerId: this.searchForm.value.customerId || null,
-          },
-          pageEvt.pageIndex,
-          pageEvt.pageSize
-        )
+        .search(this.buildSearchDto(), pageEvt.pageIndex, pageEvt.pageSize)
         .subscribe({
           next: (page) => {
             this.dataSource.data = page.content.map((item) =>
@@ -174,26 +217,21 @@ export class DeliveryComponent extends BasePage {
 
   exportDeliveries() {
     this.registerSubscription(
-      this.$deliveryService
-        .export({
-          eventId: this.searchForm.value.eventId || null,
-          customerId: this.searchForm.value.customerId || null,
-        })
-        .subscribe({
-          next: (response) => {
-            const blob = new Blob([response], {
-              type: "application/vnd.ms-excel",
-            });
-            BlobUtil.downloadBlob(blob, "deliveries_export.xlsx");
-          },
-          error: (error) => {
-            console.error("Error exporting deliveries:", error);
-            this.dialogHandler.alert(
-              "Failed to export deliveries. " +
-                this.$errorUtil.retrieErrorMessage(error)
-            );
-          },
-        })
+      this.$deliveryService.export(this.buildSearchDto()).subscribe({
+        next: (response) => {
+          const blob = new Blob([response], {
+            type: "application/vnd.ms-excel",
+          });
+          BlobUtil.downloadBlob(blob, "deliveries_export.xlsx");
+        },
+        error: (error) => {
+          console.error("Error exporting deliveries:", error);
+          this.dialogHandler.alert(
+            "Failed to export deliveries. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      })
     );
   }
 
