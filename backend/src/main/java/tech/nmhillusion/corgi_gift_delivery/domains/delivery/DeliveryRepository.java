@@ -30,6 +30,7 @@ public interface DeliveryRepository extends JpaRepository<DeliveryEntity, Long> 
             WHERE (:#{#dto.eventId} IS NULL OR d.eventId = :#{#dto.eventId})
             AND (:#{#dto.customerId} IS NULL OR d.customerId = :#{#dto.customerId})
             AND (:#{#dto.deliveryStatusId} IS NULL OR ea.deliveryStatusId = :#{#dto.deliveryStatusId})
+            AND (:#{#dto.deliveryTypeId} IS NULL OR ea.deliveryTypeId = :#{#dto.deliveryTypeId})
             AND (:#{#dto.returnStatusId} IS NULL OR r.returnStatusId = :#{#dto.returnStatusId})
             """)
     Page<DeliveryEntity> search(DeliverySearchDto dto, PageRequest pageRequest);

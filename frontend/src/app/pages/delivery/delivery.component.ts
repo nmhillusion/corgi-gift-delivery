@@ -15,6 +15,10 @@ import { DeliveryStatusService } from "@app/service/delivery-status.service";
 import { DeliveryStatus } from "@app/model/business/delivery-status.model";
 import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
 import { DeliveryReturnStatus } from "@app/model/business/delivery-return-status.model";
+import { DeliveryType } from "@app/model/business/delivery-type.model";
+import { Nullable } from "@app/model/core/nullable.model";
+import { IdType } from "@app/model/core/id.model";
+import { DeliveryTypeService } from "@app/service/delivery-type.service";
 
 @Component({
   standalone: true,
@@ -68,21 +72,24 @@ export class DeliveryComponent extends BasePage {
   paginator = this.generatePaginator();
 
   deliveryStatusList$ = signal<DeliveryStatus[]>([]);
+  deliveryTypeList$ = signal<DeliveryType[]>([]);
   deliveryReturnStatusList$ = signal<DeliveryReturnStatus[]>([]);
 
   deliveryImportFile$ = new BehaviorSubject<File[]>([]);
 
   searchForm = new FormGroup({
-    eventId: new FormControl<string | null>(null),
-    customerId: new FormControl<string | null>(null),
-    deliveryStatusId: new FormControl<string | null>(null),
-    returnStatusId: new FormControl<string | null>(null),
+    eventId: new FormControl<Nullable<IdType>>(null),
+    customerId: new FormControl<Nullable<IdType>>(null),
+    deliveryStatusId: new FormControl<Nullable<IdType>>(null),
+    deliveryTypeId: new FormControl<Nullable<IdType>>(null),
+    returnStatusId: new FormControl<Nullable<IdType>>(null),
   });
 
   // methods
   constructor(
     private $deliveryService: DeliveryService,
     private $deliveryStatusService: DeliveryStatusService,
+    private $deliveryTypeService: DeliveryTypeService,
     private $deliveryReturnStatusService: DeliveryReturnStatusService
   ) {
     super("Delivery Management");
@@ -103,6 +110,24 @@ export class DeliveryComponent extends BasePage {
           );
         },
       }),
+
+      this.$deliveryTypeService.getAll().subscribe({
+        next: (list) => {
+          console.log("Fetched delivery type list:", list);
+          this.deliveryTypeList$.set(list);
+        },
+        error: (error) => {
+          console.error(
+            "Error fetching delivery type delivery type list: ",
+            error
+          );
+          this.dialogHandler.alert(
+            "Failed to fetch delivery type list. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      }),
+
       this.$deliveryReturnStatusService.getAll().subscribe({
         next: (statusList) => {
           this.deliveryReturnStatusList$.set(statusList);
@@ -126,6 +151,7 @@ export class DeliveryComponent extends BasePage {
       eventId: this.searchForm.value.eventId,
       customerId: this.searchForm.value.customerId,
       deliveryStatusId: this.searchForm.value.deliveryStatusId,
+      deliveryTypeId: this.searchForm.value.deliveryTypeId,
       returnStatusId: this.searchForm.value.returnStatusId,
     };
   }
@@ -238,10 +264,7 @@ export class DeliveryComponent extends BasePage {
   exportSummaryDeliveries() {
     this.registerSubscription(
       this.$deliveryService
-        .exportSummaryDeliveries({
-          eventId: this.searchForm.value.eventId || null,
-          customerId: this.searchForm.value.customerId || null,
-        })
+        .exportSummaryDeliveries(this.buildSearchDto())
         .subscribe({
           next: (response) => {
             const blob = new Blob([response], {

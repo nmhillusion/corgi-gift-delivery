@@ -13,6 +13,7 @@ import { Nullable } from "@app/model/core/nullable.model";
 
 export interface DeliverySearchDto extends CoreDeliverySearchDto {
   deliveryStatusId: Nullable<IdType>;
+  deliveryTypeId: Nullable<IdType>;
   returnStatusId: Nullable<IdType>;
 }
 
@@ -116,10 +117,7 @@ export class DeliveryService {
     return feItem;
   }
 
-  exportSummaryDeliveries(dto: {
-    eventId: string | null;
-    customerId: string | null;
-  }) {
+  exportSummaryDeliveries(dto: DeliverySearchDto) {
     return this.$http.post(this.buildUrl("export/summary"), dto, {
       responseType: "blob",
     });

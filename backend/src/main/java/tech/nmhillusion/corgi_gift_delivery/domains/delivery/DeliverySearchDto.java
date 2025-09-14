@@ -10,6 +10,7 @@ import tech.nmhillusion.corgi_gift_delivery.domains.base.CoreDeliverySearchDto;
 public class DeliverySearchDto extends CoreDeliverySearchDto {
     private String deliveryStatusId;
     private String returnStatusId;
+    private String deliveryTypeId;
 
     public String getDeliveryStatusId() {
         return deliveryStatusId;
@@ -26,6 +27,15 @@ public class DeliverySearchDto extends CoreDeliverySearchDto {
 
     public DeliverySearchDto setReturnStatusId(String returnStatusId) {
         this.returnStatusId = returnStatusId;
+        return this;
+    }
+
+    public String getDeliveryTypeId() {
+        return deliveryTypeId;
+    }
+
+    public DeliverySearchDto setDeliveryTypeId(String deliveryTypeId) {
+        this.deliveryTypeId = deliveryTypeId;
         return this;
     }
 }

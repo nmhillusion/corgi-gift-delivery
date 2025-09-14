@@ -85,6 +85,18 @@
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Delivery Type</mat-label>
+        <mat-select formControlName="deliveryTypeId" name="deliveryTypeId">
+          <mat-option [value]="null">All</mat-option>
+          @for (type$ of deliveryTypeList$(); track type$.typeId) {
+          <mat-option [value]="type$.typeId">
+            {{ type$.typeName }} ({{ type$.typeDesc }})
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
         <mat-label>Return Status</mat-label>
         <mat-select formControlName="returnStatusId" name="returnStatusId">
           <mat-option [value]="null">All</mat-option>
