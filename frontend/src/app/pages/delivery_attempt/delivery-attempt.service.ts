@@ -18,6 +18,7 @@ import { Nullable } from "@app/model/core/nullable.model";
 
 export interface DeliveryAttemptSearchDto extends CoreDeliverySearchDto {
   deliveryStatusId: Nullable<IdType>;
+  deliveryTypeId: Nullable<IdType>;
 }
 
 @Injectable({

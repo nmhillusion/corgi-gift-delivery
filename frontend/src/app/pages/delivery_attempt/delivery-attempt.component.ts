@@ -17,6 +17,8 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { DeliveryStatus } from "@app/model/business/delivery-status.model";
 import { DeliveryStatusService } from "@app/service/delivery-status.service";
 import { IdType } from "@app/model/core/id.model";
+import { DeliveryType } from "@app/model/business/delivery-type.model";
+import { DeliveryTypeService } from "@app/service/delivery-type.service";
 
 @Component({
   standalone: true,
@@ -49,6 +51,7 @@ export class DeliveryAttemptComponent extends BasePage {
   paginator = this.generatePaginator();
 
   deliveryStatusList$ = signal<DeliveryStatus[]>([]);
+  deliveryTypeList$ = signal<DeliveryType[]>([]);
 
   handler = {
     isImporting$: signal<boolean>(false),
@@ -61,6 +64,7 @@ export class DeliveryAttemptComponent extends BasePage {
     eventId: new FormControl<string | null>(null),
     customerId: new FormControl<string | null>(null),
     deliveryStatusId: new FormControl<IdType | null>(null),
+    deliveryTypeId: new FormControl<IdType | null>(null),
   });
 
   deliveryAttemptImportFile$ = new BehaviorSubject<File[]>([]);
@@ -68,7 +72,8 @@ export class DeliveryAttemptComponent extends BasePage {
   // methods
   constructor(
     private $deliveryAttemptService: DeliveryAttemptService,
-    private $deliveryStatusService: DeliveryStatusService
+    private $deliveryStatusService: DeliveryStatusService,
+    private $deliveryTypeService: DeliveryTypeService
   ) {
     super("Delivery Attempt Management");
   }
@@ -84,6 +89,19 @@ export class DeliveryAttemptComponent extends BasePage {
           console.error("Error fetching delivery status list:", error);
           this.dialogHandler.alert(
             "Failed to fetch delivery status list. " +
+              this.$errorUtil.retrieErrorMessage(error)
+          );
+        },
+      }),
+      this.$deliveryTypeService.getAll().subscribe({
+        next: (list) => {
+          console.log("Fetched delivery type list:", list);
+          this.deliveryTypeList$.set(list);
+        },
+        error: (error) => {
+          console.error("Error fetching delivery type list:", error);
+          this.dialogHandler.alert(
+            "Failed to fetch delivery type list. " +
               this.$errorUtil.retrieErrorMessage(error)
           );
         },
@@ -187,6 +205,7 @@ export class DeliveryAttemptComponent extends BasePage {
       eventId: this.searchForm.value.eventId,
       customerId: this.searchForm.value.customerId,
       deliveryStatusId: this.searchForm.value.deliveryStatusId,
+      deliveryTypeId: this.searchForm.value.deliveryTypeId,
     };
   }
 

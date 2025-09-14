@@ -24,6 +24,7 @@ public interface DeliveryAttemptRepository extends JpaRepository<DeliveryAttempt
             and (:#{#dto.eventId} is null or d.eventId = :#{#dto.eventId})
             and (:#{#dto.customerId} is null or d.customerId = :#{#dto.customerId})
             and (:#{#dto.deliveryStatusId} is null or a.deliveryStatusId = :#{#dto.deliveryStatusId})
+            and (:#{#dto.deliveryTypeId} is null or a.deliveryTypeId = :#{#dto.deliveryTypeId})
             """)
     Page<DeliveryAttemptEntity> search(DeliveryAttemptSearchDto dto, PageRequest pageRequest);
 }
