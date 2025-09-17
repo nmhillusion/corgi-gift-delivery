@@ -4,6 +4,7 @@ import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryStatusEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by: minguy1
@@ -19,7 +20,7 @@ public class DeliveryStatusServiceImpl implements DeliveryStatusService {
     }
 
     @Override
-    public DeliveryStatusEntity getDeliveryStatusByStatusName(String statusName) {
+    public Optional<DeliveryStatusEntity> getDeliveryStatusByStatusName(String statusName) {
         return repository.findByStatusName(statusName);
     }
 

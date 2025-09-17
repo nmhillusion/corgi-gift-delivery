@@ -3,6 +3,7 @@ package tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturnStatus;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnStatusEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by: minguy1
@@ -10,7 +11,7 @@ import java.util.List;
  * created date: 2025-07-19
  */
 public interface DeliveryReturnStatusService {
-    DeliveryReturnStatusEntity getDeliveryReturnStatusByStatusName(String statusName);
+    Optional<DeliveryReturnStatusEntity> getDeliveryReturnStatusByStatusName(String statusName);
 
     DeliveryReturnStatusEntity getDeliveryReturnStatusByStatusId(String statusId);
 

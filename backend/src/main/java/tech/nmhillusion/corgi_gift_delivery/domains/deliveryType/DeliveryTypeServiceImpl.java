@@ -4,6 +4,7 @@ import tech.nmhillusion.corgi_gift_delivery.annotation.TransactionalService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryTypeEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by: minguy1
@@ -19,7 +20,7 @@ public class DeliveryTypeServiceImpl implements DeliveryTypeService {
     }
 
     @Override
-    public DeliveryTypeEntity getDeliveryTypeByTypeName(String typeName) {
+    public Optional<DeliveryTypeEntity> getDeliveryTypeByTypeName(String typeName) {
         return repository.findByTypeName(typeName);
     }
 

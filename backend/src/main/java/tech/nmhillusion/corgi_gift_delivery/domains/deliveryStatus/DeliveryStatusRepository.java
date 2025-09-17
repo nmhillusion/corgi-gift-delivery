@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryStatusEntity;
 
+import java.util.Optional;
+
 /**
  * created by: minguy1
  * <p>
@@ -11,5 +13,5 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryStatusEntity
  */
 public interface DeliveryStatusRepository extends JpaRepository<DeliveryStatusEntity, String> {
     @Query("SELECT d FROM DeliveryStatusEntity d WHERE trim(lower(d.statusName)) = trim(lower(:statusName))")
-    DeliveryStatusEntity findByStatusName(String statusName);
+    Optional<DeliveryStatusEntity> findByStatusName(String statusName);
 }

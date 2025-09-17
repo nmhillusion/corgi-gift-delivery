@@ -37,8 +37,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
-    @ExceptionHandler(value = {ApiResponseException.class})
-    protected ResponseEntity<Object> handleApiResponseException(ApiResponseException ex, WebRequest request) {
+    @ExceptionHandler(value = {ApiResponseException.class, IllegalArgumentException.class})
+    protected ResponseEntity<Object> handleApiResponseException(Exception ex, WebRequest request) {
 
         final String bodyOfResponse = "API Error: %s".formatted(ex.getMessage());
 

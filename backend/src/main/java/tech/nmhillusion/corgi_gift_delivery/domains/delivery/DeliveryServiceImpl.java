@@ -56,11 +56,11 @@ public class DeliveryServiceImpl extends AbstractBaseDeliveryService<DeliveryEnt
     }
 
     @Override
-    public Long getDeliveryIdByEventAndCustomer(String eventId, String customerId) {
+    public Optional<Long> getDeliveryIdByEventAndCustomer(String eventId, String customerId) {
         final Optional<DeliveryEntity> entity_ = deliveryRepository.findByEventIdAndCustomerId(eventId, customerId);
         getLogger(this).info("getDeliveryIdByEventAndCustomer(String eventId = {}, String customerId = {}) = {}", eventId, customerId, entity_);
 
-        return entity_.map(DeliveryEntity::getDeliveryId).orElseThrow();
+        return entity_.map(DeliveryEntity::getDeliveryId);
     }
 
     @Override
@@ -80,7 +80,13 @@ public class DeliveryServiceImpl extends AbstractBaseDeliveryService<DeliveryEnt
             final List<DeliveryEntity> deliveryEntities = parseExcelFileToEntityList(excelFile, deliveryExcelSheetParser::parse);
 
             for (DeliveryEntity deliveryEntity : deliveryEntities) {
-                final Long existedDeliveryId = getDeliveryIdByEventAndCustomer(deliveryEntity.getEventId(), deliveryEntity.getCustomerId());
+                final Long existedDeliveryId = getDeliveryIdByEventAndCustomer(deliveryEntity.getEventId(), deliveryEntity.getCustomerId())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                MessageFormat.format("Cannot find delivery with eventId = {0}, customerId = {1}"
+                                        , deliveryEntity.getEventId()
+                                        , deliveryEntity.getCustomerId()
+                                )
+                        ));
                 if (existedDeliveryId == null) {
                     throw new NotFoundException(
                             MessageFormat.format(

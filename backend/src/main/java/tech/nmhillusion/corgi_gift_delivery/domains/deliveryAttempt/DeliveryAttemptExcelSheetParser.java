@@ -6,6 +6,8 @@ import tech.nmhillusion.corgi_gift_delivery.domains.delivery.DeliveryService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryStatus.DeliveryStatusService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryType.DeliveryTypeService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryAttemptEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryStatusEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryTypeEntity;
 import tech.nmhillusion.corgi_gift_delivery.parser.ExcelSheetParser;
 import tech.nmhillusion.corgi_gift_delivery.parser.RowIdxMapping;
 import tech.nmhillusion.corgi_gift_delivery.util.NumberUtil;
@@ -17,6 +19,7 @@ import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 import tech.nmhillusion.n2mix.util.DateUtil;
 import tech.nmhillusion.n2mix.validator.StringValidator;
 
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -79,7 +82,13 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
                 continue;
             }
 
-            final Long deliveryId = deliveryService.getDeliveryIdByEventAndCustomer(eventId, customerId);
+            final Long deliveryId = deliveryService.getDeliveryIdByEventAndCustomer(eventId, customerId)
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            MessageFormat.format("Cannot find delivery with eventId = {0}, customerId = {1}"
+                                    , eventId
+                                    , customerId
+                            )
+                    ));
 
             final String deliveryType = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_TYPE.getColumnName());
             final String deliveryStatus = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.DELIVERY_STATUS.getColumnName());
@@ -108,12 +117,16 @@ public class DeliveryAttemptExcelSheetParser extends ExcelSheetParser<DeliveryAt
                             )
                             .setDeliveryTypeId(
                                     Integer.parseInt(
-                                            deliveryTypeService.getDeliveryTypeByTypeName(deliveryType).getTypeId()
+                                            deliveryTypeService.getDeliveryTypeByTypeName(deliveryType)
+                                                    .map(DeliveryTypeEntity::getTypeId)
+                                                    .orElseThrow(() -> new IllegalArgumentException("Invalid delivery type: " + deliveryType))
                                     )
                             )
                             .setDeliveryStatusId(
                                     Integer.parseInt(
-                                            deliveryStatusService.getDeliveryStatusByStatusName(deliveryStatus).getStatusId()
+                                            deliveryStatusService.getDeliveryStatusByStatusName(deliveryStatus)
+                                                    .map(DeliveryStatusEntity::getStatusId)
+                                                    .orElseThrow(() -> new IllegalArgumentException("Invalid delivery status: " + deliveryStatus))
                                     )
                             )
                             .setDeliveryDate(

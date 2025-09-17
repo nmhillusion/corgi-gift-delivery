@@ -6,6 +6,7 @@ import tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt.DeliveryAtte
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryAttempt.DeliveryAttemptService;
 import tech.nmhillusion.corgi_gift_delivery.domains.deliveryReturnStatus.DeliveryReturnStatusService;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnEntity;
+import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryReturnStatusEntity;
 import tech.nmhillusion.corgi_gift_delivery.parser.ExcelSheetParser;
 import tech.nmhillusion.corgi_gift_delivery.parser.RowIdxMapping;
 import tech.nmhillusion.corgi_gift_delivery.util.NumberUtil;
@@ -14,6 +15,7 @@ import tech.nmhillusion.n2mix.helper.office.excel.reader.model.CellData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.RowData;
 import tech.nmhillusion.n2mix.helper.office.excel.reader.model.SheetData;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +67,13 @@ public class DeliveryReturnExcelSheetParser extends ExcelSheetParser<DeliveryRet
             final String customerId = NumberUtil.parseStringFromDoubleToLong(
                     getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryAttemptParserEnum.CUSTOMER_ID.getColumnName())
             );
-            final Long deliveryId = deliveryService.getDeliveryIdByEventAndCustomer(eventId, customerId);
+            final Long deliveryId = deliveryService.getDeliveryIdByEventAndCustomer(eventId, customerId)
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            MessageFormat.format("Cannot find delivery with eventId = {0}, customerId = {1}"
+                                    , eventId
+                                    , customerId
+                            )
+                    ));
 
             final String returnStatus = getValueOfColumn(dataRowCells, rowIdxMappings, DeliveryReturnParserEnum.RETURN_STATUS.getColumnName());
 
@@ -76,7 +84,9 @@ public class DeliveryReturnExcelSheetParser extends ExcelSheetParser<DeliveryRet
                             )
                             .setReturnStatusId(
                                     Integer.parseInt(
-                                            deliveryReturnStatusService.getDeliveryReturnStatusByStatusName(returnStatus).getStatusId()
+                                            deliveryReturnStatusService.getDeliveryReturnStatusByStatusName(returnStatus)
+                                                    .map(DeliveryReturnStatusEntity::getStatusId)
+                                                    .orElseThrow(() -> new IllegalArgumentException("Invalid return status: " + returnStatus))
                                     )
                             )
                             .setNote(

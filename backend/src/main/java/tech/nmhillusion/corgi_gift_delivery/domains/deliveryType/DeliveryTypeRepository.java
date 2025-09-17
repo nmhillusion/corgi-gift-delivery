@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryTypeEntity;
 
+import java.util.Optional;
+
 /**
  * created by: minguy1
  * <p>
@@ -11,5 +13,5 @@ import tech.nmhillusion.corgi_gift_delivery.entity.business.DeliveryTypeEntity;
  */
 public interface DeliveryTypeRepository extends JpaRepository<DeliveryTypeEntity, String> {
     @Query("SELECT d FROM DeliveryTypeEntity d WHERE trim(lower(d.typeName)) = trim(lower(:typeName))")
-    DeliveryTypeEntity findByTypeName(String typeName);
+    Optional<DeliveryTypeEntity> findByTypeName(String typeName);
 }
