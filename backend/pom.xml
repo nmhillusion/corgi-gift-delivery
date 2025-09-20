@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.0</version>
+        <version>3.5.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>tech.nmhillusion</groupId>
@@ -29,8 +29,8 @@
     <properties>
         <java.version>21</java.version>
 
-        <spring.version>6.2.9</spring.version>
-        <hibernate.version>7.0.8.Final</hibernate.version>
+        <spring.version>6.2.11</spring.version>
+        <hibernate.version>7.1.1.Final</hibernate.version>
         <poi.version>5.4.1</poi.version>
     </properties>
 
@@ -94,11 +94,13 @@
             <version>2.3.232</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
