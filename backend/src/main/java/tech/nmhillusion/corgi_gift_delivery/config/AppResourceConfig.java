@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 public class AppResourceConfig implements WebMvcConfigurer {
-    protected static final String[] RESOURCE_LOCATIONS = {"classpath:/static/"};
+    protected static final String[] RESOURCE_LOCATIONS = {"classpath:/static/", "classpath:/corgi-dist/"};
     protected static final String[] RESOURCE_PATHS = {"/*.js", "/*.css", "/*.svg", "/*.png", "*.ico"};
 
     @Override

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng --configuration development serve --hmr",
-    "build": "ng build --configuration production",
+    "build": "ng build --configuration production --base-href=/corgi",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
