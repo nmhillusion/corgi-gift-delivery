@@ -1,4 +1,4 @@
-. .env
+. ./.env
 
 currDir=$(pwd)
 
@@ -7,4 +7,7 @@ echo "App name: $app_name"
 echo "Frontend base href: $frontend_base_href"
 
 cd frontend
-frontend_base_href=$frontend_base_href npm run build
+
+OLD_PATTERN="var__frontend_base_href"
+sed "s|$OLD_PATTERN|$frontend_base_href|g" "./package.template.json" > "./package.json"
+npm run build
