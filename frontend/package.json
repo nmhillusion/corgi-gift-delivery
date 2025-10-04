@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng --configuration development serve --hmr",
-    "build": "ng build --configuration production --base-href=/cogri-delivery-app",
+    "build:win": "ng build --configuration production --base-href=\"/%var__frontend_base_href%\"",
+    "build:unix": "ng build --configuration production --base-href=\"/$var__frontend_base_href\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
