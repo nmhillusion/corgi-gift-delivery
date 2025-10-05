@@ -1,5 +1,4 @@
-app:
-  name: var__app_name
+app.name: corgi-delivery-app # var__app_name
 
 server:
   port: 8080
@@ -12,7 +11,7 @@ server:
 
 spring:
   application:
-    name: ${app.name}
+    name: ${app.name:cogriTest}
   output:
     ansi:
       enabled: always
@@ -27,8 +26,8 @@ database:
 
 logging:
   file:
-    name: logs/${app.name}.log
-    path: logs/${app.name}.log
+    name: logs/${app.name:cogriTest}.log
+    path: logs/${app.name:cogriTest}.log
   pattern:
     dateformat: yyyy-MM-dd'T'HH:mm:ssXXX
 

@@ -18,5 +18,11 @@ elif [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" ==
     echo "Build on Windows"
     var__frontend_base_href=$frontend_base_href npm run build:win
 else
-    echo "Unknown OS"
+    echo "ERROR: Unknown OS"
 fi
+
+cd ../backend
+
+sed -i "s|app.name: .* # var__app_name|app.name: $frontend_base_href # var__app_name|g" ./src/main/resources/application.yml
+
+mvn clean compile package
