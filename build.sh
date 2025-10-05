@@ -8,7 +8,10 @@ echo "Current dir: $currDir"
 echo "App name: $app_name"
 echo "Frontend base href: $frontend_base_href"
 
+# FRONT-END
+
 cd frontend
+npm install && npm ci
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     echo "Build on Linux"
@@ -22,6 +25,8 @@ elif [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" ==
 else
     echo "ERROR: Unknown OS"
 fi
+
+# BACKEND
 
 cd ../backend
 

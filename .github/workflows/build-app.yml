@@ -26,7 +26,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.x
-      - name: Install dependencies for front-end
-        run: npm install && npm ci
       - name: Build with custom script
         run: bash ./build.sh
