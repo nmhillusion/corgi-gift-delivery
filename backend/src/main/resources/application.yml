@@ -1,4 +1,5 @@
-app.name: corgi-delivery-app # var__app_name
+app.name: Corgi Gift Delivery # var__app_name
+app.frontend_base_href: corgi-delivery-app # var__frontend_base_href
 
 server:
   port: 8080

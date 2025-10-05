@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class ViewController {
-    @RequestMapping(value = "/corgi-deli/{path:[^\\.]*}")
+    @RequestMapping(value = "/${app.frontend_base_href:app}/{path:[^\\.]*}")
     public String redirect() {
         // Forward all non-file/non-api requests to index.html
         return "forward:/index.html";

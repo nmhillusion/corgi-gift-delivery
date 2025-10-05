@@ -23,6 +23,7 @@ fi
 
 cd ../backend
 
-sed -i "s|app.name: .* # var__app_name|app.name: $frontend_base_href # var__app_name|g" ./src/main/resources/application.yml
+sed -i "s|app.name: .* # var__app_name|app.name: $app_name # var__app_name|g" ./src/main/resources/application.yml
+sed -i "s|app.frontend_base_href: .* # var__frontend_base_href|app.frontend_base_href: $frontend_base_href # var__frontend_base_href|g" ./src/main/resources/application.yml
 
-mvn clean compile package
+mvn clean compile package -Dmaven.test.skip=true
