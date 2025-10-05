@@ -11,6 +11,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import tech.nmhillusion.n2mix.annotation.EnableN2mix;
 
+import java.awt.*;
 import java.util.Calendar;
 
 import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
@@ -38,5 +39,21 @@ public class Application implements CommandLineRunner {
         getLogger(this).info("Started app successfully at {}", Calendar.getInstance()
                 .getTime()
         );
+
+        if (Desktop.isDesktopSupported()) {
+            final Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    desktop.browse(new java.net.URI("http://localhost:8080"));
+                } catch (Exception e) {
+                    getLogger(this).error(e);
+                    getLogger(this).error("Error when open browser. " + e.getMessage());
+                }
+            } else {
+                getLogger(this).warn("Desktop is not supported opening browser");
+            }
+        } else {
+            getLogger(this).warn("Desktop is not supported");
+        }
     }
 }
