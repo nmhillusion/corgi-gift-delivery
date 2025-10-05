@@ -27,4 +27,4 @@ jobs:
         with:
           node-version: 20.x
       - name: Build with custom script
-        run: sh ./build.sh
+        run: bash ./build.sh
