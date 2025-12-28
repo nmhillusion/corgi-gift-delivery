@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
+        <version>3.5.9</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>tech.nmhillusion</groupId>
@@ -20,9 +20,9 @@
     <properties>
         <java.version>21</java.version>
 
-        <spring.version>6.2.11</spring.version>
-        <hibernate.version>7.1.1.Final</hibernate.version>
-        <poi.version>5.4.1</poi.version>
+        <spring.version>6.2.15</spring.version>
+        <hibernate.version>7.1.13.Final</hibernate.version>
+        <poi.version>5.5.1</poi.version>
     </properties>
 
     <repositories>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20250517</version>
+            <version>20251224</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
@@ -82,7 +82,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.3.232</version>
+            <version>2.4.240</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
@@ -100,7 +100,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>5.1.0</version>
+            <version>7.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -120,7 +120,7 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.10.8</version>
+            <version>3.11.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>jaxb-runtime</artifactId>
