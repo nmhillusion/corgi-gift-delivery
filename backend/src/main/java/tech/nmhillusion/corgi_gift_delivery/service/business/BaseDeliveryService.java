@@ -26,4 +26,6 @@ public interface BaseDeliveryService<E extends BaseBusinessEntity<Long>, DTO> {
     long getTotalElementsForSearch(DTO dto);
 
     Resource export(@Valid DTO dto) throws ApiResponseException;
+
+    E updateById(String id, E mEntity);
 }

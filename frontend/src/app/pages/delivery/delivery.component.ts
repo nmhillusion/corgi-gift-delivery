@@ -19,6 +19,8 @@ import { DeliveryType } from "@app/model/business/delivery-type.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { IdType } from "@app/model/core/id.model";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
+import { EditDialogComponent } from "./edit-dialog/edit-dialog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   standalone: true,
@@ -59,6 +61,8 @@ export class DeliveryComponent extends BasePage {
     ///
     "return_returnStatus",
     "return_note",
+    ///
+    "action",
   ];
   dataSource = new MatTableDataSource<DeliveryFE>([]);
 
@@ -90,7 +94,8 @@ export class DeliveryComponent extends BasePage {
     private $deliveryService: DeliveryService,
     private $deliveryStatusService: DeliveryStatusService,
     private $deliveryTypeService: DeliveryTypeService,
-    private $deliveryReturnStatusService: DeliveryReturnStatusService
+    private $deliveryReturnStatusService: DeliveryReturnStatusService,
+    private dialog: MatDialog
   ) {
     super("Delivery Management");
   }
@@ -280,6 +285,39 @@ export class DeliveryComponent extends BasePage {
             );
           },
         })
+    );
+  }
+
+  editDelivery(el: DeliveryFE) {
+    const dialogRef = this.dialog.open<
+      EditDialogComponent,
+      DeliveryFE,
+      DeliveryFE
+    >(EditDialogComponent, {
+      data: el,
+      width: "600px",
+    });
+
+    this.registerSubscription(
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          console.log("result = ", result);
+          this.$deliveryService.update(result.deliveryId, result).subscribe({
+            next: (data) => {
+              console.log("Delivery updated successfully:", data);
+              this.dialogHandler.alert("Delivery updated successfully.");
+              this.search(this.generateDefaultPage()); // Refresh the data
+            },
+            error: (error) => {
+              console.error("Error updating delivery:", error);
+              this.dialogHandler.alert(
+                "Failed to update delivery. " +
+                  this.$errorUtil.retrieErrorMessage(error)
+              );
+            },
+          });
+        }
+      })
     );
   }
 }

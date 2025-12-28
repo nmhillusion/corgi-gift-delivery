@@ -182,4 +182,10 @@ public class DeliveryAttemptServiceImpl extends AbstractBaseDeliveryService<Deli
             throw new ApiResponseException(e);
         }
     }
+
+    @Override
+    public DeliveryAttemptEntity updateById(String id, DeliveryAttemptEntity mEntity) {
+        mEntity.setId(Long.parseLong(id));
+        return repository.saveAndFlush(mEntity);
+    }
 }

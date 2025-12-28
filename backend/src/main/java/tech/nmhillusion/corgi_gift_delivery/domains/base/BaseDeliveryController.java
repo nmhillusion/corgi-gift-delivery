@@ -1,8 +1,11 @@
 package tech.nmhillusion.corgi_gift_delivery.domains.base;
 
+import jakarta.persistence.Entity;
+import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +51,13 @@ public abstract class BaseDeliveryController<E extends BaseBusinessEntity<Long>,
         return service.updateBatchByExcelFile(excelFile);
     }
 
-    @PostMapping(value = "/export", produces = ContentType.MS_EXCEL_XLSX)
+    @PostMapping(value = "{id}/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public E update(@PathVariable String id, @RequestBody @Valid E mEntity) {
+        return service.updateById(id, mEntity);
+    }
+
+
+                    @PostMapping(value = "/export", produces = ContentType.MS_EXCEL_XLSX)
     public Resource export(@RequestBody DTO dto) {
         return service.export(dto);
     }

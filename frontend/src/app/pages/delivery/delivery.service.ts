@@ -68,6 +68,13 @@ export class DeliveryService {
     );
   }
 
+  update(deliveryId: IdType, result: DeliveryFE) {
+    return this.$http.post<Delivery>(
+      this.buildUrl(`${deliveryId}/update`),
+      result
+    );
+  }
+
   getById(deliveryId: IdType): Observable<Delivery> {
     return this.$http.get<Delivery>(this.buildUrl(deliveryId));
   }

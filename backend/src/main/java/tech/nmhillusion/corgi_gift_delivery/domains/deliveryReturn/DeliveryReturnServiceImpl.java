@@ -161,4 +161,10 @@ public class DeliveryReturnServiceImpl extends AbstractBaseDeliveryService<Deliv
             throw new ApiResponseException(ex);
         }
     }
+
+    @Override
+    public DeliveryReturnEntity updateById(String id, DeliveryReturnEntity mEntity) {
+        mEntity.setId(Long.parseLong(id));
+        return repository.saveAndFlush(mEntity);
+    }
 }

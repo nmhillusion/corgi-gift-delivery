@@ -261,6 +261,12 @@ public class DeliveryServiceImpl extends AbstractBaseDeliveryService<DeliveryEnt
     }
 
     @Override
+    public DeliveryEntity updateById(String id, DeliveryEntity mEntity) {
+        mEntity.setId(Long.parseLong(id));
+        return deliveryRepository.saveAndFlush(mEntity);
+    }
+
+    @Override
     public Resource export(DeliverySearchDto deliverySearchDto) throws ApiResponseException {
         try {
             final long totalElements = getTotalElementsForSearch(deliverySearchDto);
@@ -317,5 +323,7 @@ public class DeliveryServiceImpl extends AbstractBaseDeliveryService<DeliveryEnt
             LogHelper.getLogger(this).error(ex);
             throw new ApiResponseException(ex);
         }
+
+
     }
 }
