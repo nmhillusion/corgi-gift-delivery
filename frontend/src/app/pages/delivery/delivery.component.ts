@@ -94,8 +94,7 @@ export class DeliveryComponent extends BasePage {
     private $deliveryService: DeliveryService,
     private $deliveryStatusService: DeliveryStatusService,
     private $deliveryTypeService: DeliveryTypeService,
-    private $deliveryReturnStatusService: DeliveryReturnStatusService,
-    private dialog: MatDialog
+    private $deliveryReturnStatusService: DeliveryReturnStatusService
   ) {
     super("Delivery Management");
   }
@@ -289,7 +288,7 @@ export class DeliveryComponent extends BasePage {
   }
 
   editDelivery(el: DeliveryFE) {
-    const dialogRef = this.dialog.open<
+    const dialogRef = this.$dialog.open<
       EditDialogComponent,
       DeliveryFE,
       DeliveryFE

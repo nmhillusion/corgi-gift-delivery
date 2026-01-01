@@ -19,6 +19,7 @@ import { DeliveryStatusService } from "@app/service/delivery-status.service";
 import { IdType } from "@app/model/core/id.model";
 import { DeliveryType } from "@app/model/business/delivery-type.model";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
+import { EditDialogComponent } from "./edit-dialog/edit-dialog.component";
 
 @Component({
   standalone: true,
@@ -45,6 +46,8 @@ export class DeliveryAttemptComponent extends BasePage {
     "deliveryStatusName",
     "deliveryDate",
     "note",
+    ///
+    "action",
   ];
   dataSource = new MatTableDataSource<DeliveryAttemptFE>([]);
 
@@ -227,5 +230,40 @@ export class DeliveryAttemptComponent extends BasePage {
         },
       })
     );
+  }
+
+  editDeliveryAttempt(deliveryAttempt: DeliveryAttemptFE) {
+    const dialogRef = this.$dialog.open<
+      EditDialogComponent,
+      DeliveryAttemptFE,
+      DeliveryAttemptFE
+    >(EditDialogComponent, {
+      data: deliveryAttempt,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.$deliveryAttemptService
+          .update(result.attemptId, result)
+          .subscribe({
+            next: (data) => {
+              console.log("Delivery attempt data updated successfully:", data);
+              this.dialogHandler.alert(
+                "Delivery attempt data updated successfully."
+              );
+            },
+            error: (error) => {
+              console.error("Error updating delivery attempt data:", error);
+              this.dialogHandler.alert(
+                "Failed to update delivery attempt data. " +
+                  this.$errorUtil.retrieErrorMessage(error)
+              );
+            },
+            complete: () => {
+              this.search(this.generateDefaultPage());
+            },
+          });
+      }
+    });
   }
 }

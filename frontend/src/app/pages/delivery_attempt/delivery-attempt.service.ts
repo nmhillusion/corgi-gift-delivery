@@ -123,4 +123,11 @@ export class DeliveryAttemptService {
       responseType: "blob",
     });
   }
+
+  update(attemptId: IdType, updatedEntity: DeliveryAttemptFE) {
+    return this.$http.put<DeliveryAttemptFE>(
+      this.buildUrl(`${attemptId}/update`),
+      updatedEntity
+    );
+  }
 }

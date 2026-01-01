@@ -1,0 +1,79 @@
+<div class="dialog-container">
+  <h2>Edit Delivery</h2>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Attempt ID</mat-label>
+      <input
+        readonly
+        matInput
+        type="number"
+        name="attemptId"
+        formControlName="attemptId"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Delivery ID</mat-label>
+      <input
+        readonly
+        matInput
+        type="number"
+        name="deliveryId"
+        formControlName="deliveryId"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Delivery Type</mat-label>
+      <mat-select
+        matInput
+        name="deliveryTypeId"
+        formControlName="deliveryTypeId"
+      >
+        @for (deliveryType of deliveryTypes$(); track deliveryType.typeId) {
+        <mat-option [value]="deliveryType.typeId">
+          {{ deliveryType.typeName }} ({{ deliveryType.typeDesc }})
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Delivery Status</mat-label>
+      <mat-select
+        matInput
+        name="deliveryStatusId"
+        formControlName="deliveryStatusId"
+      >
+        @for (deliveryStatus of deliveryStatuses$(); track
+        deliveryStatus.statusId) {
+        <mat-option [value]="deliveryStatus.statusId">
+          {{ deliveryStatus.statusName }} ({{ deliveryStatus.statusDesc }})
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Delivery Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="deliveryDatePicker"
+        name="deliveryDate"
+        formControlName="deliveryDate"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="deliveryDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #deliveryDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Note</mat-label>
+      <textarea matInput name="note" formControlName="note"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </form>
+</div>
