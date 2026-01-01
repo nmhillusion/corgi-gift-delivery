@@ -1,130 +1,137 @@
 <div class="dialog-container">
   <h2>Edit Delivery</h2>
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <mat-label>Event ID</mat-label>
-      <input matInput type="text" name="eventId" formControlName="eventId" />
-    </mat-form-field>
+    <div class="fields-panel">
+      <mat-form-field>
+        <mat-label>Event ID</mat-label>
+        <input matInput type="text" name="eventId" formControlName="eventId" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Delivery Period Year</mat-label>
-      <input
-        matInput
-        type="number"
-        name="deliveryPeriodYear"
-        formControlName="deliveryPeriodYear"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Delivery Period Year</mat-label>
+        <input
+          matInput
+          type="number"
+          name="deliveryPeriodYear"
+          formControlName="deliveryPeriodYear"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Delivery Period Month</mat-label>
-      <input
-        matInput
-        type="number"
-        name="deliveryPeriodMonth"
-        formControlName="deliveryPeriodMonth"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Delivery Period Month</mat-label>
+        <input
+          matInput
+          type="number"
+          name="deliveryPeriodMonth"
+          formControlName="deliveryPeriodMonth"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Territory</mat-label>
-      <input
-        matInput
-        type="text"
-        name="territory"
-        formControlName="territory"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Territory</mat-label>
+        <input
+          matInput
+          type="text"
+          name="territory"
+          formControlName="territory"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Region</mat-label>
-      <input matInput type="text" name="region" formControlName="region" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Region</mat-label>
+        <input matInput type="text" name="region" formControlName="region" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Organ ID</mat-label>
-      <input matInput type="text" name="organId" formControlName="organId" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Organ ID</mat-label>
+        <input matInput type="text" name="organId" formControlName="organId" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Received Organ</mat-label>
-      <input
-        matInput
-        type="text"
-        name="receivedOrgan"
-        formControlName="receivedOrgan"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Received Organ</mat-label>
+        <input
+          matInput
+          type="text"
+          name="receivedOrgan"
+          formControlName="receivedOrgan"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>AMD Name</mat-label>
-      <input matInput type="text" name="amdName" formControlName="amdName" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>AMD Name</mat-label>
+        <input matInput type="text" name="amdName" formControlName="amdName" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Customer Level</mat-label>
-      <input
-        matInput
-        type="text"
-        name="customerLevel"
-        formControlName="customerLevel"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Customer Level</mat-label>
+        <input
+          matInput
+          type="text"
+          name="customerLevel"
+          formControlName="customerLevel"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Customer ID</mat-label>
-      <input
-        matInput
-        type="text"
-        name="customerId"
-        formControlName="customerId"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Customer ID</mat-label>
+        <input
+          matInput
+          type="text"
+          name="customerId"
+          formControlName="customerId"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Customer Name</mat-label>
-      <input
-        matInput
-        type="text"
-        name="customerName"
-        formControlName="customerName"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Customer Name</mat-label>
+        <input
+          matInput
+          type="text"
+          name="customerName"
+          formControlName="customerName"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>ID Card Number</mat-label>
-      <input
-        matInput
-        type="text"
-        name="idCardNumber"
-        formControlName="idCardNumber"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>ID Card Number</mat-label>
+        <input
+          matInput
+          type="text"
+          name="idCardNumber"
+          formControlName="idCardNumber"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Phone Number</mat-label>
-      <input
-        matInput
-        type="text"
-        name="phoneNumber"
-        formControlName="phoneNumber"
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Phone Number</mat-label>
+        <input
+          matInput
+          type="text"
+          name="phoneNumber"
+          formControlName="phoneNumber"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Address</mat-label>
-      <input matInput type="text" name="address" formControlName="address" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input matInput type="text" name="address" formControlName="address" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Gift Name</mat-label>
-      <input matInput type="text" name="giftName" formControlName="giftName" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Gift Name</mat-label>
+        <input
+          matInput
+          type="text"
+          name="giftName"
+          formControlName="giftName"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Note</mat-label>
-      <textarea matInput name="note" formControlName="note"></textarea>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Note</mat-label>
+        <textarea matInput name="note" formControlName="note"></textarea>
+      </mat-form-field>
+    </div>
 
     <button mat-raised-button color="primary" type="submit">Save</button>
   </form>
