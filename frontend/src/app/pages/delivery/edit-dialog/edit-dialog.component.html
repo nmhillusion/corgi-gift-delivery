@@ -2,6 +2,17 @@
   <h2>Edit Delivery</h2>
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div class="fields-panel">
+      <mat-form-field disabled>
+        <mat-label>Delivery ID</mat-label>
+        <input
+          readonly
+          matInput
+          type="number"
+          name="deliveryId"
+          formControlName="deliveryId"
+        />
+      </mat-form-field>
+
       <mat-form-field>
         <mat-label>Event ID</mat-label>
         <input matInput type="text" name="eventId" formControlName="eventId" />

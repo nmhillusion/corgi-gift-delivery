@@ -106,4 +106,11 @@ export class DeliveryReturnService {
       responseType: "blob",
     });
   }
+
+  update(deliveryReturnId: IdType, result: DeliveryReturnFE) {
+    return this.$http.post<DeliveryReturn>(
+      this.buildUrl(`${deliveryReturnId}/update`),
+      result
+    );
+  }
 }

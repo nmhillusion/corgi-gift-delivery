@@ -6,7 +6,10 @@ import { MainLayoutComponent } from "@app/layout/main-layout/main-layout.compone
 import { BasePage } from "@app/pages/base.page";
 import { AppInputFileComponent } from "@app/widget/component/input-file/input-file.component";
 import { BehaviorSubject } from "rxjs";
-import { DeliveryReturnSearchDto, DeliveryReturnService } from "./delivery-return.service";
+import {
+  DeliveryReturnSearchDto,
+  DeliveryReturnService,
+} from "./delivery-return.service";
 import { DeliveryReturnFE } from "@app/model/business/delivery-return.model";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { BlobUtil } from "@app/util/blob.util";
@@ -14,6 +17,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { DeliveryReturnStatus } from "@app/model/business/delivery-return-status.model";
 import { IdType } from "@app/model/core/id.model";
 import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
+import { EditDialogComponent } from "./edit-dialog/edit-dialog.component";
 
 @Component({
   standalone: true,
@@ -38,6 +42,8 @@ export class DeliveryReturnComponent extends BasePage {
     "giftName",
     "returnStatusName",
     "note",
+    ///
+    "actions",
   ];
   dataSource = new MatTableDataSource<DeliveryReturnFE>([]);
 
@@ -200,6 +206,41 @@ export class DeliveryReturnComponent extends BasePage {
               this.$errorUtil.retrieErrorMessage(error)
           );
         },
+      })
+    );
+  }
+
+  editDeliveryReturn(deliveryReturn: DeliveryReturnFE) {
+    const dialogRef = this.$dialog.open<
+      EditDialogComponent,
+      DeliveryReturnFE,
+      DeliveryReturnFE
+    >(EditDialogComponent, {
+      data: deliveryReturn,
+    });
+
+    this.registerSubscription(
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.$deliveryReturnService
+            .update(result.returnId, result)
+            .subscribe({
+              next: (data) => {
+                console.log("Delivery return data updated successfully:", data);
+                this.dialogHandler.alert(
+                  "Delivery return data updated successfully."
+                );
+                this.search(this.generateDefaultPage()); // Refresh the data
+              },
+              error: (error) => {
+                console.error("Error updating delivery return data:", error);
+                this.dialogHandler.alert(
+                  "Failed to update delivery return data. " +
+                    this.$errorUtil.retrieErrorMessage(error)
+                );
+              },
+            });
+        }
       })
     );
   }

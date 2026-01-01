@@ -1,0 +1,50 @@
+<div class="dialog-container">
+  <h2>Edit Delivery Return</h2>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="fields-panel">
+      <mat-form-field disabled>
+        <mat-label>Return ID</mat-label>
+        <input
+          readonly
+          matInput
+          type="number"
+          name="returnId"
+          formControlName="returnId"
+        />
+      </mat-form-field>
+
+      <mat-form-field disabled>
+        <mat-label>Delivery ID</mat-label>
+        <input
+          readonly
+          matInput
+          type="number"
+          name="deliveryId"
+          formControlName="deliveryId"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Return Status</mat-label>
+        <mat-select
+          matInput
+          name="returnStatusId"
+          formControlName="returnStatusId"
+        >
+          @for (returnStatus of deliveryReturnStatuses$(); track
+          returnStatus.statusId) {
+          <mat-option [value]="returnStatus.statusId">
+            {{ returnStatus.statusName }} ({{ returnStatus.statusDesc }})
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Note</mat-label>
+        <textarea matInput name="note" formControlName="note"></textarea>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </form>
+</div>

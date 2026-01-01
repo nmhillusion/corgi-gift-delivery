@@ -47,6 +47,8 @@ export class EditDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup.patchValue(this.dialogData);
+
+    this.formGroup.controls.deliveryId.disable();
   }
 
   onSubmit() {

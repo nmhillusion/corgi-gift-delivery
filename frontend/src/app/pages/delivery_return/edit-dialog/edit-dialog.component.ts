@@ -8,12 +8,15 @@ import {
 } from "@angular/material/dialog";
 import { AppCommonModule } from "@app/core/app-common.module";
 import { DeliveryAttemptFE } from "@app/model/business/delivery-attempt.model";
+import { DeliveryReturnStatus } from "@app/model/business/delivery-return-status.model";
+import { DeliveryReturnFE } from "@app/model/business/delivery-return.model";
 import { DeliveryStatus } from "@app/model/business/delivery-status.model";
 import { DeliveryType } from "@app/model/business/delivery-type.model";
 import { DeliveryFE } from "@app/model/business/delivery.model";
 import { IdType } from "@app/model/core/id.model";
 import { Nullable } from "@app/model/core/nullable.model";
 import { BasePage } from "@app/pages/base.page";
+import { DeliveryReturnStatusService } from "@app/service/delivery-return-status.service";
 import { DeliveryStatusService } from "@app/service/delivery-status.service";
 import { DeliveryTypeService } from "@app/service/delivery-type.service";
 
@@ -43,23 +46,19 @@ import { DeliveryTypeService } from "@app/service/delivery-type.service";
 export class EditDialogComponent extends BasePage implements OnInit {
   // fields
   formGroup = new FormGroup({
-    attemptId: new FormControl<Nullable<IdType>>(null),
+    returnId: new FormControl<Nullable<IdType>>(null),
     deliveryId: new FormControl<Nullable<IdType>>(null),
-    deliveryTypeId: new FormControl<Nullable<IdType>>(null),
-    deliveryStatusId: new FormControl<Nullable<IdType>>(null),
-    deliveryDate: new FormControl<Nullable<Date>>(null),
+    returnStatusId: new FormControl<Nullable<IdType>>(null),
     note: new FormControl<Nullable<string>>(null),
   });
 
-  deliveryTypes$ = signal<DeliveryType[]>([]);
-  deliveryStatuses$ = signal<DeliveryStatus[]>([]);
+  deliveryReturnStatuses$ = signal<DeliveryReturnStatus[]>([]);
 
   /// methods
   constructor(
-    private $deliveryTypeService: DeliveryTypeService,
-    private $deliveryStatusService: DeliveryStatusService,
+    private $deliveryReturnStatusService: DeliveryReturnStatusService,
     private dialogRef: MatDialogRef<EditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private dialogData: DeliveryAttemptFE
+    @Inject(MAT_DIALOG_DATA) private dialogData: DeliveryReturnFE
   ) {
     super();
     console.log({ dialogData });
@@ -67,30 +66,10 @@ export class EditDialogComponent extends BasePage implements OnInit {
 
   override __ngOnInit__() {
     this.registerSubscription(
-      this.$deliveryTypeService.getAll().subscribe({
+      this.$deliveryReturnStatusService.getAll().subscribe({
         next: (list) => {
-          console.log("Fetched delivery type list:", list);
-          this.deliveryTypes$.set(
-            list.map((it) => {
-              return {
-                typeId: Number(it.typeId),
-                typeName: it.typeName,
-                typeDesc: it.typeDesc,
-              };
-            })
-          );
-          this.formGroup.controls.deliveryTypeId.setValue(
-            this.dialogData.deliveryTypeId
-          );
-        },
-        error: (error) => {
-          console.error("Error fetching delivery type list:", error);
-        },
-      }),
-      this.$deliveryStatusService.getAll().subscribe({
-        next: (list) => {
-          console.log("Fetched delivery status list:", list);
-          this.deliveryStatuses$.set(
+          console.log("Fetched delivery return status list:", list);
+          this.deliveryReturnStatuses$.set(
             list.map((it) => {
               return {
                 statusId: Number(it.statusId),
@@ -99,19 +78,19 @@ export class EditDialogComponent extends BasePage implements OnInit {
               };
             })
           );
-          this.formGroup.controls.deliveryStatusId.setValue(
-            this.dialogData.deliveryStatusId
+          this.formGroup.controls.returnStatusId.setValue(
+            this.dialogData.returnStatusId
           );
         },
         error: (error) => {
-          console.error("Error fetching delivery status list:", error);
+          console.error("Error fetching delivery return status list:", error);
         },
       })
     );
 
     this.formGroup.patchValue(this.dialogData);
 
-    this.formGroup.controls.attemptId.disable();
+    this.formGroup.controls.returnId.disable();
     this.formGroup.controls.deliveryId.disable();
   }
 
